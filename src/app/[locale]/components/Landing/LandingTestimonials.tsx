@@ -82,11 +82,9 @@ export default function LandingTestimonials({
   const t = useTranslations('LandingPage.Updates')
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const [isLoading, setIsLoading] = useState(true)
-  const [hasError, setHasError] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval>>()
 
-  // Testimonials slider with error handling
+  // Testimonials slider - clean implementation like AboutPortugal
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
     defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration },
@@ -104,54 +102,8 @@ export default function LandingTestimonials({
     },
     slideChanged(s) {
       setCurrentSlide(s.track.details.rel)
-    },
-    created() {
-      // Backup: set loading to false after a short delay if callback doesn't work
-      console.log('Keen Slider created')
-      setIsLoading(false)
-    },
-    destroyed() {
-      setHasError(true)
     }
   })
-
-  // Fallback effect to handle loading state if keen-slider callback fails
-  useEffect(() => {
-    // Set a timeout as fallback in case the created callback doesn't fire
-    const loadingTimeout = setTimeout(() => {
-      console.log('Fallback: Setting loading to false')
-      setIsLoading(false)
-    }, 1000) // 1 second fallback
-
-    // Also try to detect when the slider instance is available
-    const checkSliderReady = () => {
-      if (instanceRef.current) {
-        console.log('Slider instance detected, setting loading to false')
-        setIsLoading(false)
-        clearTimeout(loadingTimeout)
-      }
-    }
-
-    // Check immediately and also after a short delay
-    checkSliderReady()
-    const checkTimeout = setTimeout(checkSliderReady, 100)
-
-    return () => {
-      clearTimeout(loadingTimeout)
-      clearTimeout(checkTimeout)
-    }
-  }, [instanceRef])
-
-  // Additional effect to ensure we're not stuck in loading state
-  useEffect(() => {
-    // Force loading to false after 2 seconds maximum
-    const maxLoadingTimeout = setTimeout(() => {
-      console.log('Max loading timeout reached, forcing loading to false')
-      setIsLoading(false)
-    }, 2000)
-
-    return () => clearTimeout(maxLoadingTimeout)
-  }, [])
 
   // Auto-play functionality
   const startAutoPlay = useCallback(() => {
@@ -171,52 +123,37 @@ export default function LandingTestimonials({
     setIsAutoPlaying(prev => !prev)
   }, [])
 
-  // Navigation functions with error handling
-  const goToPrevious = useCallback(() => {
-    try {
-      instanceRef.current?.prev()
-      stopAutoPlay()
-      setIsAutoPlaying(false)
-    } catch (error) {
-      console.error('Error navigating to previous slide:', error)
-      setHasError(true)
-    }
-  }, [instanceRef, stopAutoPlay])
-
-  const goToNext = useCallback(() => {
-    try {
-      instanceRef.current?.next()
-      stopAutoPlay()
-      setIsAutoPlaying(false)
-    } catch (error) {
-      console.error('Error navigating to next slide:', error)
-      setHasError(true)
-    }
-  }, [instanceRef, stopAutoPlay])
-
+  // Navigation functions - same pattern as AboutPortugal
   const goToSlide = useCallback(
     (index: number) => {
-      try {
-        instanceRef.current?.moveToIdx(index)
-        stopAutoPlay()
-        setIsAutoPlaying(false)
-      } catch (error) {
-        console.error('Error navigating to slide:', error)
-        setHasError(true)
-      }
+      instanceRef.current?.moveToIdx(index)
+      stopAutoPlay()
+      setIsAutoPlaying(false)
     },
     [instanceRef, stopAutoPlay]
   )
 
+  const goToPrevious = useCallback(() => {
+    instanceRef.current?.prev()
+    stopAutoPlay()
+    setIsAutoPlaying(false)
+  }, [instanceRef, stopAutoPlay])
+
+  const goToNext = useCallback(() => {
+    instanceRef.current?.next()
+    stopAutoPlay()
+    setIsAutoPlaying(false)
+  }, [instanceRef, stopAutoPlay])
+
   // Auto-play effect
   useEffect(() => {
-    if (isAutoPlaying && !hasError && !isLoading) {
+    if (isAutoPlaying) {
       startAutoPlay()
     } else {
       stopAutoPlay()
     }
     return stopAutoPlay
-  }, [isAutoPlaying, startAutoPlay, stopAutoPlay, hasError, isLoading])
+  }, [isAutoPlaying, startAutoPlay, stopAutoPlay])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -224,19 +161,6 @@ export default function LandingTestimonials({
       stopAutoPlay()
     }
   }, [stopAutoPlay])
-
-  if (hasError) {
-    return (
-      <div className='mx-auto max-w-screen-xl px-4'>
-        <div className='py-8 text-center text-white'>
-          <p className='text-lg'>
-            {t('testimonialsError') ||
-              'Unable to load testimonials at this time.'}
-          </p>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <>
@@ -270,121 +194,102 @@ export default function LandingTestimonials({
             priority={false}
             quality={60}
             sizes='100vw'
-            onError={() => setHasError(true)}
           />
 
-          {/* Loading state */}
-          {isLoading && (
-            <div className='absolute inset-0 flex items-center justify-center text-white'>
-              <div className='text-center'>
-                <div className='mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-b-2 border-white'></div>
-                <p>{t('loadingTestimonials') || 'Loading testimonials...'}</p>
-              </div>
-            </div>
-          )}
-
           {/* Testimonials overlay */}
-          {!isLoading && (
-            <div className='absolute inset-0 flex items-center text-white'>
-              <div className='mx-auto w-full max-w-screen-xl px-4'>
-                {/* Slider with controls */}
-                <div className='relative'>
-                  <div
-                    ref={sliderRef}
-                    className='keen-slider'
-                    onMouseEnter={stopAutoPlay}
-                    onMouseLeave={() => isAutoPlaying && startAutoPlay()}
-                    aria-labelledby='testimonials-heading'
-                    role='region'
-                    aria-live='polite'
+          <div className='absolute inset-0 flex items-center text-white'>
+            <div className='mx-auto w-full max-w-screen-xl px-4'>
+              {/* Slider with controls */}
+              <div className='relative'>
+                <div
+                  ref={sliderRef}
+                  className='keen-slider'
+                  onMouseEnter={stopAutoPlay}
+                  onMouseLeave={() => isAutoPlaying && startAutoPlay()}
+                  aria-labelledby='testimonials-heading'
+                >
+                  {testimonials.map((item, index) => (
+                    <div
+                      key={`${item.team}-${index}`}
+                      className='keen-slider__slide min-h-[180px] px-2 py-6 lg:px-4'
+                    >
+                      <TestimonialCard {...item} />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Navigation arrows (desktop only) */}
+                <div className='hidden lg:block'>
+                  <button
+                    onClick={goToPrevious}
+                    aria-label={
+                      t('previousTestimonial') || 'Previous testimonial'
+                    }
+                    className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
                   >
-                    {testimonials.map((item, index) => (
-                      <div
-                        key={`${item.team}-${index}`}
-                        className='keen-slider__slide min-h-[180px] px-2 py-6 lg:px-4'
-                      >
-                        <TestimonialCard {...item} />
-                      </div>
+                    <FiChevronLeft className='h-6 w-6' />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    aria-label={t('nextTestimonial') || 'Next testimonial'}
+                    className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                  >
+                    <FiChevronRight className='h-6 w-6' />
+                  </button>
+                </div>
+
+                {/* Controls */}
+                <div className='mt-6 flex items-center justify-center gap-4'>
+                  {/* Dots */}
+                  <div
+                    className='flex gap-2'
+                    role='tablist'
+                    aria-label='Testimonial slides'
+                  >
+                    {testimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToSlide(index)}
+                        aria-label={`${t('goToSlide') || 'Go to slide'} ${index + 1}`}
+                        role='tab'
+                        aria-selected={currentSlide === index}
+                        className={clsx(
+                          'h-2 w-2 rounded-full transition-all',
+                          currentSlide === index
+                            ? 'scale-125 bg-white'
+                            : 'bg-white/50 hover:bg-white/80'
+                        )}
+                      />
                     ))}
                   </div>
 
-                  {/* Navigation arrows (desktop only) */}
-                  <div className='hidden lg:block'>
-                    <button
-                      onClick={goToPrevious}
-                      aria-label={
-                        t('previousTestimonial') || 'Previous testimonial'
-                      }
-                      disabled={isLoading}
-                      className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:cursor-not-allowed disabled:opacity-50'
-                    >
-                      <FiChevronLeft className='h-6 w-6' />
-                    </button>
-                    <button
-                      onClick={goToNext}
-                      aria-label={t('nextTestimonial') || 'Next testimonial'}
-                      disabled={isLoading}
-                      className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:cursor-not-allowed disabled:opacity-50'
-                    >
-                      <FiChevronRight className='h-6 w-6' />
-                    </button>
-                  </div>
-
-                  {/* Controls */}
-                  <div className='mt-6 flex items-center justify-center gap-4'>
-                    {/* Dots */}
-                    <div
-                      className='flex gap-2'
-                      role='tablist'
-                      aria-label='Testimonial slides'
-                    >
-                      {testimonials.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => goToSlide(index)}
-                          disabled={isLoading}
-                          aria-label={`${t('goToSlide') || 'Go to slide'} ${index + 1}`}
-                          role='tab'
-                          aria-selected={currentSlide === index}
-                          className={clsx(
-                            'h-2 w-2 rounded-full transition-all disabled:cursor-not-allowed disabled:opacity-50',
-                            currentSlide === index
-                              ? 'scale-125 bg-white'
-                              : 'bg-white/50 hover:bg-white/80'
-                          )}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Auto-play toggle */}
-                    <button
-                      onClick={toggleAutoPlay}
-                      disabled={isLoading}
-                      aria-label={
-                        isAutoPlaying
-                          ? t('pauseSlideshow') || 'Pause slideshow'
-                          : t('playSlideshow') || 'Play slideshow'
-                      }
-                      className='ml-4 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:cursor-not-allowed disabled:opacity-50'
-                    >
-                      {isAutoPlaying ? (
-                        <FiPause className='h-4 w-4' />
-                      ) : (
-                        <FiPlay className='h-4 w-4' />
-                      )}
-                    </button>
-                  </div>
+                  {/* Auto-play toggle */}
+                  <button
+                    onClick={toggleAutoPlay}
+                    aria-label={
+                      isAutoPlaying
+                        ? t('pauseSlideshow') || 'Pause slideshow'
+                        : t('playSlideshow') || 'Play slideshow'
+                    }
+                    className='ml-4 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                  >
+                    {isAutoPlaying ? (
+                      <FiPause className='h-4 w-4' />
+                    ) : (
+                      <FiPlay className='h-4 w-4' />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
   )
 }
 
-// Testimonial card component with improved accessibility
+// Testimonial card component
 const TestimonialCard: React.FC<Testimonial> = ({
   team,
   quote,

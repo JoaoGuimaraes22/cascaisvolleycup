@@ -76,7 +76,7 @@ export default function LandingUpdates() {
       {/* Content wrapper with responsive padding */}
       <div className='relative z-10 pt-[80px] sm:pt-[100px] lg:pt-[140px]'>
         {/* News Section */}
-        <LandingNews isVisible={isVisible} />
+        {/* <LandingNews isVisible={isVisible} /> 
 
         {/* Testimonials Section */}
         <LandingTestimonials isVisible={isVisible} />

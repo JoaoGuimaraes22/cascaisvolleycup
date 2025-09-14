@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'keen-slider/keen-slider.min.css';
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+}
+
+@layer base {
+  :root {
+    --primary: #333366;
+    --background: #ededed;
+
+    /* keep only if you use bg-span-bg anywhere */
+    --span-bg: linear-gradient(to right, #4e4e9e, #097fa5, #3e87ed);
+
+    /* Fonts are defined in tailwind.config.ts as CSS vars, so keep them set in your @font-face or global font loader */
+    --header-h: 4rem;
+  }
+}
+
+.lang-sky [role='menu'],
+.lang-sky .radix-dropdown-content,
+.lang-sky .headless-menu-items {
+  @apply rounded-md border border-white/10 bg-sky-500 text-white shadow-lg;
+}
+.lang-sky [role='menuitem'],
+.lang-sky .radix-dropdown-item,
+.lang-sky .headless-menu-item {
+  @apply hover:bg-white/10 focus:bg-white/10;
+}
+
+@layer base {
+  *:lang(ar),
+  *:lang(fa) {
+    font-family: var(--rubik) !important;
+  }
+
+  html {
+    font-size: 83%;
+  }
+
+  @screen md {
+    html {
+      font-size: 80%;
+    }
+  }
+
+  /* lg ≥ 1024px */
+  @screen lg {
+    html {
+      font-size: 78%;
+    }
+  }
+
+  div::selection,
+  h1::selection,
+  button::selection,
+  p::selection,
+  span::selection,
+  a::selection,
+  h2::selection {
+    background-color: rgb(121, 255, 225);
+    text-shadow: rgb(0, 102, 255) 0px 0px 7px;
+    color: rgb(248, 28, 229);
+  }
+
+  body {
+    @apply bg-background text-primary;
+  }
+}

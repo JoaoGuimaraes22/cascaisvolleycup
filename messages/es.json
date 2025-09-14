@@ -1,0 +1,584 @@
+{
+  "Header": {
+    "About": "Acerca de",
+    "Accommodation": "Alojamiento",
+    "Program": "Programa",
+    "Competition": "Competición",
+    "Gallery": "Galería",
+    "Registration": "Inscripción",
+    "Hall_of_Fame": "Hall of Fame"
+  },
+
+  "LandingPage": {
+    "Welcome": {
+      "tagline_alt": "siente la ACCIÓN, disfruta del VERANO",
+      "PORTUGAL": "PORTUGAL",
+      "dates": "8 — 12 JULIO",
+      "avg_air_temp": "TEMP. MEDIA AIRE",
+      "avg_air_temp_value": "94°F | 34°C",
+      "airport": "AEROPUERTO (LIS)",
+      "airport_value": "30 km | 25 min",
+      "location": "UBICACIÓN",
+      "location_value": "LISBOA, CASCAIS",
+      "scrollDown": "Desplázate hacia abajo",
+      "register": "Regístrate ahora",
+      "brochure": "Folleto"
+    },
+    "Updates": {
+      "Latest_news": "ÚLTIMAS NOTICIAS",
+      "What_they_say": "LO QUE DICEN",
+      "previousTestimonial": "Testimonio anterior",
+      "nextTestimonial": "Siguiente testimonio",
+      "goToSlide": "Ir a la diapositiva",
+      "pauseSlideshow": "Pausar presentación",
+      "playSlideshow": "Reproducir presentación"
+    },
+    "Location": {
+      "title": "¿Cómo llegar a Cascais?",
+      "p1": "Existen varias formas de viajar desde el Aeropuerto de Lisboa hasta Cascais: tren, taxi, alquiler de coche o reservando un servicio de traslado. Solo elige la opción que mejor se adapte a tus necesidades, sabiendo que está a solo 30 km de distancia — unos 20-30 minutos desde Cascais.",
+      "p2_prefix": "Para quienes viajan desde Oporto a Cascais, la opción más económica y cómoda se llama ",
+      "flixbus": "FLIXBUS",
+      "p2_suffix": ". Este operador ofrece varios servicios diarios que salen desde Oporto (Campanhã) directamente a Cascais (Alcabideche) a precios inmejorables.",
+      "avg_air_temp": "TEMP. MEDIA AIRE",
+      "avg_air_temp_value": "94°F | 34°C",
+      "airport": "AEROPUERTO (LIS)",
+      "airport_value": "30 km | 25 min",
+      "cta": "Podemos ayudar",
+      "stats_teams": "50 equipos",
+      "stats_athletes": "600 atletas",
+      "stats_countries": "3 países",
+      "stats_games": "150 partidos",
+      "mapAlt": "Mapa mostrando la ruta de Lisboa a Cascais",
+      "taglineAlt": "Siente la acción, disfruta del verano"
+    }
+  },
+
+  "AboutPage": {
+    "Hero": {
+      "title": "Volley4All",
+      "p1": "Cascais Volley4all es una asociación deportiva sin ánimo de lucro fundada en 2013, enfocada en el desarrollo atlético competente de sus atletas.",
+      "p2": "Durante los últimos 12 años, hemos logrado varios resultados deportivos significativos, entrenando varios atletas de élite para las diferentes selecciones nacionales portuguesas, y nos hemos convertido en uno de los clubes de voleibol más importantes y técnicamente eficientes del sur del país.",
+      "p3": "Volley4all compite a nivel nacional en todos los niveles de edad disponibles y actualmente es un referente en la formación deportiva en todo el sur de Portugal.",
+      "p4": "Somos un club ",
+      "p4Bold": "PLAY HARD TRAIN HARDER",
+      "p4Rest": ".",
+      "cta": "Visítanos",
+      "heroImageAlt": "Jugadores de voleibol en acción en el torneo de Cascais",
+      "club": { "logoAlt": "Gorriones Volley4All" },
+      "sponsors": {
+        "cascaisEstorilAlt": "Turismo de Cascais Estoril",
+        "camaraAlt": "Ayuntamiento de Cascais",
+        "camFordAlt": "C.A.M. Ford",
+        "fpvAlt": "FPV"
+      }
+    },
+    "Portugal": {
+      "title": "¿POR QUÉ PORTUGAL? ¿POR QUÉ CASCAIS?",
+      "p1": "Con un clima suave, más de 300 días de sol al año y 850 km de playas impresionantes bañadas por el Océano Atlántico, Portugal es el lugar ideal para disfrutar de experiencias inolvidables durante todo el año.",
+      "p2": "Reconocido como uno de los principales destinos turísticos de Europa y clasificado entre los 3 destinos más seguros del mundo, Portugal combina de manera única paisajes naturales diversos, riqueza cultural, gastronomía galardonada y la hospitalidad tradicional del pueblo portugués.",
+      "p3": "A solo 2 horas en avión desde las principales capitales europeas, Lisboa ofrece conexiones rápidas y convenientes para visitantes de todo el mundo.",
+      "p4": "¡La encantadora ciudad de Cascais, donde tiene lugar nuestro torneo, está ubicada en la costa atlántica y a solo 30 km del Aeropuerto Internacional de Lisboa!",
+      "logoAlt": "Copa de Voleibol Cascais 2026",
+      "taglineAlt": "Siente la acción, disfruta del verano",
+      "cards": {
+        "portugal": {
+          "title": "PORTUGAL",
+          "subtitle": "Lisboa",
+          "desc": "Una de las naciones más antiguas de Europa, fundada en 1139 con fronteras estables desde 1297.",
+          "alt": "Vista de Lisboa y la Torre de Belém"
+        },
+        "cabo": {
+          "title": "CABO DA ROCA",
+          "subtitle": "Cascais",
+          "desc": "El punto más occidental de Europa continental, marcado por acantilados dramáticos y paisajes salvajes. Hasta el siglo XV, estos acantilados azotados por el viento se consideraban el \"fin del mundo\".",
+          "alt": "Acantilados y faro en Cabo da Roca"
+        },
+        "boca": {
+          "title": "BOCA DO INFERNO",
+          "subtitle": "Cascais",
+          "desc": "Una formación rocosa única con un arco marino impresionante y acantilados tallados por el poder implacable del Océano Atlántico. Ubicada al oeste de Cascais, es una de las maravillas naturales más icónicas de la región.",
+          "alt": "Arcos y acantilados en Boca do Inferno"
+        },
+        "sec1719": {
+          "title": "SEC XVII | XIX",
+          "subtitle": "Cascais",
+          "desc": "Con numerosas mansiones nobles de los siglos XVII, XVIII y XIX, Cascais se convirtió en un lujoso refugio costero en las afueras de Lisboa — un refugio atemporal para la aristocracia europea y portuguesa.",
+          "alt": "Arquitectura histórica de Cascais"
+        }
+      },
+      "stats": {
+        "teams": "50 EQUIPOS",
+        "athletes": "600 ATLETAS",
+        "countries": "3 PAÍSES",
+        "matches": "150 PARTIDOS"
+      }
+    },
+    "Villa": {
+      "taglineAlt": "siente la ACCIÓN, disfruta del VERANO",
+      "title": "Cascais — La Ciudad",
+      "p1": "Cascais es una encantadora ciudad costera, famosa por sus pintorescas playas, elegantes jardines, excelente comida y un ambiente relajado y acogedor. Aquí, la tradición y la modernidad conviven lado a lado, creando un entorno ideal para el ocio, el deporte y el bienestar.",
+      "p2": "Con numerosas mansiones nobles de los siglos XVII-XIX, Cascais es un resort costero de lujo a las puertas de Lisboa (solo 20 minutos en coche) y una vez fue el refugio favorito de la realeza portuguesa y europea.",
+      "p3": "Con una excelente infraestructura turística y servicios de alta calidad, Cascais es el escenario perfecto para dar la bienvenida a jóvenes atletas y familias de todo el mundo.",
+      "p4": "Visita Cascais y disfruta del verano.",
+      "eventLogoAlt": "Logo de la Copa de Voleibol Cascais 2026",
+      "sponsorAlt": "Cascais — Ayuntamiento",
+      "cta": "VISÍTANOS"
+    }
+  },
+
+  "AccommodationPage": {
+    "Hero": {
+      "title": "Alojamiento",
+      "schools": {
+        "title": "Alojamiento en Escuelas",
+        "p1": "El alojamiento y las comidas para las delegaciones se proporcionarán en las Escuelas del Municipio de Cascais, a saber:",
+        "list": {
+          "a": "Agrupamento de Escolas de Alvide | Alcabideche",
+          "b": "Agrupamento de Escolas da Cidadela | Cascais",
+          "c": "Agrupamento de Escolas de Cascais | Cascais",
+          "d": "Agrupamento de Escolas IBN Mucana | Alcabideche",
+          "e": "Agrupamento de Escolas de Carcavelos"
+        },
+        "p2": "Todos los partidos se celebrarán en pabellones deportivos del municipio. Entre los partidos y el alojamiento, las visitas a la ciudad y sus magníficas playas están a 15–20 minutos a pie. Además, cada participante recibirá una 'free pass card' que permitirá el uso gratuito de la red de transportes ",
+        "p2Bold": "MOBICASCAIS",
+        "p2_cont": "en todo el municipio durante el evento. Recomendamos consultar la aplicación oficial para un mejor uso de la red de transportes.\n\nA cada delegación se le asignará un aula, y todos los participantes deberán traer su propio saco de dormir, almohada y colchón."
+      },
+      "hotel": {
+        "title": "Alojamiento en Hoteles",
+        "p1": "Los equipos que deseen y/o necesiten alojarse en hoteles de la región y/o requieran transporte desde y hacia el Aeropuerto de Lisboa deben ponerse en contacto con la agencia de viajes oficial, ",
+        "pBold": "O-SPORTS.",
+        "p1_cont": " Para acceder a los mejores precios y disfrutar de una estancia sin inconvenientes, todos los interesados en este servicio deben comunicarse con su respectiva Agencia de Viajes lo antes posible, preferiblemente antes de finales de noviembre."
+      },
+      "food": {
+        "title": "Comida y Comidas",
+        "p1": "Los comedores solo estarán operativos desde el 8 de julio en adelante, por lo tanto, no se proporcionarán comidas el 7 de julio. En el último día del evento, 12 de julio, no se servirá la cena.",
+        "scheduleTitle": "Las comidas se servirán en varios comedores escolares disponibles según el siguiente horario:",
+        "breakfast": "Desayunos envasados distribuidos a los equipos | 8:00–10:00",
+        "lunch": "Almuerzo | 12:00–15:00",
+        "dinner": "Cena | 19:00–21:00",
+        "intolerances": "En caso de intolerancias alimentarias, los managers de los equipos deben informar a la organización en el momento de la inscripción para que se puedan preparar comidas apropiadas para cada caso.",
+        "contactButton": "Contactar O-Sports"
+      },
+      "playerAlt": "Jugador de voleibol en acción"
+    },
+    "ContactModal": {
+      "title": "Contactar O-Sports",
+      "closeButton": "Cerrar modal",
+      "emailLabel": "Dirección de correo:",
+      "subjectLabel": "Asunto:",
+      "subjectValue": "Cascais Volley Cup",
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "guidelinesTitle": "Directrices del Mensaje:",
+      "guidelinesText": "Preferiblemente, incluya en su mensaje el **país y club**, seguido de su pregunta o comentario sobre el alojamiento.",
+      "exampleTitle": "Mensaje de Ejemplo:",
+      "exampleText": "\"Hola, escribo desde [País] en nombre de [Nombre del Club]. Nos gustaría consultar sobre opciones de alojamiento para nuestro equipo de 12 jugadores para la Cascais Volley Cup 2026...\"",
+      "gotItButton": "¡Entendido!"
+    }
+  },
+
+  "ProgramPage": {
+    "Hero": {
+      "title": "Programa",
+      "taglineAlt": "Eslogan del evento",
+      "playersAlt": "Jugadores en acción",
+      "downloadBrochure": "Descargar Folleto",
+      "checkin": {
+        "label": "7 Julio - Martes",
+        "text": "El **CHECK-IN** para todos los equipos debe realizarse entre las **15:00 y 24:00** de este día en su alojamiento asignado, que será comunicado con antelación por la organización."
+      },
+      "days": {
+        "d1": {
+          "weekday": "MIÉRCOLES",
+          "date": "08-Jul",
+          "block1": {
+            "title": "1ª FASE DE GRUPOS",
+            "subtitle": "Partidos",
+            "times": "9:00-22:00"
+          }
+        },
+        "d2": {
+          "weekday": "JUEVES",
+          "date": "09-Jul",
+          "block1": {
+            "title": "1ª FASE DE GRUPOS",
+            "subtitle": "Partidos",
+            "times": "9:00-22:00"
+          }
+        },
+        "d3": {
+          "weekday": "VIERNES",
+          "date": "10-Jul",
+          "block1": {
+            "title": "DÍA DE DESCANSO"
+          }
+        },
+        "d4": {
+          "weekday": "SÁBADO",
+          "date": "11-Jul",
+          "block1": { "title": "2ª FASE DE GRUPOS" },
+          "block2": { "title": "Cuartos de final" },
+          "block3": {
+            "subtitle": "Partidos",
+            "times": "9:00-22:00"
+          }
+        },
+        "d5": {
+          "weekday": "DOMINGO",
+          "date": "12-Jul",
+          "block1": { "title": "2ª FASE DE GRUPOS" },
+          "block2": { "title": "Semifinales" },
+          "block3": { "title": "Finales" },
+          "block4": {
+            "subtitle": "Partidos",
+            "times": "9:00-16:00"
+          },
+          "block5": {
+            "note": "Ceremonia de Premiación · 18:00"
+          }
+        }
+      },
+      "checkout": {
+        "label": "13 Julio - Lunes",
+        "text": "El **CHECK-OUT** para todos los equipos que soliciten y/o necesiten traslados al Aeropuerto de Lisboa debe realizarse antes de las **12:00** de este día."
+      },
+      "layDay": {
+        "title": "Día de Descanso",
+        "content1": "El ",
+        "bold1": "10 de julio, viernes ",
+        "content2": "solo se celebrarán los partidos estrictamente necesarios para asegurar el cumplimiento del calendario. Este día será posible disfrutar de todo lo que nuestra ciudad tiene para ofrecer, con la opción de hacer un viaje a Lisboa. El viaje en tren por el estuario es una experiencia inolvidable, pasando por todas las playas de la Costa del Estoril y ofreciendo vistas de sitios turísticos como la Torre de Belém, el Monasterio de los Jerónimos, el Monumento a los Descubrimientos, el Centro Cultural de Belém, el MAAT, entre otros. Todo esto en un viaje de solo ",
+        "bold2": "25 minutos ",
+        "content3": "en tren.",
+        "note": "Atención: Si es en el mejor interés de todos los participantes, la organización se reserva el derecho de cambiar el programa respectivo. En este caso, todos los equipos serán debidamente notificados."
+      }
+    }
+  },
+
+  "CompetitionPage": {
+    "Hero": {
+      "phoneAlt": "App de la Copa de Voleibol Cascais mostrada en un teléfono móvil",
+      "title": "LA COMPETICIÓN",
+      "p1": "El formato de competición se organizará según el número de inscripciones, siempre buscando proporcionar el mayor número posible de partidos para todos los equipos.",
+      "p2": "Habrá una primera fase que consiste en grupos de 4 equipos, donde todos juegan contra todos y los equipos mejor clasificados de cada grupo califican. Los equipos clasificados entran en una segunda fase de eliminación simple para determinar las clasificaciones del 1º al 8º lugar, mientras que los equipos no clasificados entran en una segunda fase de grupos para determinar las clasificaciones restantes. Cada equipo tiene garantizado un mínimo de **6 partidos** y un máximo de **8 partidos.**",
+      "p3": "La formación de grupos, clasificaciones, puntos y horarios de partidos para todos los equipos siempre estarán actualizados y disponibles en la **APP CASCAIS VOLLEY CUP**",
+      "cta": "REGLAMENTO",
+      "ctaHref": "/regulamento",
+      "ctaDescription": "Ver el reglamento completo de la competición",
+      "mosaicAlt": "Mosaico de imágenes de la competición"
+    },
+    "LogoTaglineHero": {
+      "sectionLabel": "Banner de la Copa de Voleibol Cascais",
+      "logoAlt": "Logo de la Copa de Voleibol Cascais 2026",
+      "taglineAlt": "siente la ACCIÓN, disfruta del VERANO"
+    },
+    "Facts": {
+      "sectionTitle": "Datos e Información de la Competición",
+      "ages": {
+        "heading": "GRUPOS DE EDAD",
+        "under15": "Sub 15",
+        "under15Years": "(≤2011)",
+        "under17": "Sub 17",
+        "under17Years": "(2010-2009)",
+        "open": "Abierto",
+        "openYears": "(≥2008)"
+      },
+      "who": {
+        "heading": "¿QUIÉN PUEDE PARTICIPAR?",
+        "l1": "UNIVERSIDADES",
+        "l2": "SELECCIONES NACIONALES",
+        "l3": "COLEGIOS",
+        "l4": "ESCUELAS",
+        "l5": "CLUBES"
+      },
+      "wherewhen": {
+        "heading": "¿DÓNDE Y CUÁNDO?",
+        "l1": "En el municipio de",
+        "l2": "CASCAIS",
+        "l3": "del 8 al 12 de julio"
+      },
+      "games": {
+        "heading": "¿CUÁNTOS PARTIDOS?",
+        "maximum": "Máximo",
+        "maxMatches": "8 partidos",
+        "minimum": "Mínimo",
+        "minMatches": "6 partidos"
+      },
+      "stats": {
+        "teams": "50 Equipos",
+        "athletes": "600 Atletas",
+        "countries": "3 Países",
+        "games": "150 Partidos"
+      }
+    },
+    "Info": {
+      "title": "Reglamento",
+      "intro": "Se aplicará el reglamento actual de la FPV para las diversas categorías, con las siguientes excepciones:",
+      "rules": {
+        "item1": "Los partidos se jugarán al mejor de <b>3 sets obligatorios</b> con el 1º y 2º set jugados a 25 puntos y el 3º set a 15 puntos, usando la regla de \"Punto de Oro\" en caso de empate a 24-24.",
+        "item2": "Solo las finales se jugarán al mejor de 5 sets.",
+        "item3": "En caso de empate en la fase de grupos, los criterios de desempate seguirán el reglamento de la FPV.",
+        "item4": "En la categoría SUB15, se aplicará el reglamento SUB17.",
+        "item5": "Cada atleta solo puede jugar para un equipo. El incumplimiento resultará en la descalificación tanto del jugador como del equipo."
+      },
+      "notes": {
+        "p1": "También les informamos que todos los partidos tendrán arbitraje oficial y que la Copa de Voleibol Cascais es un torneo certificado por la <b>Federación Portuguesa de Voleibol</b>.",
+        "p2": "El comité organizador proporcionará los balones de juego. Todos los equipos deben traer sus propios balones para el calentamiento.",
+        "p3": "Cada equipo ganador recibirá <b>10 balones GALA PRO-LINE</b> Si un equipo de Cascais Volley4all gana, los premios se otorgarán al siguiente equipo mejor clasificado.",
+        "p4": "La organización otorgará trofeos y medallas a los equipos clasificados del 1º al 4º lugar, así como <b>trofeos MVP individuales</b> para todos los partidos finales."
+      },
+      "playerAlt": "Jugador en acción",
+      "sponsorAlt": "Logo del patrocinador"
+    }
+  },
+
+  "GalleryPage": {
+    "title": "Galería",
+    "description": "Galería de fotos de los torneos de voleibol Cascais Cup",
+    "yearDescription": "Fotos y destacados del Cascais Cup",
+    "yearSubtitle": "Galería oficial de fotos del",
+    "metaDescription": "Explora galerías de fotos de los torneos de voleibol Cascais Cup a través de los años. Revive los mejores momentos y destacados.",
+    "Hero": {
+      "title": "Galería",
+      "subtitle": "Revive los mejores momentos del Cascais Cup a través de los años",
+      "view_all": "Ver todas",
+      "gallery_image": "Imagen de galería",
+      "image": "imagen",
+      "images": "imágenes",
+      "check_all_images": "Ve todas las imágenes de {year} aquí",
+      "empty_title": "No hay imágenes disponibles",
+      "empty_description": "Las imágenes de la galería aparecerán aquí pronto. ¡Vuelve más tarde!",
+      "check_again": "Verificar nuevamente",
+      "refresh": "Actualizar",
+      "refreshing": "Actualizando...",
+      "try_again": "Intentar nuevamente"
+    },
+    "Main": {
+      "loading": "Cargando galería...",
+      "failed_title": "Error al cargar galería",
+      "failed_description": "No se pudieron cargar las imágenes de la galería. Inténtalo nuevamente.",
+      "try_again": "Intentar nuevamente",
+      "images": "imágenes",
+      "no_images_title": "No se encontraron imágenes",
+      "no_images_description": "Esta galería está vacía",
+      "no_images_year": "No hay imágenes disponibles para",
+      "view_modes": {
+        "grid": "Vista de cuadrícula",
+        "masonry": "Vista de mosaico"
+      },
+      "grid_sizes": {
+        "small": "Pequeña",
+        "medium": "Mediana",
+        "large": "Grande"
+      },
+      "refresh": "Actualizar galería",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "close_lightbox": "Cerrar lightbox",
+      "previous_image": "Imagen anterior",
+      "next_image": "Siguiente imagen",
+      "image_of": "de",
+      "cached": "Cache",
+      "live_data": "Datos en vivo"
+    }
+  },
+
+  "HallOfFamePage": {
+    "Hero": {
+      "title": "Hall of Fame",
+      "intro": "En los últimos tres años, en la Copa de Voleibol Cascais hemos tenido el honor de dar la bienvenida a numerosos equipos de voleibol femenino de todo Portugal. En 2025, logramos la ansiada representación nacional y agregamos el título de \"internacional\" al recibir equipos de varios países. A todos, un enorme GRACIAS por creer y por ser parte de la familia de la COPA DE VOLEIBOL CASCAIS.",
+      "see_more": "Ver más",
+      "hero_alt": "MVPs del torneo",
+      "logoAlt": "Logo de la Copa de Voleibol Cascais",
+      "mvpAlt": "MVP 2025",
+      "see_participants": "Ver Participantes",
+      "see_winners": "Ver Ganadores"
+    },
+    "Participants": {
+      "title": "Equipos Participantes",
+      "intro": "Texto introductorio sobre los equipos participantes...",
+      "playersAlt": "Jugadores celebrando",
+      "seeWinners": "Ver Ganadores",
+      "stats": {
+        "teams": "50 equipos",
+        "athletes": "600 atletas",
+        "countries": "3 países",
+        "games": "150 partidos"
+      }
+    },
+    "Winners": {
+      "title": "Equipos Ganadores",
+      "description": "Descubre los equipos que alcanzaron el podio en años recientes, en cada categoría.",
+      "divisions": {
+        "Open": "Abierto",
+        "Sub17": "Sub-17",
+        "Sub15": "Sub-15",
+        "seeMore": "Ver más"
+      }
+    }
+  },
+
+  "RegistrationPage": {
+    "RegistrationHero": {
+      "title": "INSCRIPCIONES",
+      "schoolAccommodation": {
+        "title": "ALOJAMIENTO EN ESCUELAS",
+        "description": "La inscripción debe realizarse obligatoriamente a través del sitio web del evento siguiendo las instrucciones que se proporcionarán en el mismo. De forma general, la inscripción en la COPA DE VOLEIBOL CASCAIS 2026 tiene dos momentos:"
+      },
+      "pricing": {
+        "earlyBird": {
+          "label": "EARLY BIRD",
+          "period": "I Del 1 de enero al 31 de marzo",
+          "price": "165 euros/atleta",
+          "details": "incluye inscripción en el torneo, estancia y alimentación del 8 al 12 de julio I Alojamiento Escolar de ocupación múltiple (mín 10 pax – max 20 pax)."
+        },
+        "regularBird": {
+          "label": "REGULAR BIRD",
+          "period": "I Del 1 de abril al 31 de mayo",
+          "price": "185 euros/atleta",
+          "details": "incluye inscripción, estancia y alimentación del 8 al 12 de julio I Alojamiento Escolar de ocupación múltiple (mín 10 pax – max 20 pax)."
+        }
+      },
+      "teamRequirements": "Cada equipo debe tener un mínimo de 10 atletas inscritas, y la organización ofrece la inscripción gratuita para 2 entrenadores por equipo.",
+      "paymentInfo": {
+        "instruction": "Los pagos deben realizarse por transferencia bancaria a:",
+        "account": {
+          "name": "CASCAIS VOLLEY4ALL I Banco BPI",
+          "iban": "PT50 0010 0000 5072 8780 0018 3",
+          "bic": "BBPIPTPL",
+          "nib": "0010.0000.50728.780001.83"
+        }
+      },
+      "registrationNotice": "Los equipos solo estarán formalmente inscritos después de completar todo el proceso de inscripción en línea. Informamos que, después de la inscripción y pago, en caso de renuncia, la organización del evento se reserva el derecho de no reembolsar las cantidades ya pagadas.",
+      "hotelAccommodation": {
+        "title": "ALOJAMIENTO EN HOTEL",
+        "description": "Los equipos que deseen y/o necesiten alojarse en unidades hoteleras de la región y/o necesiten transporte desde y hacia el Aeropuerto de Lisboa deben comunicarse con la agencia de viajes oficial, O-SPORTS. Para tener acceso a los mejores precios y una estancia sin contratiempos, todos los interesados en este servicio deben comunicarse con la respectiva Agencia de Viajes lo antes posible, preferiblemente antes de finales de noviembre."
+      },
+      "buttons": {
+        "brochure": "FOLLETO (PDF)",
+        "registerTeams": "INSCRIBIR EQUIPOS",
+        "osports": "O-SPORTS"
+      },
+      "playerAlt": "Jugador de voleibol playa",
+      "stats": {
+        "teams": "50 Equipos",
+        "athletes": "600 Atletas",
+        "countries": "3 Países",
+        "games": "150 Partidos"
+      },
+      "ContactModal": {
+        "title": "Contactar O-Sports",
+        "closeButton": "Cerrar modal",
+        "emailLabel": "Dirección de correo:",
+        "subjectLabel": "Asunto:",
+        "subjectValue": "Cascais Volley Cup",
+        "copy": "Copiar",
+        "copied": "¡Copiado!",
+        "guidelinesTitle": "Directrices del Mensaje:",
+        "guidelinesText": "Preferiblemente, incluya en su mensaje el **país y club**, seguido de su pregunta o comentario sobre el alojamiento.",
+        "exampleTitle": "Mensaje de Ejemplo:",
+        "exampleText": "\"Hola, escribo desde [País] en nombre de [Nombre del Club]. Nos gustaría consultar sobre opciones de alojamiento para nuestro equipo de 12 jugadores para la Cascais Volley Cup 2026...\"",
+        "gotItButton": "¡Entendido!"
+      }
+    },
+
+    "ContactModal": {
+      "title": "Contactar O-Sports",
+      "closeButton": "Cerrar modal",
+      "submit": "Enviar",
+      "submitting": "Enviando...",
+      "successMessage": "¡Su solicitud de alojamiento ha sido enviada con éxito!",
+      "errorMessage": "Algo salió mal. Por favor, inténtelo de nuevo.",
+
+      "fields": {
+        "teamName": "Nombre del Equipo",
+        "country": "País",
+        "teamManagerName": "Nombre del Entrenador/Responsable",
+        "phone": "Teléfono",
+        "email": "Correo electrónico",
+        "ageGroup": "Categoría de Edad",
+        "numberOfPeople": "Número de Personas",
+        "message": "Mensaje"
+      },
+
+      "placeholders": {
+        "teamName": "Introduzca el nombre de su equipo",
+        "country": "Introduzca su país",
+        "teamManagerName": "Introduzca el nombre del entrenador/responsable",
+        "phone": "Introduzca el número de teléfono",
+        "email": "Introduzca la dirección de correo electrónico",
+        "ageGroup": "Seleccione la categoría de edad",
+        "numberOfPeople": "Introduzca el número total de personas",
+        "message": "Escriba su mensaje"
+      },
+
+      "validation": {
+        "teamNameRequired": "El nombre del equipo es obligatorio",
+        "countryRequired": "El país es obligatorio",
+        "managerNameRequired": "El nombre del entrenador/responsable es obligatorio",
+        "managerNameMinLength": "El nombre debe tener al menos 2 caracteres",
+        "emailRequired": "El correo electrónico es obligatorio",
+        "emailInvalid": "Por favor, introduzca un correo electrónico válido",
+        "phoneInvalid": "Por favor, introduzca un número de teléfono válido",
+        "ageGroupRequired": "La categoría de edad es obligatoria",
+        "numberOfPeopleRequired": "El número de personas es obligatorio",
+        "numberOfPeopleInvalid": "Por favor, introduzca un número válido"
+      }
+    },
+
+    "Form": {
+      "FormTitle": "Contáctanos",
+      "FormDescription": "Completa el formulario a continuación para ponerte en contacto con nosotros",
+      "Name": "Nombre Completo",
+      "NamePlaceholder": "Ingresa tu nombre completo",
+      "Mobile": "Número de Teléfono",
+      "Club": "Nombre del Club/Equipo",
+      "ClubPlaceholder": "Ingresa tu club o nombre del equipo",
+      "City": "Ciudad",
+      "CityPlaceholder": "Tu ciudad",
+      "Country": "País",
+      "CountryPlaceholder": "Tu país",
+      "Questions": "Preguntas o Comentarios",
+      "QuestionsPlaceholder": "Cualquier pregunta, más información, ...",
+      "Submit": "Enviar Mensaje",
+      "Submitting": "Enviando...",
+      "SuccessMessage": "¡Mensaje Enviado! Te contactaremos pronto.",
+      "ErrorMessage": "Algo salió mal. Por favor intenta de nuevo.",
+      "ValidationErrors": {
+        "nameRequired": "El nombre es obligatorio",
+        "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+        "emailRequired": "El email es obligatorio",
+        "emailInvalid": "Por favor ingresa una dirección de email válida",
+        "clubRequired": "El nombre del club es obligatorio",
+        "cityRequired": "La ciudad es obligatoria",
+        "countryRequired": "El país es obligatorio",
+        "mobileInvalid": "Por favor ingresa un número de teléfono válido",
+        "fixErrors": "Por favor corrige los errores de arriba"
+      }
+    }
+  },
+  "Footer": {
+    "logoAria": "Copa de Voleibol Cascais - Inicio",
+    "description": "El mayor torneo internacional de voleibol del sur de Portugal. Únete a nosotros para una experiencia deportiva inolvidable junto a la costa atlántica.",
+    "quickLinks": "Enlaces Rápidos",
+    "about": "Acerca de",
+    "program": "Programa",
+    "competition": "Competición",
+    "accommodation": "Alojamiento",
+    "gallery": "Galería",
+    "hallOfFame": "Hall of Fame",
+    "contact": "Contacto",
+    "email": "Envíanos un email",
+    "phone": "Llámanos",
+    "location": "Nuestra ubicación",
+    "followUs": "Síguenos",
+    "website": "Visita nuestra página web",
+    "instagram": "Visita nuestro perfil de Instagram",
+    "youtube": "Visita nuestro canal de YouTube",
+    "registrationCTA": "Regístrate para el torneo",
+    "registration": "Inscripción",
+    "sponsors": "Nuestros Socios y Patrocinadores",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "brochure": "Folleto",
+    "regulations": "Reglamento"
+  }
+}

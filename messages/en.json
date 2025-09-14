@@ -1,0 +1,577 @@
+{
+  "Header": {
+    "About": "About",
+    "Accommodation": "Accommodation",
+    "Program": "Program",
+    "Competition": "Competition",
+    "Gallery": "Gallery",
+    "Registration": "Registration",
+    "Hall_of_Fame": "Hall of Fame"
+  },
+
+  "LandingPage": {
+    "Welcome": {
+      "tagline_alt": "feel the ACTION, enjoy the SUMMER",
+      "PORTUGAL": "PORTUGAL",
+      "dates": "8 — 12 JULY",
+      "avg_air_temp": "AVG AIR TEMP",
+      "avg_air_temp_value": "94°F | 34°C",
+      "airport": "AIRPORT (LIS)",
+      "airport_value": "30 km | 25 min",
+      "location": "LOCATION",
+      "location_value": "LISBON, CASCAIS",
+      "scrollDown": "Scroll Down",
+      "register": "Register Now",
+      "brochure": "Brochure"
+    },
+    "Updates": {
+      "Latest_news": "LATEST NEWS",
+      "What_they_say": "WHAT THEY SAY",
+      "previousTestimonial": "Previous testimonial",
+      "nextTestimonial": "Next testimonial",
+      "goToSlide": "Go to slide",
+      "pauseSlideshow": "Pause slideshow",
+      "playSlideshow": "Play slideshow"
+    },
+    "Location": {
+      "title": "How to get to Cascais?",
+      "p1": "There are several ways to travel from Lisbon Airport to Cascais: train, taxi, car rental, or booking a transfer service. Just choose the option that best suits your needs, knowing that it’s only 30 km away — about 20–30 minutes from Cascais.",
+      "p2_prefix": "For those traveling from Porto to Cascais, the most economical and comfortable option is called ",
+      "flixbus": "FLIXBUS",
+      "p2_suffix": ". This operator offers several daily services departing from Porto (Campanhã) directly to Cascais (Alcabideche) at unbeatable prices.",
+      "avg_air_temp": "AVG AIR TEMP",
+      "avg_air_temp_value": "94°F | 34°C",
+      "airport": "AIRPORT (LIS)",
+      "airport_value": "30 km | 25 min",
+      "cta": "We can help",
+      "stats_teams": "50 teams",
+      "stats_athletes": "600 athletes",
+      "stats_countries": "3 countries",
+      "stats_games": "150 games",
+      "mapAlt": "Map showing route from Lisbon to Cascais",
+      "taglineAlt": "Feel the action, enjoy the summer"
+    }
+  },
+
+  "AboutPage": {
+    "Hero": {
+      "title": "Volley4All",
+      "p1": "Cascais Volley4all is a non-profit sports association founded in 2013, focused on the competent athletic development of its athletes.",
+      "p2": "Over the past 12 years, we have achieved several significant sporting results, training various elite athletes for the different Portuguese national teams, and we have become one of the most important and technically efficient volleyball clubs in the south of the country.",
+      "p3": "Volley4all competes nationally at all available age levels and is currently a benchmark in sports training throughout southern Portugal.",
+      "p4": "We are a ",
+      "p4Bold": "PLAY HARD TRAIN HARDER",
+      "p4Rest": " club.",
+      "cta": "Visit us",
+      "heroImageAlt": "Volleyball players in action at Cascais tournament",
+      "club": { "logoAlt": "Volley4All Sparrows" },
+      "sponsors": {
+        "cascaisEstorilAlt": "Cascais Estoril Tourism",
+        "camaraAlt": "Cascais City Council",
+        "camFordAlt": "C.A.M. Ford",
+        "fpvAlt": "FPV"
+      }
+    },
+    "Portugal": {
+      "title": "WHY PORTUGAL? WHY CASCAIS?",
+      "p1": "With a mild climate, more than 300 days of sunshine per year, and 850 km of stunning beaches bathed by the Atlantic Ocean, Portugal is the ideal place to enjoy unforgettable experiences all year round.",
+      "p2": "Recognized as one of Europe’s top tourist destinations and ranked among the Top 3 safest destinations in the world, Portugal uniquely combines diverse natural landscapes, cultural richness, award-winning gastronomy, and the traditional hospitality of the Portuguese people.",
+      "p3": "Just 2 hours by plane from major European capitals, Lisbon offers fast and convenient connections for visitors from around the world.",
+      "p4": "The charming town of Cascais, where our tournament takes place, is located on the Atlantic coast and just 30 km from Lisbon International Airport!",
+      "logoAlt": "Cascais Volley Cup 2026",
+      "taglineAlt": "Feel the action, enjoy the summer",
+      "cards": {
+        "portugal": {
+          "title": "PORTUGAL",
+          "subtitle": "Lisbon",
+          "desc": "One of the oldest nations in Europe, founded in 1139 with stable borders since 1297.",
+          "alt": "View of Lisbon and Belém Tower"
+        },
+        "cabo": {
+          "title": "CABO DA ROCA",
+          "subtitle": "Cascais",
+          "desc": "The westernmost point of continental Europe, marked by dramatic cliffs and wild scenery. Until the 15th century, these windswept cliffs were considered the “end of the world.”",
+          "alt": "Cliffs and lighthouse at Cabo da Roca"
+        },
+        "boca": {
+          "title": "BOCA DO INFERNO",
+          "subtitle": "Cascais",
+          "desc": "A unique rocky formation with a striking sea arch and cliffs carved by the relentless power of the Atlantic Ocean. Located just west of Cascais, it’s one of the region’s most iconic natural wonders.",
+          "alt": "Arches and cliffs at Boca do Inferno"
+        },
+        "sec1719": {
+          "title": "SEC XVII | XIX",
+          "subtitle": "Cascais",
+          "desc": "With numerous noble mansions from the 17th, 18th, and 19th centuries, Cascais became a luxurious seaside retreat on the outskirts of Lisbon — a timeless refuge for European and Portuguese aristocracy.",
+          "alt": "Historic architecture of Cascais"
+        }
+      },
+      "stats": {
+        "teams": "50 TEAMS",
+        "athletes": "600 ATHLETES",
+        "countries": "3 COUNTRIES",
+        "matches": "150 MATCHES"
+      }
+    },
+    "Villa": {
+      "taglineAlt": "feel the ACTION, enjoy the SUMMER",
+      "title": "Cascais — The Town",
+      "p1": "Cascais is a charming seaside town, famous for its picturesque beaches, elegant gardens, great food, and a relaxed, welcoming atmosphere. Here, tradition and modernity live side by side, creating an ideal setting for leisure, sport, and well-being.",
+      "p2": "With numerous noble mansions from the 17th–19th centuries, Cascais is a luxury seaside resort on Lisbon’s doorstep (just 20 minutes by car) and was once a favorite refuge of Portuguese and European royalty.",
+      "p3": "With excellent tourist infrastructure and high-quality services, Cascais is the perfect stage to welcome young athletes and families from around the world.",
+      "p4": "Visit Cascais and enjoy the summer.",
+      "eventLogoAlt": "Cascais Volley Cup 2026 logo",
+      "sponsorAlt": "Cascais — City Hall",
+      "cta": "VISIT US"
+    }
+  },
+
+  "AccommodationPage": {
+    "Hero": {
+      "title": "Accommodation",
+      "schools": {
+        "title": "Accommodation in Schools",
+        "p1": "Accommodation and meals for the delegations will be provided in the Schools of the Municipality of Cascais, namely:",
+        "list": {
+          "a": "Agrupamento de Escolas de Alvide | Alcabideche",
+          "b": "Agrupamento de Escolas da Cidadela | Cascais",
+          "c": "Agrupamento de Escolas de Cascais | Cascais",
+          "d": "Agrupamento de Escolas IBN Mucana | Alcabideche",
+          "e": "Agrupamento de Escolas de Carcavelos"
+        },
+        "p2": "All matches will take place in sports halls within the municipality. Between matches and accommodation, visits to the town and its magnificent beaches are within a 15–20 minute walk. Additionally, each participant will receive a 'free pass card' allowing free use of the ",
+        "p2Bold": "MOBICASCAIS",
+        "p2_cont": "transport network throughout the municipality during the event. We recommend checking the official app for better use of the transport network.\n\nEach delegation will be assigned a classroom, and all participants must bring their own sleeping bag, pillow, and mattress."
+      },
+      "hotel": {
+        "title": "Accommodation in Hotels",
+        "p1": "Teams that wish and/or need to stay in hotels in the region and/or require transport to and from Lisbon Airport must contact the official travel agency, ",
+        "pBold": "O-SPORTS.",
+        "p1_cont": " To access the best prices and enjoy a hassle-free stay, all those interested in this service must contact their respective Travel Agency as soon as possible, preferably by the end of November."
+      },
+      "food": {
+        "title": "Food & Meals",
+        "p1": "The canteens will only be operational from July 8th onwards, therefore no meals will be provided on July 7th. On the last day of the event, July 12th, dinner will not be served.",
+        "scheduleTitle": "Meals will be served in various school canteens available according to the following schedule:",
+        "breakfast": "Packaged breakfasts distributed to teams | 8:00–10:00",
+        "lunch": "Lunch | 12:00–15:00",
+        "dinner": "Dinner | 19:00–21:00",
+        "intolerances": "In case of food intolerances, team managers must inform the organization at the time of registration so that appropriate meals can be prepared for each case.",
+        "contactButton": "Contact O-Sports"
+      },
+      "playerAlt": "Volleyball player in action"
+    },
+
+    "ContactModal": {
+      "title": "Contact O-Sports",
+      "closeButton": "Close modal",
+      "emailLabel": "Email Address:",
+      "subjectLabel": "Subject:",
+      "subjectValue": "Cascais Volley Cup",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "guidelinesTitle": "Message Guidelines:",
+      "guidelinesText": "Preferably, have your message contain your **country and club**, followed by your question or comment about accommodation.",
+      "exampleTitle": "Example Message:",
+      "exampleText": "\"Hello, I'm writing from [Country] on behalf of [Club Name]. We would like to inquire about accommodation options for our team of 12 players for Cascais Volley Cup 2026...\"",
+      "gotItButton": "Got it!"
+    }
+  },
+
+  "ProgramPage": {
+    "Hero": {
+      "title": "Program",
+      "taglineAlt": "Event tagline",
+      "playersAlt": "Players in action",
+      "downloadBrochure": "Download Brochure",
+      "checkin": {
+        "label": "7 July - Tuesday",
+        "text": "The **CHECK-IN** for all teams must take place between **15:00 and 24:00** on this day at their assigned accommodation, which will be communicated in advance by the organization."
+      },
+      "days": {
+        "d1": {
+          "weekday": "WEDNESDAY",
+          "date": "08-Jul",
+          "block1": {
+            "title": "1st GROUP PHASE",
+            "subtitle": "Games",
+            "times": "9:00-22:00"
+          }
+        },
+        "d2": {
+          "weekday": "THURSDAY",
+          "date": "09-Jul",
+          "block1": {
+            "title": "1st GROUP PHASE",
+            "subtitle": "Games",
+            "times": "9:00-22:00"
+          }
+        },
+        "d3": {
+          "weekday": "FRIDAY",
+          "date": "10-Jul",
+          "block1": {
+            "title": "LAY DAY"
+          }
+        },
+        "d4": {
+          "weekday": "SATURDAY",
+          "date": "11-Jul",
+          "block1": { "title": "2nd GROUP PHASE" },
+          "block2": { "title": "Quarter-finals" },
+          "block3": {
+            "subtitle": "Games",
+            "times": "9:00-22:00"
+          }
+        },
+        "d5": {
+          "weekday": "SUNDAY",
+          "date": "12-Jul",
+          "block1": { "title": "2nd GROUP PHASE" },
+          "block2": { "title": "Semi-finals" },
+          "block3": { "title": "Finals" },
+          "block4": {
+            "subtitle": "Games",
+            "times": "9:00-16:00"
+          },
+          "block5": {
+            "note": "Awards Ceremony · 18:00"
+          }
+        }
+      },
+      "checkout": {
+        "label": "13 July - Monday",
+        "text": "The **CHECK-OUT** for all teams who request and/or need transfers to Lisbon Airport must be carried out by **12:00** on this day."
+      },
+      "layDay": {
+        "title": "Lay Day",
+        "content1": "On, ",
+        "bold1": "July 10th, Friday ",
+        "content2": "only the strictly necessary games will be held to ensure calendar compliance. This day will be possible to enjoy everything our town has to offer, with the option of taking a trip to Lisbon. The train journey along the estuary is an unforgettable experience, passing through all the beaches of the Estoril Coast and offering views of tourist sites such as Belém Tower, Jerónimos Monastery, the Monument to the Discoveries, the Cultural Center of Belém, the MAAT, among others. All this in a journey of just ",
+        "bold2": "25 minutes ",
+        "content3": "by train.",
+        "note": "Attention: If it is in the best interest of all participants, the organization reserves the right to change the respective program. In this case, all teams will be duly notified."
+      }
+    }
+  },
+
+  "CompetitionPage": {
+    "Hero": {
+      "phoneAlt": "Cascais Volley Cup app displayed on a mobile phone",
+      "title": "THE COMPETITION",
+      "p1": "The competition format will be organized according to the number of registrations, always aiming to provide the highest possible number of matches for all teams.",
+      "p2": "There will be a first phase consisting of groups of 4 teams, where all play against each other and the top-ranked teams in each group qualify. Qualified teams enter a second phase of single elimination to determine rankings from 1st to 8th place, while non-qualified teams enter a second group phase to determine the remaining rankings. Each team is guaranteed a minimum of **6 matches** and a maximum of **8 matches.**",
+      "p3": "The formation of groups, rankings, points, and match schedules for all teams will always be updated and available in the **CASCAIS VOLLEY CUP APP**",
+      "cta": "REGULATIONS",
+      "ctaHref": "/regulamento",
+      "ctaDescription": "View the full competition regulations",
+      "mosaicAlt": "Mosaic of competition images"
+    },
+    "LogoTaglineHero": {
+      "sectionLabel": "Cascais Volley Cup banner",
+      "logoAlt": "Cascais Volley Cup 2026 logo",
+      "taglineAlt": "feel the ACTION, enjoy the SUMMER"
+    },
+    "Facts": {
+      "sectionTitle": "Competition Facts and Information",
+      "ages": {
+        "heading": "AGE GROUPS",
+        "under15": "Under 15",
+        "under15Years": "(≤2011)",
+        "under17": "Under 17",
+        "under17Years": "(2010-2009)",
+        "open": "Open",
+        "openYears": "(≥2008)"
+      },
+      "who": {
+        "heading": "WHO CAN PARTICIPATE?",
+        "l1": "UNIVERSITIES",
+        "l2": "NATIONAL TEAMS",
+        "l3": "COLLEGES",
+        "l4": "SCHOOLS",
+        "l5": "CLUBS"
+      },
+      "wherewhen": {
+        "heading": "WHERE AND WHEN?",
+        "l1": "In the municipality of",
+        "l2": "CASCAIS",
+        "l3": "from July 8th to 12th"
+      },
+      "games": {
+        "heading": "HOW MANY GAMES?",
+        "maximum": "Maximum",
+        "maxMatches": "8 games",
+        "minimum": "Minimum",
+        "minMatches": "6 games"
+      },
+      "stats": {
+        "teams": "50 Teams",
+        "athletes": "600 Athletes",
+        "countries": "3 Countries",
+        "games": "150 Games"
+      }
+    },
+    "Info": {
+      "title": "Regulations",
+      "intro": "The current FPV regulations will apply for the various categories, with the following exceptions:",
+      "rules": {
+        "item1": "Matches will be played as the best of <b>3 mandatory sets</b> with the 1st and 2nd sets played to 25 points and the 3rd set to 15 points, using the “Golden Point” rule in case of a tie at 24–24.",
+        "item2": "Only the finals will be played as the best of 5 sets.",
+        "item3": "In case of a tie in the group stage, the tiebreaker criteria will follow the FPV regulations.",
+        "item4": "In the SUB15 category, the SUB17 regulations will apply.",
+        "item5": "Each athlete may only play for one team. Failure to comply will result in disqualification of both the player and the team."
+      },
+      "notes": {
+        "p1": "We also inform you that all matches will have official refereeing and that the Cascais Volley Cup is a tournament certified by the <b>Portuguese Volleyball Federation</b>.",
+        "p2": "The organizing committee will provide the game balls. All teams must bring their own balls for warm-up.",
+        "p3": "Each winning team will receive <b>10 GALA PRO-LINE balls</b> If a Cascais Volley4all team wins, the prizes will be awarded to the next best-ranked team.",
+        "p4": "The organization will award trophies and medals to teams classified from 1st to 4th place, as well as <b>individual MVP trophies</b> for all final matches."
+      },
+      "playerAlt": "Player in action",
+      "sponsorAlt": "Sponsor logo"
+    }
+  },
+
+  "GalleryPage": {
+    "title": "Gallery",
+    "description": "Photo gallery from Cascais Cup volleyball tournaments",
+    "yearDescription": "Photos and highlights from Cascais Cup",
+    "yearSubtitle": "Official photo gallery of the",
+    "metaDescription": "Explore photo galleries from Cascais Cup volleyball tournaments through the years. Relive the best moments and highlights.",
+    "Hero": {
+      "title": "Gallery",
+      "subtitle": "Relive the best moments from Cascais Cup through the years",
+      "view_all": "View all",
+      "gallery_image": "Gallery image",
+      "image": "image",
+      "images": "images",
+      "check_all_images": "Check all of the {year} images here",
+      "empty_title": "No images available",
+      "empty_description": "Gallery images will appear here soon. Check back later!",
+      "check_again": "Check again",
+      "refresh": "Refresh",
+      "refreshing": "Refreshing...",
+      "try_again": "Try again"
+    },
+    "Main": {
+      "loading": "Cargando galería...",
+      "failed_title": "Error al cargar galería",
+      "try_again": "Intentar Nuevamente",
+      "image": "imagen",
+      "images": "imágenes",
+      "more_available": "más disponibles",
+      "all_loaded": "Todas las imágenes cargadas",
+      "load_more": "Cargar Más Imágenes",
+      "loading_more": "Cargando más...",
+      "grid_size": "Tamaño de cuadrícula",
+      "grid_sizes": {
+        "small": "Pequeño",
+        "medium": "Mediano",
+        "large": "Grande"
+      },
+      "gallery_image": "Imagen de galería",
+      "close_lightbox": "Cerrar lightbox"
+    }
+  },
+
+  "HallOfFamePage": {
+    "Hero": {
+      "title": "Hall of Fame",
+      "intro": "In the last three years, at the Cascais Volley Cup we have had the honor of welcoming numerous women’s volleyball teams from all over Portugal. In 2025, we achieved the long-awaited national representation and added the title of “international” by hosting teams from various countries. To all, a huge THANK YOU for believing and for being part of the CASCAIS VOLLEY CUP family.",
+      "see_more": "See more",
+      "hero_alt": "Tournament MVPs",
+      "logoAlt": "Cascais Volley Cup logo",
+      "mvpAlt": "MVP 2025",
+      "see_participants": "See Participants",
+      "see_winners": "See Winners"
+    },
+    "Participants": {
+      "title": "Participating Teams",
+      "intro": "Introductory text about the participating teams...",
+      "playersAlt": "Players celebrating",
+      "seeWinners": "See Winners",
+      "stats": {
+        "teams": "50 teams",
+        "athletes": "600 athletes",
+        "countries": "3 countries",
+        "games": "150 games"
+      }
+    },
+    "Winners": {
+      "title": "Winning Teams",
+      "description": "Discover the teams that reached the podium in recent years, in each category.",
+      "divisions": {
+        "Open": "Open",
+        "Sub17": "Under-17",
+        "Sub15": "Under-15",
+        "seeMore": "See more"
+      }
+    }
+  },
+
+  "RegistrationPage": {
+    "RegistrationHero": {
+      "title": "REGISTRATION",
+      "schoolAccommodation": {
+        "title": "SCHOOL ACCOMMODATION",
+        "description": "Registration must be done exclusively through the event website following the instructions provided there. In general, registration for CASCAIS VOLLEY CUP 2026 has two phases:"
+      },
+      "pricing": {
+        "earlyBird": {
+          "label": "EARLY BIRD",
+          "period": "I From January 1 to March 31",
+          "price": "165 euros/player",
+          "details": "includes tournament registration, accommodation and meals from July 8 to 12 I Shared school lodging (min 10 pax – max 20 pax)."
+        },
+        "regularBird": {
+          "label": "REGULAR BIRD",
+          "period": "I From April 1 to May 31",
+          "price": "185 euros/player",
+          "details": "includes registration, accommodation and meals from July 8 to 12 I Shared school lodging (min 10 pax – max 20 pax)."
+        }
+      },
+      "teamRequirements": "Each team must have a minimum of 10 registered players, and the organization offers free registration for 2 coaches per team.",
+      "paymentInfo": {
+        "instruction": "Payments must be made by bank transfer to:",
+        "account": {
+          "name": "CASCAIS VOLLEY4ALL I Banco BPI",
+          "iban": "PT50 0010 0000 5072 8780 0018 3",
+          "bic": "BBPIPTPL",
+          "nib": "0010.0000.50728.780001.83"
+        }
+      },
+      "registrationNotice": "Teams will only be formally registered after completing the entire online registration process. Please note that after registration and payment, in case of withdrawal, the organization reserves the right not to refund the amounts already paid.",
+      "hotelAccommodation": {
+        "title": "HOTEL ACCOMMODATION",
+        "description": "Teams that wish and/or need to stay in hotels in the region and/or require transport to and from Lisbon Airport must contact the official travel agency, O-SPORTS. To access the best prices and a hassle-free stay, all those interested in this service must contact their respective Travel Agency as soon as possible, preferably by the end of November."
+      },
+      "buttons": {
+        "brochure": "BROCHURE (PDF)",
+        "registerTeams": "REGISTER TEAMS",
+        "osports": "O-SPORTS"
+      },
+      "playerAlt": "Beach volleyball player",
+      "stats": {
+        "teams": "50 Teams",
+        "athletes": "600 Athletes",
+        "countries": "3 Countries",
+        "games": "150 Games"
+      },
+      "ContactModal": {
+        "title": "Contact O-Sports",
+        "closeButton": "Close modal",
+        "emailLabel": "Email Address:",
+        "subjectLabel": "Subject:",
+        "subjectValue": "Cascais Volley Cup",
+        "copy": "Copy",
+        "copied": "Copied!",
+        "guidelinesTitle": "Message Guidelines:",
+        "guidelinesText": "Preferably, have your message contain your **country and club**, followed by your question or comment about accommodation.",
+        "exampleTitle": "Example Message:",
+        "exampleText": "\"Hello, I'm writing from [Country] on behalf of [Club Name]. We would like to inquire about accommodation options for our team of 12 players for Cascais Volley Cup 2026...\"",
+        "gotItButton": "Got it!"
+      }
+    },
+
+    "Form": {
+      "FormTitle": "Contact Us",
+      "FormDescription": "Fill out the form below to get in touch with us",
+      "Name": "Full Name",
+      "NamePlaceholder": "Enter your full name",
+      "Mobile": "Phone Number",
+      "Club": "Club/Team Name",
+      "ClubPlaceholder": "Enter your club or team name",
+      "City": "City",
+      "CityPlaceholder": "Your city",
+      "Country": "Country",
+      "CountryPlaceholder": "Your country",
+      "Questions": "Questions or Comments",
+      "QuestionsPlaceholder": "Any questions, more information, ...",
+      "Submit": "Send Message",
+      "Submitting": "Submitting...",
+      "SuccessMessage": "Message Sent! We will contact you soon.",
+      "ErrorMessage": "Something went wrong. Please try again.",
+      "ValidationErrors": {
+        "nameRequired": "Name is required",
+        "nameMinLength": "Name must be at least 2 characters",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "clubRequired": "Club name is required",
+        "cityRequired": "City is required",
+        "countryRequired": "Country is required",
+        "mobileInvalid": "Please enter a valid phone number",
+        "fixErrors": "Please fix the errors above"
+      }
+    }
+  },
+
+  "ContactModal": {
+    "title": "Contact O-Sports",
+    "closeButton": "Close modal",
+    "submit": "Send",
+    "submitting": "Sending...",
+    "successMessage": "Your accommodation request has been sent successfully!",
+    "errorMessage": "Something went wrong. Please try again.",
+
+    "fields": {
+      "teamName": "Team Name",
+      "country": "Country",
+      "teamManagerName": "Team Manager Name",
+      "phone": "Phone",
+      "email": "Email",
+      "ageGroup": "Age Group",
+      "numberOfPeople": "Number of People",
+      "message": "Message"
+    },
+
+    "placeholders": {
+      "teamName": "Enter your team name",
+      "country": "Enter your country",
+      "teamManagerName": "Enter team manager name",
+      "phone": "Enter phone number",
+      "email": "Enter email address",
+      "ageGroup": "Select age group",
+      "numberOfPeople": "Enter total number of people",
+      "message": "Enter your message"
+    },
+
+    "validation": {
+      "teamNameRequired": "Team name is required",
+      "countryRequired": "Country is required",
+      "managerNameRequired": "Team manager name is required",
+      "managerNameMinLength": "Name must be at least 2 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "phoneInvalid": "Please enter a valid phone number",
+      "ageGroupRequired": "Age group is required",
+      "numberOfPeopleRequired": "Number of people is required",
+      "numberOfPeopleInvalid": "Please enter a valid number"
+    }
+  },
+
+  "Footer": {
+    "logoAria": "Cascais Volley Cup - Home",
+    "description": "The largest international volleyball tournament in southern Portugal. Join us for an unforgettable sporting experience by the Atlantic coast.",
+    "quickLinks": "Quick Links",
+    "about": "About",
+    "program": "Program",
+    "competition": "Competition",
+    "accommodation": "Accommodation",
+    "gallery": "Gallery",
+    "hallOfFame": "Hall of Fame",
+    "contact": "Contact",
+    "email": "Email us",
+    "phone": "Call us",
+    "location": "Our location",
+    "followUs": "Follow Us",
+    "website": "Visit our Website",
+    "instagram": "Visit our Instagram profile",
+    "youtube": "Visit our YouTube channel",
+    "registrationCTA": "Register for the tournament",
+    "registration": "Registration",
+    "sponsors": "Our Partners & Sponsors",
+    "allRightsReserved": "All rights reserved.",
+    "brochure": "Brochure",
+    "regulations": "Regulations"
+  }
+}

@@ -31,7 +31,9 @@
       "nextTestimonial": "Next testimonial",
       "goToSlide": "Go to slide",
       "pauseSlideshow": "Pause slideshow",
-      "playSlideshow": "Play slideshow"
+      "playSlideshow": "Play slideshow",
+      "loadingTestimonials": "Loading testimonials...",
+      "testimonialsError": "Unable to load testimonials at this time."
     },
     "Location": {
       "title": "How to get to Cascais?",

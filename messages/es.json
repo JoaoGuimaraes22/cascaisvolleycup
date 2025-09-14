@@ -31,7 +31,9 @@
       "nextTestimonial": "Siguiente testimonio",
       "goToSlide": "Ir a la diapositiva",
       "pauseSlideshow": "Pausar presentación",
-      "playSlideshow": "Reproducir presentación"
+      "playSlideshow": "Reproducir presentación",
+      "loadingTestimonials": "Cargando testimonios...",
+      "testimonialsError": "No se pudieron cargar los testimonios en este momento."
     },
     "Location": {
       "title": "¿Cómo llegar a Cascais?",

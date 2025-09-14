@@ -106,12 +106,52 @@ export default function LandingTestimonials({
       setCurrentSlide(s.track.details.rel)
     },
     created() {
+      // Backup: set loading to false after a short delay if callback doesn't work
+      console.log('Keen Slider created')
       setIsLoading(false)
     },
     destroyed() {
       setHasError(true)
     }
   })
+
+  // Fallback effect to handle loading state if keen-slider callback fails
+  useEffect(() => {
+    // Set a timeout as fallback in case the created callback doesn't fire
+    const loadingTimeout = setTimeout(() => {
+      console.log('Fallback: Setting loading to false')
+      setIsLoading(false)
+    }, 1000) // 1 second fallback
+
+    // Also try to detect when the slider instance is available
+    const checkSliderReady = () => {
+      if (instanceRef.current) {
+        console.log('Slider instance detected, setting loading to false')
+        setIsLoading(false)
+        clearTimeout(loadingTimeout)
+      }
+    }
+
+    // Check immediately and also after a short delay
+    checkSliderReady()
+    const checkTimeout = setTimeout(checkSliderReady, 100)
+
+    return () => {
+      clearTimeout(loadingTimeout)
+      clearTimeout(checkTimeout)
+    }
+  }, [instanceRef])
+
+  // Additional effect to ensure we're not stuck in loading state
+  useEffect(() => {
+    // Force loading to false after 2 seconds maximum
+    const maxLoadingTimeout = setTimeout(() => {
+      console.log('Max loading timeout reached, forcing loading to false')
+      setIsLoading(false)
+    }, 2000)
+
+    return () => clearTimeout(maxLoadingTimeout)
+  }, [])
 
   // Auto-play functionality
   const startAutoPlay = useCallback(() => {
@@ -170,13 +210,13 @@ export default function LandingTestimonials({
 
   // Auto-play effect
   useEffect(() => {
-    if (isAutoPlaying && !hasError) {
+    if (isAutoPlaying && !hasError && !isLoading) {
       startAutoPlay()
     } else {
       stopAutoPlay()
     }
     return stopAutoPlay
-  }, [isAutoPlaying, startAutoPlay, stopAutoPlay, hasError])
+  }, [isAutoPlaying, startAutoPlay, stopAutoPlay, hasError, isLoading])
 
   // Cleanup on unmount
   useEffect(() => {

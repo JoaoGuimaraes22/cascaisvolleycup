@@ -3,20 +3,19 @@
 
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { FiChevronLeft, FiChevronRight, FiPlay, FiPause } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 
 // Testimonials-specific assets
 const TESTIMONIALS_ASSETS = {
   waveTestimonials: '/img/global/ondas-9.webp',
   animations: {
-    duration: 800,
-    autoPlayInterval: 4000
+    duration: 600 // Reduced from 800 to match AboutPortugal
   },
   breakpoints: {
     mobile: '(min-width: 768px)',
@@ -81,12 +80,10 @@ export default function LandingTestimonials({
 }: LandingTestimonialsProps) {
   const t = useTranslations('LandingPage.Updates')
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const intervalRef = useRef<ReturnType<typeof setInterval>>()
 
-  // Testimonials slider - clean implementation like AboutPortugal
+  // Testimonials slider - same configuration as AboutPortugal but with loop
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: true,
+    loop: true, // Keep loop enabled
     defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration },
     slides: {
       perView: 1,
@@ -105,62 +102,21 @@ export default function LandingTestimonials({
     }
   })
 
-  // Auto-play functionality
-  const startAutoPlay = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    intervalRef.current = setInterval(() => {
-      if (isAutoPlaying && instanceRef.current) {
-        instanceRef.current.next()
-      }
-    }, TESTIMONIALS_ASSETS.animations.autoPlayInterval)
-  }, [isAutoPlaying, instanceRef])
-
-  const stopAutoPlay = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-  }, [])
-
-  const toggleAutoPlay = useCallback(() => {
-    setIsAutoPlaying(prev => !prev)
-  }, [])
-
-  // Navigation functions - same pattern as AboutPortugal
+  // Navigation functions - same pattern as AboutPortugal (no auto-play logic)
   const goToSlide = useCallback(
     (index: number) => {
       instanceRef.current?.moveToIdx(index)
-      stopAutoPlay()
-      setIsAutoPlaying(false)
     },
-    [instanceRef, stopAutoPlay]
+    [instanceRef]
   )
 
   const goToPrevious = useCallback(() => {
     instanceRef.current?.prev()
-    stopAutoPlay()
-    setIsAutoPlaying(false)
-  }, [instanceRef, stopAutoPlay])
+  }, [instanceRef])
 
   const goToNext = useCallback(() => {
     instanceRef.current?.next()
-    stopAutoPlay()
-    setIsAutoPlaying(false)
-  }, [instanceRef, stopAutoPlay])
-
-  // Auto-play effect
-  useEffect(() => {
-    if (isAutoPlaying) {
-      startAutoPlay()
-    } else {
-      stopAutoPlay()
-    }
-    return stopAutoPlay
-  }, [isAutoPlaying, startAutoPlay, stopAutoPlay])
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      stopAutoPlay()
-    }
-  }, [stopAutoPlay])
+  }, [instanceRef])
 
   return (
     <>
@@ -204,8 +160,6 @@ export default function LandingTestimonials({
                 <div
                   ref={sliderRef}
                   className='keen-slider'
-                  onMouseEnter={stopAutoPlay}
-                  onMouseLeave={() => isAutoPlaying && startAutoPlay()}
                   aria-labelledby='testimonials-heading'
                 >
                   {testimonials.map((item, index) => (
@@ -238,8 +192,19 @@ export default function LandingTestimonials({
                   </button>
                 </div>
 
-                {/* Controls */}
+                {/* Controls - Simplified like AboutPortugal */}
                 <div className='mt-6 flex items-center justify-center gap-4'>
+                  {/* Navigation arrows (mobile/tablet) */}
+                  <button
+                    onClick={goToPrevious}
+                    aria-label={
+                      t('previousTestimonial') || 'Previous testimonial'
+                    }
+                    className='rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                  >
+                    <FiChevronLeft className='h-4 w-4' />
+                  </button>
+
                   {/* Dots */}
                   <div
                     className='flex gap-2'
@@ -263,21 +228,12 @@ export default function LandingTestimonials({
                     ))}
                   </div>
 
-                  {/* Auto-play toggle */}
                   <button
-                    onClick={toggleAutoPlay}
-                    aria-label={
-                      isAutoPlaying
-                        ? t('pauseSlideshow') || 'Pause slideshow'
-                        : t('playSlideshow') || 'Play slideshow'
-                    }
-                    className='ml-4 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                    onClick={goToNext}
+                    aria-label={t('nextTestimonial') || 'Next testimonial'}
+                    className='rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
                   >
-                    {isAutoPlaying ? (
-                      <FiPause className='h-4 w-4' />
-                    ) : (
-                      <FiPlay className='h-4 w-4' />
-                    )}
+                    <FiChevronRight className='h-4 w-4' />
                   </button>
                 </div>
               </div>
@@ -304,12 +260,11 @@ const TestimonialCard: React.FC<Testimonial> = ({
         </p>
         {(country || year) && (
           <p className='mt-1 text-xs opacity-80'>
-            {country && year ? `${country} • ${year}` : country || year}
+            {country && year ? `${country} · ${year}` : country || year}
           </p>
         )}
       </div>
-
-      <blockquote className='max-w-[52ch] text-base italic leading-relaxed drop-shadow sm:text-lg'>
+      <blockquote className='text-sm leading-relaxed drop-shadow-sm sm:text-base lg:text-lg'>
         {quote}
       </blockquote>
     </div>

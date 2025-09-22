@@ -6,6 +6,8 @@ import {
 } from 'next-intl'
 import { Inter, Rubik, Space_Grotesk } from 'next/font/google'
 import NextTopLoader from 'nextjs-toploader'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Header } from './components/Global/Header'
 import Footer from './components/Global/Footer'
 import ScrollToTopButton from './components/Global/ScrollToTopButton'
@@ -65,6 +67,10 @@ export default function RootLayout({
           <Footer locale={locale} />
           <ScrollToTopButton />
         </NextIntlClientProvider>
+
+        {/* Add Vercel Analytics */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

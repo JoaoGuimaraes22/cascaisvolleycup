@@ -191,7 +191,7 @@ export default function LandingTestimonials({
             fill
             className='object-cover'
             loading='lazy'
-            quality={isMobile ? 60 : 70} // ✅ Even lower quality on mobile
+            quality={isMobile ? 60 : 70} // ✅ Even lower quality on mobile (Test)
             sizes='100vw'
           />
           {/* ✅ MOBILE-FIRST Testimonials overlay */}

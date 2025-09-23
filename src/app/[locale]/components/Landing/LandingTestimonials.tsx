@@ -1,9 +1,9 @@
-// 3. Testimonials Section Component - PERFORMANCE OPTIMIZED
+// MOBILE-FIRST Optimized Testimonials - Smooth scrolling on mobile!
 // src/app/[locale]/components/Landing/LandingTestimonials.tsx
 
 'use client'
 
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
@@ -11,20 +11,20 @@ import { useTranslations } from 'next-intl'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 
-// Testimonials-specific assets - PERFORMANCE OPTIMIZED
+// ✅ MOBILE-FIRST optimized assets
 const TESTIMONIALS_ASSETS = {
   waveTestimonials: '/img/global/ondas-9.webp',
   animations: {
-    duration: 400 // ✅ Reduced from 600 to 400 for snappier transitions
+    duration: 250 // ✅ Ultra fast for mobile
   },
   breakpoints: {
-    mobile: '(min-width: 768px)',
+    tablet: '(min-width: 640px)', // ✅ Mobile-first breakpoints
     desktop: '(min-width: 1024px)'
   },
   spacing: {
-    mobile: 16,
-    tablet: 20,
-    desktop: 24
+    mobile: 8, // ✅ Minimal spacing for mobile
+    tablet: 12,
+    desktop: 16
   }
 } as const
 
@@ -35,7 +35,7 @@ interface Testimonial {
   year?: string
 }
 
-// ✅ Keep all 5 testimonials but optimize rendering
+// ✅ Keep all 5 testimonials with original text content
 const testimonials: Testimonial[] = [
   {
     team: 'SC Arcozelo',
@@ -80,43 +80,56 @@ export default function LandingTestimonials({
 }: LandingTestimonialsProps) {
   const t = useTranslations('LandingPage.Updates')
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isMobile, setIsMobile] = useState(true)
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null)
 
-  // ✅ OPTIMIZED testimonials slider configuration
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
-    {
-      loop: true,
-      defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration }, // ✅ Faster transitions
-      slides: {
-        perView: 1,
-        spacing: TESTIMONIALS_ASSETS.spacing.mobile
+  // ✅ Detect mobile for optimizations
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // ✅ MOBILE-FIRST keen-slider configuration
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    mode: 'snap', // ✅ Better for mobile touch
+    defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration },
+    slides: {
+      perView: isMobile ? 1 : 1, // ✅ Always 1 on mobile
+      spacing: TESTIMONIALS_ASSETS.spacing.mobile,
+      origin: 'center' // ✅ Center slides on mobile
+    },
+    breakpoints: {
+      [TESTIMONIALS_ASSETS.breakpoints.tablet]: {
+        slides: { perView: 2, spacing: TESTIMONIALS_ASSETS.spacing.tablet }
       },
-      breakpoints: {
-        [TESTIMONIALS_ASSETS.breakpoints.mobile]: {
-          slides: { perView: 2, spacing: TESTIMONIALS_ASSETS.spacing.tablet }
-        },
-        [TESTIMONIALS_ASSETS.breakpoints.desktop]: {
-          slides: { perView: 3, spacing: TESTIMONIALS_ASSETS.spacing.desktop } // ✅ Reduced from 4 to 3 for better performance
-        }
-      },
-      slideChanged(s) {
-        setCurrentSlide(s.track.details.rel)
+      [TESTIMONIALS_ASSETS.breakpoints.desktop]: {
+        slides: { perView: 3, spacing: TESTIMONIALS_ASSETS.spacing.desktop } // ✅ 3 slides on desktop
       }
     },
-    [
-      // ✅ SIMPLIFIED autoplay - only when visible
-      slider => {
-        if (!isVisible) return
-
-        const autoplayTimer = setInterval(() => {
-          slider.next()
-        }, 4000) // ✅ Every 4 seconds
-
-        return () => clearInterval(autoplayTimer)
+    slideChanged(s) {
+      setCurrentSlide(s.track.details.rel)
+    },
+    // ✅ Mobile-friendly autoplay
+    created(s) {
+      if (isVisible && !isMobile) {
+        // ✅ No autoplay on mobile to save battery
+        autoplayRef.current = setInterval(() => {
+          s.next()
+        }, 4000)
       }
-    ]
-  )
+    },
+    destroyed() {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current)
+        autoplayRef.current = null
+      }
+    }
+  })
 
-  // ✅ Memoized navigation functions to prevent re-renders
+  // ✅ Mobile-optimized navigation functions
   const goToSlide = useCallback(
     (index: number) => {
       instanceRef.current?.moveToIdx(index)
@@ -132,15 +145,15 @@ export default function LandingTestimonials({
     instanceRef.current?.next()
   }, [instanceRef])
 
-  // ✅ Memoized testimonial cards to prevent unnecessary re-renders
+  // ✅ Memoized mobile-first testimonial cards
   const testimonialCards = useMemo(
     () =>
       testimonials.map((item, index) => (
         <div
           key={`${item.team}-${index}`}
-          className='keen-slider__slide min-h-[180px] px-2 py-6 lg:px-4'
+          className='keen-slider__slide px-2 py-3 sm:py-4' // ✅ Smaller padding on mobile
         >
-          <TestimonialCard {...item} />
+          <MobileFirstTestimonialCard testimonial={item} />
         </div>
       )),
     []
@@ -148,42 +161,44 @@ export default function LandingTestimonials({
 
   return (
     <>
-      {/* Section Title */}
+      {/* ✅ MOBILE-FIRST Section Title */}
       <div className='mx-auto max-w-screen-xl px-4'>
         <div
           className={clsx(
-            'delay-[600ms] transition-all duration-1000 ease-out',
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            'transition-opacity duration-300', // ✅ Faster for mobile
+            isVisible ? 'opacity-100' : 'opacity-0'
           )}
         >
           <h3
             id='testimonials-heading'
-            className='mb-3 mt-12 text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:mb-4 sm:mt-16 sm:text-3xl'
+            className='mb-2 mt-8 text-xl font-extrabold uppercase tracking-wide text-sky-500 sm:mb-3 sm:mt-12 sm:text-2xl lg:text-3xl' // ✅ Mobile-first sizing
           >
             {t('What_they_say') || 'WHAT THEY SAY'}
           </h3>
         </div>
       </div>
 
-      {/* Full-bleed wave band with testimonials */}
-      <div className='relative left-1/2 w-screen -translate-x-1/2'>
-        <div className='relative min-h-[50vh] sm:min-h-[360px]'>
-          {/* ✅ OPTIMIZED Wave background */}
+      {/* ✅ MOBILE-OPTIMIZED Wave section */}
+      <div className='relative w-full overflow-hidden'>
+        <div className='relative min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]'>
+          {' '}
+          {/* ✅ Smaller on mobile */}
+          {/* ✅ MOBILE-OPTIMIZED Wave background */}
           <Image
             src={TESTIMONIALS_ASSETS.waveTestimonials}
             alt=''
             role='presentation'
             fill
             className='object-cover'
-            loading='lazy' // ✅ Changed from priority={false}
-            quality={50} // ✅ Reduced from 60 to 50 for background
+            loading='lazy'
+            quality={isMobile ? 60 : 70} // ✅ Even lower quality on mobile
             sizes='100vw'
           />
-
-          {/* Testimonials overlay */}
+          {/* ✅ MOBILE-FIRST Testimonials overlay */}
           <div className='absolute inset-0 flex items-center text-white'>
-            <div className='mx-auto w-full max-w-screen-xl px-4'>
-              {/* ✅ OPTIMIZED Slider with controls */}
+            <div className='mx-auto w-full max-w-screen-xl px-2 sm:px-4'>
+              {' '}
+              {/* ✅ Less padding on mobile */}
               <div className='relative'>
                 <div
                   ref={sliderRef}
@@ -193,40 +208,18 @@ export default function LandingTestimonials({
                   {testimonialCards}
                 </div>
 
-                {/* Navigation arrows (desktop only) */}
-                <div className='hidden lg:block'>
+                {/* ✅ MOBILE-FIRST Navigation - dots only on mobile */}
+                <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
+                  {/* Navigation arrows - hidden on mobile to save space */}
                   <button
                     onClick={goToPrevious}
-                    aria-label={
-                      t('previousTestimonial') || 'Previous testimonial'
-                    }
-                    className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                    aria-label='Previous testimonial'
+                    className='hidden rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:block sm:p-2'
                   >
-                    <FiChevronLeft className='h-6 w-6' />
-                  </button>
-                  <button
-                    onClick={goToNext}
-                    aria-label={t('nextTestimonial') || 'Next testimonial'}
-                    className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
-                  >
-                    <FiChevronRight className='h-6 w-6' />
-                  </button>
-                </div>
-
-                {/* Controls - Simplified like AboutPortugal */}
-                <div className='mt-6 flex items-center justify-center gap-4'>
-                  {/* Navigation arrows (mobile/tablet) */}
-                  <button
-                    onClick={goToPrevious}
-                    aria-label={
-                      t('previousTestimonial') || 'Previous testimonial'
-                    }
-                    className='rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
-                  >
-                    <FiChevronLeft className='h-4 w-4' />
+                    <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
                   </button>
 
-                  {/* Dots */}
+                  {/* ✅ MOBILE-OPTIMIZED Dots navigation - larger touch targets */}
                   <div
                     className='flex gap-2'
                     role='tablist'
@@ -236,14 +229,14 @@ export default function LandingTestimonials({
                       <button
                         key={index}
                         onClick={() => goToSlide(index)}
-                        aria-label={`${t('goToSlide') || 'Go to slide'} ${index + 1}`}
+                        aria-label={`Go to slide ${index + 1}`}
                         role='tab'
                         aria-selected={currentSlide === index}
                         className={clsx(
-                          'h-2 w-2 rounded-full transition-all',
+                          'h-3 w-3 rounded-full transition-colors sm:h-2 sm:w-2', // ✅ Larger on mobile for better touch
                           currentSlide === index
-                            ? 'scale-125 bg-white'
-                            : 'bg-white/50 hover:bg-white/80'
+                            ? 'bg-white'
+                            : 'bg-white/60 hover:bg-white/80'
                         )}
                       />
                     ))}
@@ -251,10 +244,28 @@ export default function LandingTestimonials({
 
                   <button
                     onClick={goToNext}
-                    aria-label={t('nextTestimonial') || 'Next testimonial'}
-                    className='rounded-full bg-white/20 p-2 backdrop-blur-sm transition-all hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                    aria-label='Next testimonial'
+                    className='hidden rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:block sm:p-2'
                   >
-                    <FiChevronRight className='h-4 w-4' />
+                    <FiChevronRight className='h-3 w-3 sm:h-4 sm:w-4' />
+                  </button>
+                </div>
+
+                {/* ✅ DESKTOP-ONLY side arrows */}
+                <div className='hidden lg:block'>
+                  <button
+                    onClick={goToPrevious}
+                    aria-label='Previous testimonial'
+                    className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                  >
+                    <FiChevronLeft className='h-5 w-5' />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    aria-label='Next testimonial'
+                    className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                  >
+                    <FiChevronRight className='h-5 w-5' />
                   </button>
                 </div>
               </div>
@@ -266,27 +277,29 @@ export default function LandingTestimonials({
   )
 }
 
-// ✅ MEMOIZED Testimonial card component to prevent unnecessary re-renders
-const TestimonialCard: React.FC<Testimonial> = React.memo(
-  ({ team, quote, country, year }) => {
+// ✅ MOBILE-FIRST Testimonial card component
+const MobileFirstTestimonialCard: React.FC<{ testimonial: Testimonial }> =
+  React.memo(({ testimonial: { team, quote, country, year } }) => {
     return (
-      <div className='flex min-h-[140px] w-full flex-col items-center justify-center text-center text-white lg:min-h-[160px]'>
-        <div className='mb-3'>
-          <p className='text-lg font-extrabold uppercase tracking-wide drop-shadow'>
+      <div className='flex min-h-[100px] w-full flex-col items-center justify-center text-center text-white sm:min-h-[120px]'>
+        {/* ✅ Mobile-optimized header */}
+        <div className='mb-2 sm:mb-3'>
+          <p className='text-base font-extrabold uppercase tracking-wide sm:text-lg'>
             {team}
           </p>
           {(country || year) && (
-            <p className='mt-1 text-xs opacity-80'>
+            <p className='mt-0.5 text-xs opacity-80 sm:mt-1'>
               {country && year ? `${country} · ${year}` : country || year}
             </p>
           )}
         </div>
-        <blockquote className='text-sm leading-relaxed drop-shadow-sm sm:text-base lg:text-lg'>
+
+        {/* ✅ Mobile-optimized quote */}
+        <blockquote className='text-sm leading-snug sm:text-base sm:leading-relaxed'>
           {quote}
         </blockquote>
       </div>
     )
-  }
-)
+  })
 
-TestimonialCard.displayName = 'TestimonialCard'
+MobileFirstTestimonialCard.displayName = 'MobileFirstTestimonialCard'

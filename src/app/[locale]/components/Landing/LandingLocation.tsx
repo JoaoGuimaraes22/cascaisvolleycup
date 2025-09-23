@@ -1,10 +1,14 @@
+// =============================================================================
+// PRELOADED LandingLocation - No intersection observer
+// src/app/[locale]/components/Landing/LandingLocation.tsx
+
 'use client'
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FiMapPin } from 'react-icons/fi'
 import clsx from 'clsx'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import RegistrationToast from './RegistrationToast'
 
 interface StatsListProps {
@@ -14,8 +18,6 @@ interface StatsListProps {
 
 export default function LandingLocation() {
   const t = useTranslations('LandingPage.Location')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
   const [showRegistrationToast, setShowRegistrationToast] = useState(false)
 
   // Constants for better maintainability
@@ -34,71 +36,39 @@ export default function LandingLocation() {
     t('stats_games')
   ]
 
-  // Simplified intersection observer - PERFORMANCE FIX
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 } // ✅ Reduced from 0.2 for earlier trigger
-      // ✅ Removed rootMargin for simplicity
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
   const handlePlanTripClick = () => {
     setShowRegistrationToast(true)
   }
 
   return (
     <section
-      ref={sectionRef}
       className='relative isolate min-h-[720px] overflow-hidden sm:min-h-[800px] lg:min-h-[880px]'
       style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
-      aria-labelledby='location-title'
     >
-      {/* Background with optimized loading - PERFORMANCE FIX */}
+      {/* Background - preload immediately */}
       <div className='absolute inset-0 -z-10'>
         <Image
           src={ASSETS.background}
           alt=''
           fill
-          loading='lazy' // ✅ Changed from 'eager' to 'lazy'
+          priority={true} // ✅ Load immediately
           sizes='100vw'
           className='object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
-          quality={60} // ✅ Reduced from 80 to 60
+          quality={75} // ✅ Higher quality since we're preloading
           placeholder='blur'
           blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
         />
       </div>
 
-      {/* Content container - Mobile: center everything, Desktop: grid layout */}
+      {/* Content container - everything visible immediately */}
       <div className='mx-auto max-w-screen-xl px-4 pb-10 pt-[clamp(32px,4vw,64px)] sm:pb-12 lg:grid lg:h-full lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-8'>
-        {/* Mobile Layout: Centered vertical stack */}
+        {/* Mobile Layout - no animations, just static content */}
         <div className='flex flex-col items-center space-y-6 lg:hidden'>
-          {/* Text Content */}
-          <div
-            className={clsx(
-              'w-full max-w-md transition-all duration-1000 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
-            <h1
-              id='location-title'
-              className='mb-4 text-left text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl'
-            >
+          {/* Text Content - immediately visible */}
+          <div className='w-full max-w-md'>
+            <h1 className='mb-4 text-left text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl'>
               {t('title')}
             </h1>
-
             <div className='mb-6 space-y-4 text-left'>
               <p className='text-sm leading-relaxed text-slate-800/90 sm:text-base'>
                 {t('p1')}
@@ -113,15 +83,8 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Map - PERFORMANCE FIX */}
-          <div
-            className={clsx(
-              'w-full max-w-lg transition-all delay-300 duration-1000 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
+          {/* Map - preload immediately */}
+          <div className='w-full max-w-lg'>
             <div className='group rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
               <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
                 <Image
@@ -132,23 +95,16 @@ export default function LandingLocation() {
                   width={768}
                   height={456}
                   className='h-auto w-full object-cover'
-                  loading='lazy' // ✅ Changed from 'eager' to 'lazy'
+                  priority={true} // ✅ Load immediately
                   sizes='(max-width: 768px) 90vw, 512px'
-                  quality={70} // ✅ Reduced from 80 to 70
+                  quality={80}
                 />
               </div>
             </div>
           </div>
 
-          {/* CTA Button */}
-          <div
-            className={clsx(
-              'transition-all delay-500 duration-700 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
+          {/* CTA Button - immediately visible */}
+          <div>
             <button
               type='button'
               onClick={handlePlanTripClick}
@@ -162,15 +118,8 @@ export default function LandingLocation() {
             </button>
           </div>
 
-          {/* Tagline - PERFORMANCE FIX */}
-          <div
-            className={clsx(
-              'w-[260px] transition-all delay-700 duration-1000 ease-out sm:w-[320px]',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
+          {/* Tagline - preload immediately */}
+          <div className='w-[260px] sm:w-[320px]'>
             <Image
               src={ASSETS.tagline}
               alt={t('taglineAlt') || 'Feel the action, enjoy the summer'}
@@ -178,30 +127,19 @@ export default function LandingLocation() {
               height={215}
               className='h-auto w-full object-contain drop-shadow-lg'
               sizes='(max-width: 640px) 260px, 320px'
-              quality={70} // ✅ Reduced from 80 to 70
-              loading='lazy'
+              quality={80}
+              priority={true} // ✅ Load immediately
             />
           </div>
         </div>
 
-        {/* Desktop Layout: Grid positioning */}
+        {/* Desktop Layout - everything immediately visible */}
         <div className='hidden lg:contents'>
           {/* Top Left: Text Content */}
-          <div
-            className={clsx(
-              'flex flex-col transition-all duration-1000 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
-            <h1
-              id='location-title'
-              className='mb-4 text-3xl font-extrabold uppercase tracking-wide text-sky-500 lg:text-[32px]'
-            >
+          <div className='flex flex-col'>
+            <h1 className='mb-4 text-3xl font-extrabold uppercase tracking-wide text-sky-500 lg:text-[32px]'>
               {t('title')}
             </h1>
-
             <div className='space-y-4'>
               <p className='max-w-prose text-base leading-relaxed text-slate-800/90'>
                 {t('p1')}
@@ -216,15 +154,8 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Top Right: Tagline - PERFORMANCE FIX */}
-          <div
-            className={clsx(
-              'flex items-start justify-end transition-all delay-300 duration-1000 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
+          {/* Top Right: Tagline */}
+          <div className='flex items-start justify-end'>
             <div className='w-[380px] xl:w-[420px]'>
               <Image
                 src={ASSETS.tagline}
@@ -233,21 +164,14 @@ export default function LandingLocation() {
                 height={215}
                 className='h-auto w-full object-contain drop-shadow-lg'
                 sizes='420px'
-                quality={70} // ✅ Reduced from 80 to 70
-                loading='lazy'
+                quality={80}
+                priority={true} // ✅ Load immediately
               />
             </div>
           </div>
 
-          {/* Bottom Left: Map - PERFORMANCE FIX */}
-          <div
-            className={clsx(
-              'flex items-start justify-start transition-all delay-500 duration-1000 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
+          {/* Bottom Left: Map */}
+          <div className='flex items-start justify-start'>
             <div className='group max-w-[540px] rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
               <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
                 <Image
@@ -258,23 +182,16 @@ export default function LandingLocation() {
                   width={768}
                   height={456}
                   className='h-auto w-full object-cover'
-                  loading='lazy' // ✅ Changed from 'eager' to 'lazy'
+                  priority={true} // ✅ Load immediately
                   sizes='540px'
-                  quality={70} // ✅ Reduced from 80 to 70
+                  quality={80}
                 />
               </div>
             </div>
           </div>
 
           {/* Bottom Right: CTA Button */}
-          <div
-            className={clsx(
-              'flex items-end justify-end transition-all delay-700 duration-700 ease-out',
-              isVisible
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-8 opacity-0'
-            )}
-          >
+          <div className='flex items-end justify-end'>
             <button
               type='button'
               onClick={handlePlanTripClick}
@@ -290,7 +207,7 @@ export default function LandingLocation() {
         </div>
       </div>
 
-      {/* Bottom Wave Section - PERFORMANCE FIX */}
+      {/* Bottom Wave Section - preload immediately */}
       <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
         <Image
           src={ASSETS.wave}
@@ -299,26 +216,17 @@ export default function LandingLocation() {
           height={WAVE_HEIGHT}
           className='-mb-px block w-full object-cover'
           style={{ height: `${WAVE_HEIGHT}px` }}
-          loading='lazy'
-          quality={60} // ✅ Reduced from 75 to 60
+          priority={true} // ✅ Load immediately
+          quality={75}
         />
 
-        {/* Stats Overlay */}
+        {/* Stats Overlay - immediately visible */}
         <div className='pointer-events-none absolute inset-0'>
           <div className='mx-auto flex h-full max-w-screen-xl items-center justify-center px-4 lg:justify-start'>
-            <div
-              className={clsx(
-                'transition-all delay-1000 duration-1000 ease-out',
-                isVisible
-                  ? 'translate-y-0 opacity-100'
-                  : 'translate-y-4 opacity-0'
-              )}
-            >
-              {/* Mobile: compact version */}
+            <div>
               <div className='block lg:hidden'>
                 <StatsList compact items={STATS_DATA} />
               </div>
-              {/* Desktop: full version */}
               <div className='hidden lg:block'>
                 <StatsList items={STATS_DATA} />
               </div>

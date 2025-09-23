@@ -16,10 +16,9 @@ const SHARED_ASSETS = {
 
 export default function LandingUpdates() {
   const [isVisible, setIsVisible] = useState(false)
-  const [imagesLoaded, setImagesLoaded] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
-  // Intersection observer for scroll-triggered animations
+  // Simplified intersection observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -27,7 +26,7 @@ export default function LandingUpdates() {
           setIsVisible(true)
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 } // Reduced threshold for earlier trigger
     )
 
     if (sectionRef.current) {
@@ -37,46 +36,46 @@ export default function LandingUpdates() {
     return () => observer.disconnect()
   }, [])
 
-  // Preload critical images
-  useEffect(() => {
-    const criticalImages = [SHARED_ASSETS.background, SHARED_ASSETS.waveTop]
-
-    Promise.all(
-      criticalImages.map(
-        src =>
-          new Promise((resolve, reject) => {
-            const img = new window.Image()
-            img.onload = resolve
-            img.onerror = reject
-            img.src = src
-          })
-      )
-    )
-      .then(() => {
-        setImagesLoaded(true)
-      })
-      .catch(() => {
-        // Still show content even if preload fails
-        setImagesLoaded(true)
-      })
-  }, [])
-
   return (
     <section
       ref={sectionRef}
       className='relative isolate overflow-hidden pb-6 sm:pb-8'
       aria-labelledby='updates-section'
     >
-      {/* Shared Background */}
-      <SharedBackground imagesLoaded={imagesLoaded} />
+      {/* Simplified Background - Let Next.js handle loading */}
+      <div className='absolute inset-0 -z-10'>
+        <Image
+          src={SHARED_ASSETS.background}
+          alt=''
+          role='presentation'
+          fill
+          loading='lazy' // Changed from eager
+          className='object-cover'
+          quality={60} // Reduced quality for background
+          sizes='100vw'
+          placeholder='blur'
+          blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+        />
+      </div>
 
-      {/* Top Wave */}
-      <TopWave />
+      {/* Simplified Top Wave */}
+      <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
+        <Image
+          src={SHARED_ASSETS.waveTop}
+          alt=''
+          role='presentation'
+          fill
+          loading='lazy'
+          className='object-cover object-center'
+          quality={50} // Lower quality for decorative elements
+          sizes='100vw'
+        />
+      </div>
 
-      {/* Content wrapper with responsive padding */}
+      {/* Content loads immediately, no complex state management */}
       <div className='relative z-10 pt-[80px] sm:pt-[100px] lg:pt-[140px]'>
         {/* News Section */}
-        {/* <LandingNews isVisible={isVisible} /> 
+        {/* <LandingNews isVisible={isVisible} /> */}
 
         {/* Testimonials Section */}
         <LandingTestimonials isVisible={isVisible} />
@@ -84,47 +83,3 @@ export default function LandingUpdates() {
     </section>
   )
 }
-
-// Shared background component
-function SharedBackground({ imagesLoaded }: { imagesLoaded: boolean }) {
-  return (
-    <div
-      className={`absolute inset-0 -z-10 transition-opacity duration-500 ${
-        imagesLoaded ? 'opacity-100' : 'opacity-0'
-      }`}
-    >
-      <Image
-        src={SHARED_ASSETS.background}
-        alt=''
-        role='presentation'
-        fill
-        priority={false}
-        className='object-cover'
-        quality={60}
-        sizes='100vw'
-        placeholder='blur'
-        blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-      />
-    </div>
-  )
-}
-
-// Top wave component
-function TopWave() {
-  return (
-    <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
-      <Image
-        src={SHARED_ASSETS.waveTop}
-        alt=''
-        role='presentation'
-        fill
-        className='object-cover object-center'
-        quality={60}
-        priority={false}
-        sizes='100vw'
-      />
-    </div>
-  )
-}
-
-// =============================================================================

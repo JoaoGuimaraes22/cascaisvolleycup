@@ -1,9 +1,9 @@
-// 3. Testimonials Section Component
+// 3. Testimonials Section Component - PERFORMANCE OPTIMIZED
 // src/app/[locale]/components/Landing/LandingTestimonials.tsx
 
 'use client'
 
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
@@ -11,11 +11,11 @@ import { useTranslations } from 'next-intl'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 
-// Testimonials-specific assets
+// Testimonials-specific assets - PERFORMANCE OPTIMIZED
 const TESTIMONIALS_ASSETS = {
   waveTestimonials: '/img/global/ondas-9.webp',
   animations: {
-    duration: 600 // Reduced from 800 to match AboutPortugal
+    duration: 400 // ✅ Reduced from 600 to 400 for snappier transitions
   },
   breakpoints: {
     mobile: '(min-width: 768px)',
@@ -35,7 +35,7 @@ interface Testimonial {
   year?: string
 }
 
-// Fixed testimonials data - removed duplicates
+// ✅ Keep all 5 testimonials but optimize rendering
 const testimonials: Testimonial[] = [
   {
     team: 'SC Arcozelo',
@@ -81,28 +81,42 @@ export default function LandingTestimonials({
   const t = useTranslations('LandingPage.Updates')
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Testimonials slider - same configuration as AboutPortugal but with loop
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: true, // Keep loop enabled
-    defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration },
-    slides: {
-      perView: 1,
-      spacing: TESTIMONIALS_ASSETS.spacing.mobile
-    },
-    breakpoints: {
-      [TESTIMONIALS_ASSETS.breakpoints.mobile]: {
-        slides: { perView: 2, spacing: TESTIMONIALS_ASSETS.spacing.tablet }
+  // ✅ OPTIMIZED testimonials slider configuration
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      loop: true,
+      defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration }, // ✅ Faster transitions
+      slides: {
+        perView: 1,
+        spacing: TESTIMONIALS_ASSETS.spacing.mobile
       },
-      [TESTIMONIALS_ASSETS.breakpoints.desktop]: {
-        slides: { perView: 4, spacing: TESTIMONIALS_ASSETS.spacing.desktop }
+      breakpoints: {
+        [TESTIMONIALS_ASSETS.breakpoints.mobile]: {
+          slides: { perView: 2, spacing: TESTIMONIALS_ASSETS.spacing.tablet }
+        },
+        [TESTIMONIALS_ASSETS.breakpoints.desktop]: {
+          slides: { perView: 3, spacing: TESTIMONIALS_ASSETS.spacing.desktop } // ✅ Reduced from 4 to 3 for better performance
+        }
+      },
+      slideChanged(s) {
+        setCurrentSlide(s.track.details.rel)
       }
     },
-    slideChanged(s) {
-      setCurrentSlide(s.track.details.rel)
-    }
-  })
+    [
+      // ✅ SIMPLIFIED autoplay - only when visible
+      slider => {
+        if (!isVisible) return
 
-  // Navigation functions - same pattern as AboutPortugal (no auto-play logic)
+        const autoplayTimer = setInterval(() => {
+          slider.next()
+        }, 4000) // ✅ Every 4 seconds
+
+        return () => clearInterval(autoplayTimer)
+      }
+    ]
+  )
+
+  // ✅ Memoized navigation functions to prevent re-renders
   const goToSlide = useCallback(
     (index: number) => {
       instanceRef.current?.moveToIdx(index)
@@ -117,6 +131,20 @@ export default function LandingTestimonials({
   const goToNext = useCallback(() => {
     instanceRef.current?.next()
   }, [instanceRef])
+
+  // ✅ Memoized testimonial cards to prevent unnecessary re-renders
+  const testimonialCards = useMemo(
+    () =>
+      testimonials.map((item, index) => (
+        <div
+          key={`${item.team}-${index}`}
+          className='keen-slider__slide min-h-[180px] px-2 py-6 lg:px-4'
+        >
+          <TestimonialCard {...item} />
+        </div>
+      )),
+    []
+  )
 
   return (
     <>
@@ -140,36 +168,29 @@ export default function LandingTestimonials({
       {/* Full-bleed wave band with testimonials */}
       <div className='relative left-1/2 w-screen -translate-x-1/2'>
         <div className='relative min-h-[50vh] sm:min-h-[360px]'>
-          {/* Wave background */}
+          {/* ✅ OPTIMIZED Wave background */}
           <Image
             src={TESTIMONIALS_ASSETS.waveTestimonials}
             alt=''
             role='presentation'
             fill
             className='object-cover'
-            priority={false}
-            quality={60}
+            loading='lazy' // ✅ Changed from priority={false}
+            quality={50} // ✅ Reduced from 60 to 50 for background
             sizes='100vw'
           />
 
           {/* Testimonials overlay */}
           <div className='absolute inset-0 flex items-center text-white'>
             <div className='mx-auto w-full max-w-screen-xl px-4'>
-              {/* Slider with controls */}
+              {/* ✅ OPTIMIZED Slider with controls */}
               <div className='relative'>
                 <div
                   ref={sliderRef}
                   className='keen-slider'
                   aria-labelledby='testimonials-heading'
                 >
-                  {testimonials.map((item, index) => (
-                    <div
-                      key={`${item.team}-${index}`}
-                      className='keen-slider__slide min-h-[180px] px-2 py-6 lg:px-4'
-                    >
-                      <TestimonialCard {...item} />
-                    </div>
-                  ))}
+                  {testimonialCards}
                 </div>
 
                 {/* Navigation arrows (desktop only) */}
@@ -245,28 +266,27 @@ export default function LandingTestimonials({
   )
 }
 
-// Testimonial card component
-const TestimonialCard: React.FC<Testimonial> = ({
-  team,
-  quote,
-  country,
-  year
-}) => {
-  return (
-    <div className='flex min-h-[140px] w-full flex-col items-center justify-center text-center text-white lg:min-h-[160px]'>
-      <div className='mb-3'>
-        <p className='text-lg font-extrabold uppercase tracking-wide drop-shadow'>
-          {team}
-        </p>
-        {(country || year) && (
-          <p className='mt-1 text-xs opacity-80'>
-            {country && year ? `${country} · ${year}` : country || year}
+// ✅ MEMOIZED Testimonial card component to prevent unnecessary re-renders
+const TestimonialCard: React.FC<Testimonial> = React.memo(
+  ({ team, quote, country, year }) => {
+    return (
+      <div className='flex min-h-[140px] w-full flex-col items-center justify-center text-center text-white lg:min-h-[160px]'>
+        <div className='mb-3'>
+          <p className='text-lg font-extrabold uppercase tracking-wide drop-shadow'>
+            {team}
           </p>
-        )}
+          {(country || year) && (
+            <p className='mt-1 text-xs opacity-80'>
+              {country && year ? `${country} · ${year}` : country || year}
+            </p>
+          )}
+        </div>
+        <blockquote className='text-sm leading-relaxed drop-shadow-sm sm:text-base lg:text-lg'>
+          {quote}
+        </blockquote>
       </div>
-      <blockquote className='text-sm leading-relaxed drop-shadow-sm sm:text-base lg:text-lg'>
-        {quote}
-      </blockquote>
-    </div>
-  )
-}
+    )
+  }
+)
+
+TestimonialCard.displayName = 'TestimonialCard'

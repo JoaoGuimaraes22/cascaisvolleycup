@@ -34,7 +34,7 @@ export default function LandingLocation() {
     t('stats_games')
   ]
 
-  // Intersection observer for animations
+  // Simplified intersection observer - PERFORMANCE FIX
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -42,7 +42,8 @@ export default function LandingLocation() {
           setIsVisible(true)
         }
       },
-      { threshold: 0.2, rootMargin: '50px' }
+      { threshold: 0.1 } // ✅ Reduced from 0.2 for earlier trigger
+      // ✅ Removed rootMargin for simplicity
     )
 
     if (sectionRef.current) {
@@ -63,16 +64,18 @@ export default function LandingLocation() {
       style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
       aria-labelledby='location-title'
     >
-      {/* Background with optimized loading */}
+      {/* Background with optimized loading - PERFORMANCE FIX */}
       <div className='absolute inset-0 -z-10'>
         <Image
           src={ASSETS.background}
           alt=''
           fill
-          loading='eager'
+          loading='lazy' // ✅ Changed from 'eager' to 'lazy'
           sizes='100vw'
           className='object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
-          quality={80}
+          quality={60} // ✅ Reduced from 80 to 60
+          placeholder='blur'
+          blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
         />
       </div>
 
@@ -110,7 +113,7 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Map */}
+          {/* Map - PERFORMANCE FIX */}
           <div
             className={clsx(
               'w-full max-w-lg transition-all delay-300 duration-1000 ease-out',
@@ -129,9 +132,9 @@ export default function LandingLocation() {
                   width={768}
                   height={456}
                   className='h-auto w-full object-cover'
-                  loading='eager'
+                  loading='lazy' // ✅ Changed from 'eager' to 'lazy'
                   sizes='(max-width: 768px) 90vw, 512px'
-                  quality={80}
+                  quality={70} // ✅ Reduced from 80 to 70
                 />
               </div>
             </div>
@@ -159,7 +162,7 @@ export default function LandingLocation() {
             </button>
           </div>
 
-          {/* Tagline */}
+          {/* Tagline - PERFORMANCE FIX */}
           <div
             className={clsx(
               'w-[260px] transition-all delay-700 duration-1000 ease-out sm:w-[320px]',
@@ -175,7 +178,7 @@ export default function LandingLocation() {
               height={215}
               className='h-auto w-full object-contain drop-shadow-lg'
               sizes='(max-width: 640px) 260px, 320px'
-              quality={80}
+              quality={70} // ✅ Reduced from 80 to 70
               loading='lazy'
             />
           </div>
@@ -213,7 +216,7 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Top Right: Tagline */}
+          {/* Top Right: Tagline - PERFORMANCE FIX */}
           <div
             className={clsx(
               'flex items-start justify-end transition-all delay-300 duration-1000 ease-out',
@@ -230,13 +233,13 @@ export default function LandingLocation() {
                 height={215}
                 className='h-auto w-full object-contain drop-shadow-lg'
                 sizes='420px'
-                quality={80}
+                quality={70} // ✅ Reduced from 80 to 70
                 loading='lazy'
               />
             </div>
           </div>
 
-          {/* Bottom Left: Map */}
+          {/* Bottom Left: Map - PERFORMANCE FIX */}
           <div
             className={clsx(
               'flex items-start justify-start transition-all delay-500 duration-1000 ease-out',
@@ -255,9 +258,9 @@ export default function LandingLocation() {
                   width={768}
                   height={456}
                   className='h-auto w-full object-cover'
-                  loading='eager'
+                  loading='lazy' // ✅ Changed from 'eager' to 'lazy'
                   sizes='540px'
-                  quality={80}
+                  quality={70} // ✅ Reduced from 80 to 70
                 />
               </div>
             </div>
@@ -287,7 +290,7 @@ export default function LandingLocation() {
         </div>
       </div>
 
-      {/* Bottom Wave Section */}
+      {/* Bottom Wave Section - PERFORMANCE FIX */}
       <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
         <Image
           src={ASSETS.wave}
@@ -297,7 +300,7 @@ export default function LandingLocation() {
           className='-mb-px block w-full object-cover'
           style={{ height: `${WAVE_HEIGHT}px` }}
           loading='lazy'
-          quality={75}
+          quality={60} // ✅ Reduced from 75 to 60
         />
 
         {/* Stats Overlay */}

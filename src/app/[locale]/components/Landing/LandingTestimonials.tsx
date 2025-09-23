@@ -1,9 +1,9 @@
-// MOBILE-FIRST Optimized Testimonials - Smooth scrolling on mobile!
+// PRELOADED LandingTestimonials - No intersection observer, always visible
 // src/app/[locale]/components/Landing/LandingTestimonials.tsx
 
 'use client'
 
-import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
+import React, { useCallback, useState, useMemo, useRef } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
@@ -11,18 +11,18 @@ import { useTranslations } from 'next-intl'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 
-// ✅ MOBILE-FIRST optimized assets
+// ✅ Optimized testimonials assets
 const TESTIMONIALS_ASSETS = {
   waveTestimonials: '/img/global/ondas-9.webp',
   animations: {
-    duration: 250 // ✅ Ultra fast for mobile
+    duration: 250 // ✅ Fast transitions
   },
   breakpoints: {
-    tablet: '(min-width: 640px)', // ✅ Mobile-first breakpoints
+    tablet: '(min-width: 640px)',
     desktop: '(min-width: 1024px)'
   },
   spacing: {
-    mobile: 8, // ✅ Minimal spacing for mobile
+    mobile: 8,
     tablet: 12,
     desktop: 16
   }
@@ -35,7 +35,7 @@ interface Testimonial {
   year?: string
 }
 
-// ✅ Keep all 5 testimonials with original text content
+// ✅ All testimonials data
 const testimonials: Testimonial[] = [
   {
     team: 'SC Arcozelo',
@@ -72,54 +72,42 @@ const testimonials: Testimonial[] = [
 ]
 
 interface LandingTestimonialsProps {
-  isVisible: boolean
+  isVisible: boolean // Keep interface but always treat as true
 }
 
 export default function LandingTestimonials({
-  isVisible
+  isVisible = true // ✅ Always visible in preloaded version
 }: LandingTestimonialsProps) {
   const t = useTranslations('LandingPage.Updates')
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isMobile, setIsMobile] = useState(true)
   const autoplayRef = useRef<NodeJS.Timeout | null>(null)
 
-  // ✅ Detect mobile for optimizations
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // ✅ MOBILE-FIRST keen-slider configuration
+  // ✅ Optimized keen-slider configuration
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    mode: 'snap', // ✅ Better for mobile touch
+    mode: 'snap',
     defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration },
     slides: {
-      perView: isMobile ? 1 : 1, // ✅ Always 1 on mobile
+      perView: 1,
       spacing: TESTIMONIALS_ASSETS.spacing.mobile,
-      origin: 'center' // ✅ Center slides on mobile
+      origin: 'center'
     },
     breakpoints: {
       [TESTIMONIALS_ASSETS.breakpoints.tablet]: {
         slides: { perView: 2, spacing: TESTIMONIALS_ASSETS.spacing.tablet }
       },
       [TESTIMONIALS_ASSETS.breakpoints.desktop]: {
-        slides: { perView: 3, spacing: TESTIMONIALS_ASSETS.spacing.desktop } // ✅ 3 slides on desktop
+        slides: { perView: 3, spacing: TESTIMONIALS_ASSETS.spacing.desktop }
       }
     },
     slideChanged(s) {
       setCurrentSlide(s.track.details.rel)
     },
-    // ✅ Mobile-friendly autoplay
+    // ✅ Autoplay starts immediately
     created(s) {
-      if (isVisible && !isMobile) {
-        // ✅ No autoplay on mobile to save battery
-        autoplayRef.current = setInterval(() => {
-          s.next()
-        }, 4000)
-      }
+      autoplayRef.current = setInterval(() => {
+        s.next()
+      }, 4000)
     },
     destroyed() {
       if (autoplayRef.current) {
@@ -129,11 +117,9 @@ export default function LandingTestimonials({
     }
   })
 
-  // ✅ Mobile-optimized navigation functions
+  // ✅ Navigation functions
   const goToSlide = useCallback(
-    (index: number) => {
-      instanceRef.current?.moveToIdx(index)
-    },
+    (index: number) => instanceRef.current?.moveToIdx(index),
     [instanceRef]
   )
 
@@ -145,15 +131,15 @@ export default function LandingTestimonials({
     instanceRef.current?.next()
   }, [instanceRef])
 
-  // ✅ Memoized mobile-first testimonial cards
+  // ✅ Memoized testimonial cards
   const testimonialCards = useMemo(
     () =>
       testimonials.map((item, index) => (
         <div
           key={`${item.team}-${index}`}
-          className='keen-slider__slide px-2 py-3 sm:py-4' // ✅ Smaller padding on mobile
+          className='keen-slider__slide px-2 py-3 sm:py-4'
         >
-          <MobileFirstTestimonialCard testimonial={item} />
+          <PreloadedTestimonialCard testimonial={item} />
         </div>
       )),
     []
@@ -161,44 +147,36 @@ export default function LandingTestimonials({
 
   return (
     <>
-      {/* ✅ MOBILE-FIRST Section Title */}
+      {/* ✅ Section Title - immediately visible */}
       <div className='mx-auto max-w-screen-xl px-4'>
-        <div
-          className={clsx(
-            'transition-opacity duration-300', // ✅ Faster for mobile
-            isVisible ? 'opacity-100' : 'opacity-0'
-          )}
-        >
+        <div>
           <h3
             id='testimonials-heading'
-            className='mb-2 mt-8 text-xl font-extrabold uppercase tracking-wide text-sky-500 sm:mb-3 sm:mt-12 sm:text-2xl lg:text-3xl' // ✅ Mobile-first sizing
+            className='mb-2 mt-8 text-xl font-extrabold uppercase tracking-wide text-sky-500 sm:mb-3 sm:mt-12 sm:text-2xl lg:text-3xl'
           >
             {t('What_they_say') || 'WHAT THEY SAY'}
           </h3>
         </div>
       </div>
 
-      {/* ✅ MOBILE-OPTIMIZED Wave section */}
+      {/* ✅ Wave section - preloaded */}
       <div className='relative w-full overflow-hidden'>
         <div className='relative min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]'>
-          {' '}
-          {/* ✅ Smaller on mobile */}
-          {/* ✅ MOBILE-OPTIMIZED Wave background */}
+          {/* ✅ Wave background - preload immediately */}
           <Image
             src={TESTIMONIALS_ASSETS.waveTestimonials}
             alt=''
             role='presentation'
             fill
             className='object-cover'
-            loading='lazy'
-            quality={isMobile ? 60 : 70} // ✅ Even lower quality on mobile (Test)
+            priority={true} // ✅ Preload wave background
+            quality={60}
             sizes='100vw'
           />
-          {/* ✅ MOBILE-FIRST Testimonials overlay */}
+
+          {/* ✅ Testimonials overlay - immediately visible */}
           <div className='absolute inset-0 flex items-center text-white'>
             <div className='mx-auto w-full max-w-screen-xl px-2 sm:px-4'>
-              {' '}
-              {/* ✅ Less padding on mobile */}
               <div className='relative'>
                 <div
                   ref={sliderRef}
@@ -208,9 +186,8 @@ export default function LandingTestimonials({
                   {testimonialCards}
                 </div>
 
-                {/* ✅ MOBILE-FIRST Navigation - dots only on mobile */}
+                {/* ✅ Navigation */}
                 <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
-                  {/* Navigation arrows - hidden on mobile to save space */}
                   <button
                     onClick={goToPrevious}
                     aria-label='Previous testimonial'
@@ -219,7 +196,7 @@ export default function LandingTestimonials({
                     <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
                   </button>
 
-                  {/* ✅ MOBILE-OPTIMIZED Dots navigation - larger touch targets */}
+                  {/* Dots navigation */}
                   <div
                     className='flex gap-2'
                     role='tablist'
@@ -233,7 +210,7 @@ export default function LandingTestimonials({
                         role='tab'
                         aria-selected={currentSlide === index}
                         className={clsx(
-                          'h-3 w-3 rounded-full transition-colors sm:h-2 sm:w-2', // ✅ Larger on mobile for better touch
+                          'h-3 w-3 rounded-full transition-colors sm:h-2 sm:w-2',
                           currentSlide === index
                             ? 'bg-white'
                             : 'bg-white/60 hover:bg-white/80'
@@ -251,7 +228,7 @@ export default function LandingTestimonials({
                   </button>
                 </div>
 
-                {/* ✅ DESKTOP-ONLY side arrows */}
+                {/* Desktop-only side arrows */}
                 <div className='hidden lg:block'>
                   <button
                     onClick={goToPrevious}
@@ -277,12 +254,11 @@ export default function LandingTestimonials({
   )
 }
 
-// ✅ MOBILE-FIRST Testimonial card component
-const MobileFirstTestimonialCard: React.FC<{ testimonial: Testimonial }> =
+// ✅ Preloaded testimonial card component
+const PreloadedTestimonialCard: React.FC<{ testimonial: Testimonial }> =
   React.memo(({ testimonial: { team, quote, country, year } }) => {
     return (
       <div className='flex min-h-[100px] w-full flex-col items-center justify-center text-center text-white sm:min-h-[120px]'>
-        {/* ✅ Mobile-optimized header */}
         <div className='mb-2 sm:mb-3'>
           <p className='text-base font-extrabold uppercase tracking-wide sm:text-lg'>
             {team}
@@ -294,7 +270,6 @@ const MobileFirstTestimonialCard: React.FC<{ testimonial: Testimonial }> =
           )}
         </div>
 
-        {/* ✅ Mobile-optimized quote */}
         <blockquote className='text-sm leading-snug sm:text-base sm:leading-relaxed'>
           {quote}
         </blockquote>
@@ -302,4 +277,4 @@ const MobileFirstTestimonialCard: React.FC<{ testimonial: Testimonial }> =
     )
   })
 
-MobileFirstTestimonialCard.displayName = 'MobileFirstTestimonialCard'
+PreloadedTestimonialCard.displayName = 'PreloadedTestimonialCard'

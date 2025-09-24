@@ -4,7 +4,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
-import Image from 'next/image'
 import clsx from 'clsx'
 
 interface FormData {
@@ -126,16 +125,13 @@ function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
     setMessageType(null)
 
     try {
-      // TODO: Replace with actual API call
-      const response = await fetch('/api/registration', {
+      // Fixed API endpoint - changed from '/api/registration' to '/api/register'
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          ...formData,
-          type: 'tournament_registration'
-        })
+        body: JSON.stringify(formData) // Removed the type field since it's not needed
       })
 
       const data = await response.json()

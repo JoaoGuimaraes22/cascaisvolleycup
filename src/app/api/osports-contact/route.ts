@@ -13,8 +13,8 @@ export async function POST(req: Request) {
       )
     }
 
-    if (!process.env.EMAIL_FROM || !process.env.EMAIL_TO) {
-      console.error('❌ EMAIL_FROM or EMAIL_TO is not configured')
+    if (!process.env.EMAIL_FROM || !process.env.OSPORT_EMAIL_TO) {
+      console.error('❌ EMAIL_FROM or OSPORT_EMAIL_TO is not configured')
       return NextResponse.json(
         { success: false, error: 'Email configuration incomplete' },
         { status: 500 }
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: process.env.EMAIL_FROM,
-      to: process.env.EMAIL_TO,
+      to: process.env.OSPORT_EMAIL_TO,
       subject: 'New Cascais Accommodation Request',
       html: emailHtml
     })

@@ -212,7 +212,7 @@ export default function LandingTestimonials({
             fill
             className='object-cover'
             priority={true}
-            quality={60}
+            quality={80}
             sizes='100vw'
           />
 

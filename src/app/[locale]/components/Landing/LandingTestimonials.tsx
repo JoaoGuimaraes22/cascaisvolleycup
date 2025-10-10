@@ -1,7 +1,7 @@
-// UPDATED LandingTestimonials - Static on mobile, slider on tablet+
+// Optimized LandingTestimonials - Lazy load wave image
 // src/app/[locale]/components/Landing/LandingTestimonials.tsx
 
-import React, { useCallback, useState, useMemo, useRef } from 'react'
+import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
@@ -68,7 +68,7 @@ const testimonials: Testimonial[] = [
 ]
 
 // Star Rating Component
-const StarRating = () => {
+const StarRating = React.memo(() => {
   return (
     <div
       className='mt-3 flex items-center justify-center gap-1'
@@ -83,7 +83,9 @@ const StarRating = () => {
       ))}
     </div>
   )
-}
+})
+
+StarRating.displayName = 'StarRating'
 
 // Testimonial Card Component
 const TestimonialCard = React.memo(
@@ -125,6 +127,12 @@ export default function LandingTestimonials({
   const t = useTranslations('LandingPage.Updates')
   const [currentSlide, setCurrentSlide] = useState(0)
   const autoplayRef = useRef<NodeJS.Timeout | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // Keen-slider configuration (only for tablet+)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -145,9 +153,12 @@ export default function LandingTestimonials({
       setCurrentSlide(s.track.details.rel)
     },
     created(s) {
-      autoplayRef.current = setInterval(() => {
-        s.next()
-      }, 4000)
+      // Only start autoplay if component is mounted
+      if (isMounted) {
+        autoplayRef.current = setInterval(() => {
+          s.next()
+        }, 5000) // Increased from 4s to 5s for better UX
+      }
     },
     destroyed() {
       if (autoplayRef.current) {
@@ -158,20 +169,52 @@ export default function LandingTestimonials({
   })
 
   const goToSlide = useCallback(
-    (index: number) => instanceRef.current?.moveToIdx(index),
+    (index: number) => {
+      instanceRef.current?.moveToIdx(index)
+      // Reset autoplay timer
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current)
+        autoplayRef.current = setInterval(() => {
+          instanceRef.current?.next()
+        }, 5000)
+      }
+    },
     [instanceRef]
   )
 
   const goToPrevious = useCallback(() => {
     instanceRef.current?.prev()
+    // Reset autoplay timer
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current)
+      autoplayRef.current = setInterval(() => {
+        instanceRef.current?.next()
+      }, 5000)
+    }
   }, [instanceRef])
 
   const goToNext = useCallback(() => {
     instanceRef.current?.next()
+    // Reset autoplay timer
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current)
+      autoplayRef.current = setInterval(() => {
+        instanceRef.current?.next()
+      }, 5000)
+    }
   }, [instanceRef])
 
+  // Cleanup autoplay on unmount
+  useEffect(() => {
+    return () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current)
+      }
+    }
+  }, [])
+
   // First three testimonials for mobile static view
-  const mobileTestimonials = testimonials.slice(0, 3)
+  const mobileTestimonials = useMemo(() => testimonials.slice(0, 3), [])
 
   // All testimonials for slider
   const testimonialSlides = useMemo(
@@ -204,16 +247,19 @@ export default function LandingTestimonials({
       {/* Wave section */}
       <div className='relative w-full overflow-hidden'>
         <div className='relative min-h-[600px] sm:min-h-[280px] lg:min-h-[320px]'>
-          {/* Wave background */}
+          {/* Wave background - LAZY LOAD */}
           <Image
             src={TESTIMONIALS_ASSETS.waveTestimonials}
             alt=''
             role='presentation'
             fill
             className='object-cover'
-            priority={true}
-            quality={80}
+            priority={false} // Changed to false
+            quality={70} // Reduced from 80
             sizes='100vw'
+            loading='lazy' // Explicit lazy loading
+            placeholder='blur'
+            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA//2Q=='
           />
 
           {/* Testimonials Content */}
@@ -232,75 +278,77 @@ export default function LandingTestimonials({
               </div>
 
               {/* Tablet+: Slider (hidden on mobile) */}
-              <div className='relative hidden sm:block'>
-                <div
-                  ref={sliderRef}
-                  className='keen-slider'
-                  aria-labelledby='testimonials-heading'
-                >
-                  {testimonialSlides}
-                </div>
-
-                {/* Navigation Controls */}
-                <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
-                  <button
-                    onClick={goToPrevious}
-                    aria-label='Previous testimonial'
-                    className='rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
-                  >
-                    <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
-                  </button>
-
-                  {/* Dots navigation */}
+              {isMounted && (
+                <div className='relative hidden sm:block'>
                   <div
-                    className='flex gap-2'
-                    role='tablist'
-                    aria-label='Testimonial slides'
+                    ref={sliderRef}
+                    className='keen-slider'
+                    aria-labelledby='testimonials-heading'
                   >
-                    {testimonials.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        aria-label={`Go to slide ${index + 1}`}
-                        role='tab'
-                        aria-selected={currentSlide === index}
-                        className={clsx(
-                          'h-3 w-3 rounded-full transition-colors sm:h-2 sm:w-2',
-                          currentSlide === index
-                            ? 'bg-white'
-                            : 'bg-white/60 hover:bg-white/80'
-                        )}
-                      />
-                    ))}
+                    {testimonialSlides}
                   </div>
 
-                  <button
-                    onClick={goToNext}
-                    aria-label='Next testimonial'
-                    className='rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
-                  >
-                    <FiChevronRight className='h-3 w-3 sm:h-4 sm:w-4' />
-                  </button>
-                </div>
+                  {/* Navigation Controls */}
+                  <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
+                    <button
+                      onClick={goToPrevious}
+                      aria-label='Previous testimonial'
+                      className='rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
+                    >
+                      <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
+                    </button>
 
-                {/* Desktop-only side arrows */}
-                <div className='hidden lg:block'>
-                  <button
-                    onClick={goToPrevious}
-                    aria-label='Previous testimonial'
-                    className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
-                  >
-                    <FiChevronLeft className='h-5 w-5' />
-                  </button>
-                  <button
-                    onClick={goToNext}
-                    aria-label='Next testimonial'
-                    className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
-                  >
-                    <FiChevronRight className='h-5 w-5' />
-                  </button>
+                    {/* Dots navigation */}
+                    <div
+                      className='flex gap-2'
+                      role='tablist'
+                      aria-label='Testimonial slides'
+                    >
+                      {testimonials.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => goToSlide(index)}
+                          aria-label={`Go to slide ${index + 1}`}
+                          role='tab'
+                          aria-selected={currentSlide === index}
+                          className={clsx(
+                            'h-3 w-3 rounded-full transition-colors sm:h-2 sm:w-2',
+                            currentSlide === index
+                              ? 'bg-white'
+                              : 'bg-white/60 hover:bg-white/80'
+                          )}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={goToNext}
+                      aria-label='Next testimonial'
+                      className='rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
+                    >
+                      <FiChevronRight className='h-3 w-3 sm:h-4 sm:w-4' />
+                    </button>
+                  </div>
+
+                  {/* Desktop-only side arrows */}
+                  <div className='hidden lg:block'>
+                    <button
+                      onClick={goToPrevious}
+                      aria-label='Previous testimonial'
+                      className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                    >
+                      <FiChevronLeft className='h-5 w-5' />
+                    </button>
+                    <button
+                      onClick={goToNext}
+                      aria-label='Next testimonial'
+                      className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                    >
+                      <FiChevronRight className='h-5 w-5' />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

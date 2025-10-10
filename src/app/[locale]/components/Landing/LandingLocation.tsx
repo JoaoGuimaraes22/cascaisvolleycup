@@ -1,5 +1,4 @@
-// =============================================================================
-// PRELOADED LandingLocation - No intersection observer
+// Optimized LandingLocation - Lazy load images (below fold)
 // src/app/[locale]/components/Landing/LandingLocation.tsx
 
 'use client'
@@ -20,7 +19,6 @@ export default function LandingLocation() {
   const t = useTranslations('LandingPage.Location')
   const [showRegistrationToast, setShowRegistrationToast] = useState(false)
 
-  // Constants for better maintainability
   const ASSETS = {
     background: '/img/landing/home-page-2-2.webp',
     map: '/img/landing/mapa.webp',
@@ -45,26 +43,27 @@ export default function LandingLocation() {
       className='relative isolate min-h-[720px] overflow-hidden sm:min-h-[800px] lg:min-h-[880px]'
       style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
     >
-      {/* Background - preload immediately */}
+      {/* Background - LAZY LOAD (below fold) */}
       <div className='absolute inset-0 -z-10'>
         <Image
           src={ASSETS.background}
           alt=''
           fill
-          priority={true} // ✅ Load immediately
+          priority={false} // ❌ Changed to false - below fold
           sizes='100vw'
           className='object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
-          quality={75} // ✅ Higher quality since we're preloading
+          quality={70} // ✅ Reduced from 75
           placeholder='blur'
           blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+          loading='lazy' // ✅ Explicit lazy loading
         />
       </div>
 
-      {/* Content container - everything visible immediately */}
+      {/* Content container */}
       <div className='mx-auto max-w-screen-xl px-4 pb-10 pt-[clamp(32px,4vw,64px)] sm:pb-12 lg:grid lg:h-full lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-8'>
-        {/* Mobile Layout - no animations, just static content */}
+        {/* Mobile Layout */}
         <div className='flex flex-col items-center space-y-6 lg:hidden'>
-          {/* Text Content - immediately visible */}
+          {/* Text Content */}
           <div className='w-full max-w-md'>
             <h1 className='mb-4 text-left text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl'>
               {t('title')}
@@ -83,7 +82,7 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Map - preload immediately */}
+          {/* Map - LAZY LOAD */}
           <div className='w-full max-w-lg'>
             <div className='group rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
               <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
@@ -95,15 +94,16 @@ export default function LandingLocation() {
                   width={768}
                   height={456}
                   className='h-auto w-full object-cover'
-                  priority={true} // ✅ Load immediately
+                  priority={false} // ❌ Changed to false
                   sizes='(max-width: 768px) 90vw, 512px'
-                  quality={80}
+                  quality={75} // ✅ Reduced from 80
+                  loading='lazy' // ✅ Explicit lazy loading
                 />
               </div>
             </div>
           </div>
 
-          {/* CTA Button - immediately visible */}
+          {/* CTA Button */}
           <div>
             <button
               type='button'
@@ -118,7 +118,7 @@ export default function LandingLocation() {
             </button>
           </div>
 
-          {/* Tagline - preload immediately */}
+          {/* Tagline - LAZY LOAD */}
           <div className='w-[260px] sm:w-[320px]'>
             <Image
               src={ASSETS.tagline}
@@ -127,13 +127,14 @@ export default function LandingLocation() {
               height={215}
               className='h-auto w-full object-contain drop-shadow-lg'
               sizes='(max-width: 640px) 260px, 320px'
-              quality={80}
-              priority={true} // ✅ Load immediately
+              quality={75} // ✅ Reduced from 80
+              priority={false} // ❌ Changed to false
+              loading='lazy' // ✅ Explicit lazy loading
             />
           </div>
         </div>
 
-        {/* Desktop Layout - everything immediately visible */}
+        {/* Desktop Layout */}
         <div className='hidden lg:contents'>
           {/* Top Left: Text Content */}
           <div className='flex flex-col'>
@@ -154,7 +155,7 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Top Right: Tagline */}
+          {/* Top Right: Tagline - LAZY LOAD */}
           <div className='flex items-start justify-end'>
             <div className='w-[380px] xl:w-[420px]'>
               <Image
@@ -164,13 +165,14 @@ export default function LandingLocation() {
                 height={215}
                 className='h-auto w-full object-contain drop-shadow-lg'
                 sizes='420px'
-                quality={80}
-                priority={true} // ✅ Load immediately
+                quality={75} // ✅ Reduced from 80
+                priority={false} // ❌ Changed to false
+                loading='lazy' // ✅ Explicit lazy loading
               />
             </div>
           </div>
 
-          {/* Bottom Left: Map */}
+          {/* Bottom Left: Map - LAZY LOAD */}
           <div className='flex items-start justify-start'>
             <div className='group max-w-[540px] rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
               <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
@@ -182,9 +184,10 @@ export default function LandingLocation() {
                   width={768}
                   height={456}
                   className='h-auto w-full object-cover'
-                  priority={true} // ✅ Load immediately
+                  priority={false} // ❌ Changed to false
                   sizes='540px'
-                  quality={80}
+                  quality={75} // ✅ Reduced from 80
+                  loading='lazy' // ✅ Explicit lazy loading
                 />
               </div>
             </div>
@@ -207,7 +210,7 @@ export default function LandingLocation() {
         </div>
       </div>
 
-      {/* Bottom Wave Section - preload immediately */}
+      {/* Bottom Wave Section - LAZY LOAD */}
       <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
         <Image
           src={ASSETS.wave}
@@ -216,11 +219,12 @@ export default function LandingLocation() {
           height={WAVE_HEIGHT}
           className='-mb-px block w-full object-cover'
           style={{ height: `${WAVE_HEIGHT}px` }}
-          priority={true} // ✅ Load immediately
-          quality={75}
+          priority={false} // ❌ Changed to false
+          quality={70} // ✅ Reduced from 75
+          loading='lazy' // ✅ Explicit lazy loading
         />
 
-        {/* Stats Overlay - immediately visible */}
+        {/* Stats Overlay */}
         <div className='pointer-events-none absolute inset-0'>
           <div className='mx-auto flex h-full max-w-screen-xl items-center justify-center px-4 lg:justify-start'>
             <div>

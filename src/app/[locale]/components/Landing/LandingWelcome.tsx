@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo, useCallback } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import clsx from 'clsx'
@@ -10,10 +10,13 @@ export default function LandingWelcome() {
   const t = useTranslations('LandingPage.Welcome')
   const locale = useLocale()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
-  // ✅ Memoized assets for better performance
+  // Use ref for background element
+  const bgRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number>()
+  const lastScrollY = useRef(0)
+
   const ASSETS = useMemo(
     () => ({
       BG: '/img/landing/hero-bg-new.webp',
@@ -25,7 +28,6 @@ export default function LandingWelcome() {
     []
   )
 
-  // ✅ Memoized brochure filename
   const getBrochureFileName = useMemo(() => {
     const languageMap = {
       en: 'UK',
@@ -38,42 +40,62 @@ export default function LandingWelcome() {
     return `CVCUP-2026-CONVITE-${langCode}.pdf`
   }, [locale])
 
-  // ✅ Check if device is mobile (optimized)
+  // Check if mobile once
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768) // md breakpoint
+      setIsMobile(window.innerWidth < 768)
     }
 
     checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
 
-  // ✅ OPTIMIZED Parallax effect with GPU acceleration
-  const handleScroll = useCallback(() => {
-    if (isMobile) return
-    setScrollY(window.scrollY)
-  }, [isMobile])
-
-  useEffect(() => {
-    if (isMobile) return
-
-    let ticking = false
-    const throttledScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll()
-          ticking = false
-        })
-        ticking = true
-      }
+    let timeoutId: NodeJS.Timeout
+    const debouncedResize = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(checkMobile, 200)
     }
 
-    window.addEventListener('scroll', throttledScroll, { passive: true })
-    return () => window.removeEventListener('scroll', throttledScroll)
-  }, [isMobile, handleScroll])
+    window.addEventListener('resize', debouncedResize, { passive: true })
+    return () => {
+      window.removeEventListener('resize', debouncedResize)
+      clearTimeout(timeoutId)
+    }
+  }, [])
 
-  // ✅ Load animation trigger
+  // ULTRA-SMOOTH parallax with requestAnimationFrame
+  useEffect(() => {
+    if (isMobile || !bgRef.current) return
+
+    const handleScroll = () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+
+      rafRef.current = requestAnimationFrame(() => {
+        const scrollY = window.scrollY
+
+        // Only update if scroll difference is significant (reduces unnecessary updates)
+        if (Math.abs(scrollY - lastScrollY.current) < 2) return
+
+        // Only apply parallax if hero is still visible
+        if (scrollY < window.innerHeight && bgRef.current) {
+          lastScrollY.current = scrollY
+          // Direct DOM manipulation - bypasses React entirely
+          bgRef.current.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
+        }
+      })
+    }
+
+    // Use passive listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
+  }, [isMobile])
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100)
     return () => clearTimeout(timer)
@@ -85,29 +107,35 @@ export default function LandingWelcome() {
       aria-labelledby='hero-heading'
       className='relative -mt-16 min-h-screen w-full overflow-hidden md:-mt-20'
     >
-      {/* ✅ Background with optimized parallax */}
+      {/* Background with CSS-based parallax fallback */}
       <div className='absolute inset-0 z-0'>
-        <Image
-          src={ASSETS.BG}
-          alt=''
-          role='presentation'
-          fill
-          priority={true} // ✅ Hero image priority
-          sizes='100vw'
-          className='object-cover object-[center_60%] md:object-[center_58%] lg:object-[center_56%]'
+        <div
+          ref={bgRef}
+          className='h-full w-full'
           style={{
-            transform: isMobile
-              ? 'none'
-              : `translate3d(0, ${scrollY * 0.5}px, 0)`, // ✅ GPU-accelerated transform
-            willChange: isMobile ? 'auto' : 'transform' // ✅ Browser optimization hint
+            willChange: 'transform',
+            // Hardware acceleration hints
+            transform: 'translate3d(0, 0, 0)'
           }}
-          quality={85}
-        />
-        {/* Gradient overlay for better text readability */}
+        >
+          <Image
+            src={ASSETS.BG}
+            alt=''
+            role='presentation'
+            fill
+            priority={true}
+            sizes='100vw'
+            className='object-cover object-[center_60%] md:object-[center_58%] lg:object-[center_56%]'
+            quality={75}
+            placeholder='blur'
+            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA//2Q=='
+          />
+        </div>
+        {/* Gradient overlay */}
         <div className='absolute inset-0 bg-gradient-to-t from-black/35 via-black/25 to-black/15' />
       </div>
 
-      {/* ✅ Top overlay content */}
+      {/* Top overlay content */}
       <div className='absolute left-0 right-0 top-0 z-20 px-6 pt-20 sm:px-10 sm:pt-24 md:px-8 md:pt-28'>
         <div className='mx-auto flex max-w-screen-2xl items-start justify-between'>
           {/* Sponsor logo - top left */}
@@ -124,10 +152,11 @@ export default function LandingWelcome() {
               alt='Cascais Câmara Municipal'
               width={300}
               height={80}
-              priority={true} // ✅ Important sponsor logo
-              quality={85}
+              priority={false}
+              quality={80}
               sizes='(max-width: 640px) 100px, (max-width: 1024px) 180px, 280px'
               className='h-auto w-[100px] drop-shadow-lg sm:w-[180px] lg:w-[280px]'
+              loading='eager'
             />
           </div>
 
@@ -143,20 +172,21 @@ export default function LandingWelcome() {
               alt={t('tagline_alt') || 'feel the ACTION, enjoy the SUMMER'}
               width={400}
               height={100}
-              priority={true} // ✅ Important tagline
-              quality={85}
+              priority={false}
+              quality={80}
               sizes='(max-width: 640px) 120px, (max-width: 1024px) 220px, 320px'
               className='h-auto w-[120px] drop-shadow-lg sm:w-[220px] lg:w-[320px]'
+              loading='eager'
             />
           </div>
         </div>
       </div>
 
-      {/* ✅ Main centered content */}
+      {/* Main centered content */}
       <div className='relative z-10 mx-auto flex min-h-screen w-full max-w-screen-2xl flex-col items-center justify-center px-6 sm:px-10 md:px-8'>
         {/* Main event logo with positioned labels */}
         <div className='relative'>
-          {/* Portugal label - anchored to top right of logo */}
+          {/* Portugal label */}
           <div
             className={clsx(
               'absolute right-0 top-0 transition-all delay-300 duration-700 ease-out',
@@ -182,14 +212,15 @@ export default function LandingWelcome() {
               alt='Cascais Volley Cup 2026'
               width={800}
               height={280}
-              priority={true} // ✅ Most important image
-              quality={90} // ✅ Highest quality for main logo
+              priority={false}
+              quality={85}
               sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
               className='h-auto w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]'
+              loading='eager'
             />
           </div>
 
-          {/* Dates - anchored to bottom right of logo */}
+          {/* Dates */}
           <div
             className={clsx(
               'absolute bottom-0 right-0 transition-all delay-700 duration-700 ease-out',
@@ -202,7 +233,7 @@ export default function LandingWelcome() {
           </div>
         </div>
 
-        {/* Action buttons - stacked vertically */}
+        {/* Action buttons */}
         <div
           className={clsx(
             'delay-900 mt-16 flex flex-col gap-3 transition-all duration-700 ease-out',
@@ -216,7 +247,6 @@ export default function LandingWelcome() {
             {t('register') || 'REGISTRATION'}
           </Link>
 
-          {/* Brochure download button with locale-based filename */}
           <a
             href={`/docs/${getBrochureFileName}`}
             download={getBrochureFileName}
@@ -227,7 +257,7 @@ export default function LandingWelcome() {
         </div>
       </div>
 
-      {/* ✅ Scroll indicator - removed duplicate */}
+      {/* Scroll indicator */}
       <div
         className={clsx(
           'absolute bottom-8 left-1/2 -translate-x-1/2 text-white transition-all delay-1000 duration-1000 ease-out',
@@ -242,7 +272,7 @@ export default function LandingWelcome() {
         </div>
       </div>
 
-      {/* ✅ O-Sports logo - bottom right of section */}
+      {/* O-Sports logo */}
       <div
         className={clsx(
           'delay-1200 absolute bottom-4 right-4 z-30 transition-all duration-700 ease-out',
@@ -255,8 +285,9 @@ export default function LandingWelcome() {
           width={120}
           height={60}
           className='h-auto w-[80px] drop-shadow-lg sm:w-[100px] lg:w-[120px]'
-          priority={true} // ✅ Preload sponsor logo
-          quality={85}
+          priority={false}
+          quality={80}
+          loading='eager'
         />
       </div>
     </section>

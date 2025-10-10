@@ -1,4 +1,4 @@
-// PRELOADED LandingUpdates - No intersection observer
+// Optimized LandingUpdates - Lazy load images
 // src/app/[locale]/components/Landing/LandingUpdates.tsx
 
 'use client'
@@ -23,37 +23,39 @@ export default function LandingUpdates() {
 
   return (
     <section className='relative isolate overflow-hidden pb-6 sm:pb-8'>
-      {/* Background - loads immediately */}
+      {/* Background - LAZY LOAD (below fold) */}
       <div className='absolute inset-0 -z-10'>
         <Image
           src={SHARED_ASSETS.background}
           alt=''
           fill
-          priority={true} // ✅ Load immediately
+          priority={false} // ❌ Changed to false - not above fold
           className='object-cover'
-          quality={75} // ✅ Higher quality since we're preloading
+          quality={70} // ✅ Reduced from 75
           sizes='100vw'
           placeholder='blur'
           blurDataURL={blurDataURL}
+          loading='lazy' // ✅ Explicit lazy loading
         />
       </div>
 
-      {/* Top Wave - loads immediately */}
+      {/* Top Wave - LAZY LOAD */}
       <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
         <Image
           src={SHARED_ASSETS.waveTop}
           alt=''
           fill
-          priority={true} // ✅ Load immediately
+          priority={false} // ❌ Changed to false
           className='object-cover object-center'
-          quality={70} // ✅ Higher quality since we're preloading
+          quality={65} // ✅ Reduced from 70
           sizes='100vw'
+          loading='lazy' // ✅ Explicit lazy loading
         />
       </div>
 
-      {/* Content - no intersection observer, everything visible immediately */}
+      {/* Content */}
       <div className='relative z-10 pt-[60px] sm:pt-[80px] lg:pt-[120px]'>
-        {/* Testimonials Section - always visible */}
+        {/* Testimonials Section */}
         <LandingTestimonials isVisible={true} />
       </div>
     </section>

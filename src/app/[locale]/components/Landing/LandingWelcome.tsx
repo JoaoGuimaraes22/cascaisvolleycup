@@ -21,7 +21,7 @@ export default function LandingWelcome() {
     () => ({
       BG: '/img/landing/hero-bg-new.webp',
       TAGLINE: '/img/global/tagline-w.webp',
-      LOGO: '/img/global/cascais-volley-cup-1-w.webp',
+      LOGO: '/img/landing/hero-logo.png',
       SPONSOR: '/img/sponsors/cascais-camara-w.webp',
       OSPORTS: '/img/sponsors/o-sports-w.webp'
     }),
@@ -187,18 +187,6 @@ export default function LandingWelcome() {
         {/* Main event logo with positioned labels */}
         <div className='relative'>
           {/* Portugal label */}
-          <div
-            className={clsx(
-              'absolute right-0 top-0 transition-all delay-300 duration-700 ease-out',
-              isLoaded
-                ? 'translate-y-0 opacity-100'
-                : '-translate-y-4 opacity-0'
-            )}
-          >
-            <p className='text-lg uppercase tracking-[0.3em] text-white drop-shadow-md sm:text-xl md:text-2xl'>
-              {t('PORTUGAL') || 'PORTUGAL'}
-            </p>
-          </div>
 
           {/* Logo */}
           <div
@@ -221,16 +209,6 @@ export default function LandingWelcome() {
           </div>
 
           {/* Dates */}
-          <div
-            className={clsx(
-              'absolute bottom-0 right-0 transition-all delay-700 duration-700 ease-out',
-              isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-            )}
-          >
-            <p className='text-xl uppercase tracking-wide text-white drop-shadow-md sm:text-2xl md:text-3xl'>
-              {t('dates') || '8 — 12 JULHO'}
-            </p>
-          </div>
         </div>
 
         {/* Action buttons */}

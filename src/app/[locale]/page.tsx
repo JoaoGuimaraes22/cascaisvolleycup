@@ -1,4 +1,4 @@
-// OPTIMIZED Landing Page - All LIGHT skeletons
+// OPTIMIZED Landing Page - Fixed black flash
 // src/app/[locale]/page.tsx
 
 import { Suspense } from 'react'
@@ -6,18 +6,15 @@ import LandingWelcome from './components/Landing/LandingWelcome'
 import LandingUpdates from './components/Landing/LandingUpdates'
 import LandingLocation from './components/Landing/LandingLocation'
 
-// ✅ Hero Skeleton - LIGHT
+// Hero Skeleton - LIGHT
 function HeroSkeleton() {
   return (
-    <div className='relative min-h-screen bg-gradient-to-br from-slate-50 to-slate-100'>
+    <div className='relative min-h-screen bg-white'>
       <div className='animate-pulse'>
         <div className='flex min-h-screen items-center justify-center'>
           <div className='space-y-8 text-center'>
-            {/* Logo placeholder */}
             <div className='mx-auto h-64 w-64 rounded-lg bg-slate-200 md:h-80 md:w-80' />
-            {/* Tagline placeholder */}
             <div className='mx-auto h-16 w-80 rounded-lg bg-slate-200 md:w-96' />
-            {/* Buttons placeholder */}
             <div className='flex justify-center gap-4'>
               <div className='h-12 w-40 rounded-full bg-slate-200' />
               <div className='h-12 w-40 rounded-full bg-slate-200' />
@@ -29,7 +26,7 @@ function HeroSkeleton() {
   )
 }
 
-// ✅ Updates Skeleton - LIGHT
+// Updates Skeleton - LIGHT
 function UpdatesSkeleton() {
   return (
     <div className='relative min-h-96 bg-white'>
@@ -51,10 +48,10 @@ function UpdatesSkeleton() {
   )
 }
 
-// ✅ Location Skeleton - LIGHT
+// Location Skeleton - LIGHT
 function LocationSkeleton() {
   return (
-    <div className='relative min-h-96 bg-gradient-to-br from-slate-50 to-slate-100'>
+    <div className='relative min-h-96 bg-white'>
       <div className='animate-pulse'>
         <div className='mx-auto max-w-screen-xl px-4 py-16'>
           <div className='mb-8 h-8 w-64 rounded bg-slate-200' />
@@ -74,16 +71,15 @@ function LocationSkeleton() {
 
 export default function DashboardPage() {
   return (
-    <div>
-      {/* All sections with LIGHT skeletons */}
+    <div className='bg-white'>
+      {' '}
+      {/* ✅ FIXED - Prevents black flash */}
       <Suspense fallback={<HeroSkeleton />}>
         <LandingWelcome />
       </Suspense>
-
       <Suspense fallback={<UpdatesSkeleton />}>
         <LandingUpdates />
       </Suspense>
-
       <Suspense fallback={<LocationSkeleton />}>
         <LandingLocation />
       </Suspense>

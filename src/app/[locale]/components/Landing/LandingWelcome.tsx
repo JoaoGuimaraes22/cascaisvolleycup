@@ -112,23 +112,19 @@ export default function LandingWelcome() {
         <div
           ref={bgRef}
           className='h-full w-full'
-          style={{
-            willChange: 'transform',
-            // Hardware acceleration hints
-            transform: 'translate3d(0, 0, 0)'
-          }}
+          style={{ willChange: 'transform' }}
         >
           <Image
             src={ASSETS.BG}
             alt=''
-            role='presentation'
             fill
-            priority={true}
-            sizes='100vw'
-            className='object-cover object-[center_60%] md:object-[center_58%] lg:object-[center_56%]'
+            priority={true} // ✅ FIXED: Critical hero image
             quality={75}
+            className='object-cover object-center'
+            sizes='100vw'
             placeholder='blur'
-            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA//2Q=='
+            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+            // ✅ REMOVED: No loading='lazy' - let Next.js optimize
           />
         </div>
         {/* Gradient overlay */}
@@ -152,11 +148,10 @@ export default function LandingWelcome() {
               alt='Cascais Câmara Municipal'
               width={300}
               height={80}
-              priority={false}
+              priority={true} // ✅ CHANGE to true
               quality={80}
               sizes='(max-width: 640px) 100px, (max-width: 1024px) 180px, 280px'
               className='h-auto w-[100px] drop-shadow-lg sm:w-[180px] lg:w-[280px]'
-              loading='eager'
             />
           </div>
 
@@ -200,11 +195,10 @@ export default function LandingWelcome() {
               alt='Cascais Volley Cup 2026'
               width={800}
               height={280}
-              priority={false}
+              priority={true} // ✅ FIXED - main logo is critical!
               quality={85}
               sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
               className='h-auto w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]'
-              loading='eager'
             />
           </div>
 

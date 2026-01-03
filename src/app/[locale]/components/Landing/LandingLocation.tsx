@@ -1,4 +1,4 @@
-// Optimized LandingLocation - Lazy load images (below fold)
+// OPTIMIZED LandingLocation - Intersection Observer for performance
 // src/app/[locale]/components/Landing/LandingLocation.tsx
 
 'use client'
@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FiMapPin } from 'react-icons/fi'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import RegistrationToast from './RegistrationToast'
 
 interface StatsListProps {
@@ -15,9 +15,49 @@ interface StatsListProps {
   compact?: boolean
 }
 
+function StatsList({ items, compact = false }: StatsListProps) {
+  return (
+    <ul
+      className={clsx(
+        'flex flex-wrap items-center justify-center',
+        compact ? 'gap-2' : 'gap-3 sm:gap-4 lg:gap-6'
+      )}
+    >
+      {items.map((item, index) => (
+        <li
+          key={index}
+          className={clsx(
+            'flex items-center font-extrabold uppercase tracking-wide text-sky-600',
+            compact ? 'text-xs sm:text-sm' : 'text-sm sm:text-lg lg:text-2xl',
+            index < items.length - 1 && 'gap-2'
+          )}
+        >
+          <span className='relative'>
+            {item}
+            <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100' />
+          </span>
+          {index < items.length - 1 && (
+            <span
+              className={clsx(
+                'leading-none text-sky-300',
+                compact ? 'text-xs' : 'text-sm sm:text-lg lg:text-2xl'
+              )}
+              aria-hidden
+            >
+              •
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export default function LandingLocation() {
   const t = useTranslations('LandingPage.Location')
   const [showRegistrationToast, setShowRegistrationToast] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
 
   const ASSETS = {
     background: '/img/landing/home-page-2-2.webp',
@@ -34,30 +74,79 @@ export default function LandingLocation() {
     t('stats_games')
   ]
 
+  // ✅ ADD: Intersection Observer to only load when section becomes visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.disconnect() // Stop observing once visible
+          }
+        })
+      },
+      {
+        rootMargin: '200px', // Start loading 200px before section is visible
+        threshold: 0.1
+      }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   const handlePlanTripClick = () => {
     setShowRegistrationToast(true)
   }
 
   return (
     <section
+      ref={sectionRef}
       className='relative isolate min-h-[720px] overflow-hidden sm:min-h-[800px] lg:min-h-[880px]'
       style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
     >
-      {/* Background - LAZY LOAD (below fold) */}
-      <div className='absolute inset-0 -z-10'>
-        <Image
-          src={ASSETS.background}
-          alt=''
-          fill
-          priority={false} // ❌ Changed to false - below fold
-          sizes='100vw'
-          className='object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
-          quality={70} // ✅ Reduced from 75
-          placeholder='blur'
-          blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-          loading='lazy' // ✅ Explicit lazy loading
-        />
-      </div>
+      {/* ✅ OPTIMIZED: Only render images when section is visible */}
+      {isVisible && (
+        <>
+          {/* Background - Lazy load (below fold) */}
+          <div className='absolute inset-0 -z-10'>
+            <Image
+              src={ASSETS.background}
+              alt=''
+              fill
+              priority={false}
+              sizes='100vw'
+              className='object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
+              quality={70}
+              placeholder='blur'
+              blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+              // ✅ REMOVED: loading='lazy'
+            />
+          </div>
+
+          {/* Bottom Wave */}
+          <div
+            className='absolute inset-x-0 bottom-0 z-20'
+            style={{ height: `${WAVE_HEIGHT}px` }}
+          >
+            <Image
+              src={ASSETS.wave}
+              alt=''
+              fill
+              priority={false}
+              className='object-cover object-center'
+              quality={65}
+              sizes='100vw'
+              // ✅ REMOVED: loading='lazy'
+            />
+          </div>
+        </>
+      )}
 
       {/* Content container */}
       <div className='mx-auto max-w-screen-xl px-4 pb-10 pt-[clamp(32px,4vw,64px)] sm:pb-12 lg:grid lg:h-full lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-8'>
@@ -82,25 +171,32 @@ export default function LandingLocation() {
             </div>
           </div>
 
-          {/* Map - LAZY LOAD */}
-          <div className='w-full max-w-lg'>
-            <div className='group rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
-              <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
-                <Image
-                  src={ASSETS.map}
-                  alt={
-                    t('mapAlt') || 'Map showing route from Lisbon to Cascais'
-                  }
-                  width={768}
-                  height={456}
-                  className='h-auto w-full object-cover'
-                  priority={false} // ❌ Changed to false
-                  sizes='(max-width: 768px) 90vw, 512px'
-                  quality={75} // ✅ Reduced from 80
-                  loading='lazy' // ✅ Explicit lazy loading
-                />
+          {/* Map - Only render when visible */}
+          {isVisible && (
+            <div className='w-full max-w-lg'>
+              <div className='group rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
+                <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
+                  <Image
+                    src={ASSETS.map}
+                    alt={
+                      t('mapAlt') || 'Map showing route from Lisbon to Cascais'
+                    }
+                    width={768}
+                    height={456}
+                    className='h-auto w-full object-cover'
+                    priority={false}
+                    sizes='(max-width: 768px) 90vw, 512px'
+                    quality={75}
+                    // ✅ REMOVED: loading='lazy'
+                  />
+                </div>
               </div>
             </div>
+          )}
+
+          {/* Stats */}
+          <div className='w-full max-w-md py-4'>
+            <StatsList items={STATS_DATA} compact />
           </div>
 
           {/* CTA Button */}
@@ -118,20 +214,22 @@ export default function LandingLocation() {
             </button>
           </div>
 
-          {/* Tagline - LAZY LOAD */}
-          <div className='w-[260px] sm:w-[320px]'>
-            <Image
-              src={ASSETS.tagline}
-              alt={t('taglineAlt') || 'Feel the action, enjoy the summer'}
-              width={1000}
-              height={215}
-              className='h-auto w-full object-contain drop-shadow-lg'
-              sizes='(max-width: 640px) 260px, 320px'
-              quality={75} // ✅ Reduced from 80
-              priority={false} // ❌ Changed to false
-              loading='lazy' // ✅ Explicit lazy loading
-            />
-          </div>
+          {/* Tagline */}
+          {isVisible && (
+            <div className='w-[260px] sm:w-[320px]'>
+              <Image
+                src={ASSETS.tagline}
+                alt={t('taglineAlt') || 'Feel the action, enjoy the summer'}
+                width={1000}
+                height={215}
+                className='h-auto w-full object-contain drop-shadow-lg'
+                sizes='(max-width: 640px) 260px, 320px'
+                quality={75}
+                priority={false}
+                // ✅ REMOVED: loading='lazy'
+              />
+            </div>
+          )}
         </div>
 
         {/* Desktop Layout */}
@@ -153,52 +251,61 @@ export default function LandingLocation() {
                 {t('p2_suffix')}
               </p>
             </div>
-          </div>
 
-          {/* Top Right: Tagline - LAZY LOAD */}
-          <div className='flex items-start justify-end'>
-            <div className='w-[380px] xl:w-[420px]'>
-              <Image
-                src={ASSETS.tagline}
-                alt={t('taglineAlt') || 'Feel the action, enjoy the summer'}
-                width={1000}
-                height={215}
-                className='h-auto w-full object-contain drop-shadow-lg'
-                sizes='420px'
-                quality={75} // ✅ Reduced from 80
-                priority={false} // ❌ Changed to false
-                loading='lazy' // ✅ Explicit lazy loading
-              />
+            {/* Stats */}
+            <div className='mt-8'>
+              <StatsList items={STATS_DATA} />
             </div>
           </div>
 
-          {/* Bottom Left: Map - LAZY LOAD */}
-          <div className='flex items-start justify-start'>
-            <div className='group max-w-[540px] rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
-              <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
+          {/* Top Right: Tagline */}
+          {isVisible && (
+            <div className='flex items-start justify-end'>
+              <div className='w-[380px] xl:w-[420px]'>
                 <Image
-                  src={ASSETS.map}
-                  alt={
-                    t('mapAlt') || 'Map showing route from Lisbon to Cascais'
-                  }
-                  width={768}
-                  height={456}
-                  className='h-auto w-full object-cover'
-                  priority={false} // ❌ Changed to false
-                  sizes='540px'
-                  quality={75} // ✅ Reduced from 80
-                  loading='lazy' // ✅ Explicit lazy loading
+                  src={ASSETS.tagline}
+                  alt={t('taglineAlt') || 'Feel the action, enjoy the summer'}
+                  width={1000}
+                  height={215}
+                  className='h-auto w-full object-contain drop-shadow-lg'
+                  sizes='420px'
+                  quality={75}
+                  priority={false}
+                  // ✅ REMOVED: loading='lazy'
                 />
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Bottom Left: Map */}
+          {isVisible && (
+            <div className='flex items-start justify-start'>
+              <div className='group max-w-[540px] rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
+                <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
+                  <Image
+                    src={ASSETS.map}
+                    alt={
+                      t('mapAlt') || 'Map showing route from Lisbon to Cascais'
+                    }
+                    width={768}
+                    height={456}
+                    className='h-auto w-full object-cover'
+                    priority={false}
+                    sizes='540px'
+                    quality={75}
+                    // ✅ REMOVED: loading='lazy'
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Bottom Right: CTA Button */}
           <div className='flex items-end justify-end'>
             <button
               type='button'
               onClick={handlePlanTripClick}
-              className='group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-8 py-4 text-base font-bold text-white shadow-xl ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:text-lg'
+              className='group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-8 py-4 text-base font-bold text-white shadow-xl ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300'
             >
               <span className='relative z-10 flex items-center gap-2'>
                 <FiMapPin className='h-5 w-5' />
@@ -210,81 +317,12 @@ export default function LandingLocation() {
         </div>
       </div>
 
-      {/* Bottom Wave Section - LAZY LOAD */}
-      <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
-        <Image
-          src={ASSETS.wave}
-          alt=''
-          width={1920}
-          height={WAVE_HEIGHT}
-          className='-mb-px block w-full object-cover'
-          style={{ height: `${WAVE_HEIGHT}px` }}
-          priority={false} // ❌ Changed to false
-          quality={70} // ✅ Reduced from 75
-          loading='lazy' // ✅ Explicit lazy loading
+      {showRegistrationToast && (
+        <RegistrationToast
+          isOpen={showRegistrationToast}
+          onClose={() => setShowRegistrationToast(false)}
         />
-
-        {/* Stats Overlay */}
-        <div className='pointer-events-none absolute inset-0'>
-          <div className='mx-auto flex h-full max-w-screen-xl items-center justify-center px-4 lg:justify-start'>
-            <div>
-              <div className='block lg:hidden'>
-                <StatsList compact items={STATS_DATA} />
-              </div>
-              <div className='hidden lg:block'>
-                <StatsList items={STATS_DATA} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Registration Toast Modal */}
-      <RegistrationToast
-        isOpen={showRegistrationToast}
-        onClose={() => setShowRegistrationToast(false)}
-      />
-    </section>
-  )
-}
-
-function StatsList({ items, compact = false }: StatsListProps) {
-  return (
-    <ul
-      role='list'
-      aria-label='Tournament statistics'
-      className={clsx(
-        'flex items-center whitespace-nowrap font-extrabold uppercase text-white drop-shadow-lg',
-        compact
-          ? 'gap-2 px-2 text-[10px] tracking-tight'
-          : 'gap-3 px-3 text-[11px] tracking-normal sm:gap-4 sm:text-[13px] sm:tracking-wide lg:gap-6 lg:text-lg'
       )}
-    >
-      {items.map((item, index) => (
-        <li
-          key={`stat-${index}`}
-          className={clsx(
-            'flex items-center transition-all duration-300 hover:scale-105',
-            compact ? 'gap-2' : 'gap-3 sm:gap-4 lg:gap-6'
-          )}
-        >
-          <span className='relative'>
-            {item}
-            <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100' />
-          </span>
-          {index < items.length - 1 && (
-            <span
-              className={clsx(
-                'leading-none text-sky-300',
-                compact ? 'text-xs' : 'text-sm sm:text-lg lg:text-2xl'
-              )}
-              aria-hidden
-            >
-              •
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
+    </section>
   )
 }

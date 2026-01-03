@@ -1,9 +1,9 @@
-// Optimized LandingUpdates - Lazy load images
+// Optimized LandingUpdates - Intersection Observer for performance
 // src/app/[locale]/components/Landing/LandingUpdates.tsx
 
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import LandingTestimonials from './LandingTestimonials'
 
@@ -14,6 +14,9 @@ const SHARED_ASSETS = {
 } as const
 
 export default function LandingUpdates() {
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
   // Memoized blur data URL
   const blurDataURL = useMemo(
     () =>
@@ -21,42 +24,76 @@ export default function LandingUpdates() {
     []
   )
 
-  return (
-    <section className='relative isolate overflow-hidden pb-6 sm:pb-8'>
-      {/* Background - LAZY LOAD (below fold) */}
-      <div className='absolute inset-0 -z-10'>
-        <Image
-          src={SHARED_ASSETS.background}
-          alt=''
-          fill
-          priority={false} // ❌ Changed to false - not above fold
-          className='object-cover'
-          quality={70} // ✅ Reduced from 75
-          sizes='100vw'
-          placeholder='blur'
-          blurDataURL={blurDataURL}
-          loading='lazy' // ✅ Explicit lazy loading
-        />
-      </div>
+  // ✅ ADD: Intersection Observer to only load when section becomes visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.disconnect() // Stop observing once visible
+          }
+        })
+      },
+      {
+        rootMargin: '200px', // Start loading 200px before section is visible
+        threshold: 0.1
+      }
+    )
 
-      {/* Top Wave - LAZY LOAD */}
-      <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
-        <Image
-          src={SHARED_ASSETS.waveTop}
-          alt=''
-          fill
-          priority={false} // ❌ Changed to false
-          className='object-cover object-center'
-          quality={65} // ✅ Reduced from 70
-          sizes='100vw'
-          loading='lazy' // ✅ Explicit lazy loading
-        />
-      </div>
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  return (
+    <section
+      ref={sectionRef}
+      className='relative isolate overflow-hidden pb-6 sm:pb-8'
+    >
+      {/* ✅ OPTIMIZED: Only render images when section is visible */}
+      {isVisible && (
+        <>
+          {/* Background - Lazy load (below fold) */}
+          <div className='absolute inset-0 -z-10'>
+            <Image
+              src={SHARED_ASSETS.background}
+              alt=''
+              fill
+              priority={false}
+              className='object-cover'
+              quality={70}
+              sizes='100vw'
+              placeholder='blur'
+              blurDataURL={blurDataURL}
+              // ✅ REMOVED: loading='lazy' - Next.js handles this automatically
+            />
+          </div>
+
+          {/* Top Wave - Lazy load */}
+          <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
+            <Image
+              src={SHARED_ASSETS.waveTop}
+              alt=''
+              fill
+              priority={false}
+              className='object-cover object-center'
+              quality={65}
+              sizes='100vw'
+              // ✅ REMOVED: loading='lazy'
+            />
+          </div>
+        </>
+      )}
 
       {/* Content */}
       <div className='relative z-10 pt-[60px] sm:pt-[80px] lg:pt-[120px]'>
         {/* Testimonials Section */}
-        <LandingTestimonials isVisible={true} />
+        <LandingTestimonials isVisible={isVisible} />
       </div>
     </section>
   )

@@ -1,4 +1,4 @@
-// OPTIMIZED Landing Page - Skeletons WITHOUT dynamic imports
+// OPTIMIZED Landing Page - All LIGHT skeletons
 // src/app/[locale]/page.tsx
 
 import { Suspense } from 'react'
@@ -6,21 +6,21 @@ import LandingWelcome from './components/Landing/LandingWelcome'
 import LandingUpdates from './components/Landing/LandingUpdates'
 import LandingLocation from './components/Landing/LandingLocation'
 
-// ✅ Hero Skeleton - Dark (matches dark hero background)
+// ✅ Hero Skeleton - LIGHT (consistent with other sections)
 function HeroSkeleton() {
   return (
-    <div className='relative min-h-screen bg-gradient-to-br from-slate-900 to-slate-800'>
+    <div className='relative min-h-screen bg-gradient-to-br from-slate-50 to-slate-100'>
       <div className='animate-pulse'>
         <div className='flex min-h-screen items-center justify-center'>
           <div className='space-y-8 text-center'>
             {/* Logo placeholder */}
-            <div className='mx-auto h-64 w-64 rounded-lg bg-slate-700/50 md:h-80 md:w-80' />
+            <div className='mx-auto h-64 w-64 rounded-lg bg-slate-200 md:h-80 md:w-80' />
             {/* Tagline placeholder */}
-            <div className='mx-auto h-16 w-80 rounded-lg bg-slate-700/50 md:w-96' />
+            <div className='mx-auto h-16 w-80 rounded-lg bg-slate-200 md:w-96' />
             {/* Buttons placeholder */}
             <div className='flex justify-center gap-4'>
-              <div className='h-12 w-40 rounded-full bg-slate-700/50' />
-              <div className='h-12 w-40 rounded-full bg-slate-700/50' />
+              <div className='h-12 w-40 rounded-full bg-slate-200' />
+              <div className='h-12 w-40 rounded-full bg-slate-200' />
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@ function HeroSkeleton() {
   )
 }
 
-// ✅ Updates Skeleton - Light (matches actual section)
+// ✅ Updates Skeleton - LIGHT
 function UpdatesSkeleton() {
   return (
     <div className='relative min-h-96 bg-white'>
@@ -51,7 +51,7 @@ function UpdatesSkeleton() {
   )
 }
 
-// ✅ Location Skeleton - Light (matches actual section)
+// ✅ Location Skeleton - LIGHT
 function LocationSkeleton() {
   return (
     <div className='relative min-h-96 bg-gradient-to-br from-slate-50 to-slate-100'>
@@ -75,17 +75,15 @@ function LocationSkeleton() {
 export default function DashboardPage() {
   return (
     <div>
-      {/* Hero with skeleton - NO dynamic import */}
+      {/* All sections with LIGHT skeletons */}
       <Suspense fallback={<HeroSkeleton />}>
         <LandingWelcome />
       </Suspense>
 
-      {/* Updates with skeleton - NO dynamic import */}
       <Suspense fallback={<UpdatesSkeleton />}>
         <LandingUpdates />
       </Suspense>
 
-      {/* Location with skeleton - NO dynamic import */}
       <Suspense fallback={<LocationSkeleton />}>
         <LandingLocation />
       </Suspense>

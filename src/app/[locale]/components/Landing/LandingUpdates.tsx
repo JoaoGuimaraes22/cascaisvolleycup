@@ -59,13 +59,13 @@ export default function LandingUpdates() {
       {isVisible && (
         <>
           {/* Background - Lazy load (below fold) */}
-          <div className='absolute inset-0 -z-10'>
+          <div className='absolute inset-0 -z-10 bg-white'>
             <Image
               src={SHARED_ASSETS.background}
               alt=''
               fill
               priority={false}
-              className='object-cover'
+              className='bg-white object-cover'
               quality={70}
               sizes='100vw'
               placeholder='blur'

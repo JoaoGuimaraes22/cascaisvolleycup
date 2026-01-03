@@ -114,18 +114,17 @@ export default function LandingLocation() {
       {isVisible && (
         <>
           {/* Background - Lazy load (below fold) */}
-          <div className='absolute inset-0 -z-10'>
+          <div className='absolute inset-0 -z-10 bg-white'>
             <Image
               src={ASSETS.background}
               alt=''
               fill
               priority={false}
               sizes='100vw'
-              className='object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
+              className='bg-white object-cover object-[50%_80%] md:object-[50%_78%] lg:object-[50%_76%]'
               quality={70}
               placeholder='blur'
               blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-              // ✅ REMOVED: loading='lazy'
             />
           </div>
 
@@ -226,7 +225,6 @@ export default function LandingLocation() {
                 sizes='(max-width: 640px) 260px, 320px'
                 quality={75}
                 priority={false}
-                // ✅ REMOVED: loading='lazy'
               />
             </div>
           )}
@@ -271,7 +269,6 @@ export default function LandingLocation() {
                   sizes='420px'
                   quality={75}
                   priority={false}
-                  // ✅ REMOVED: loading='lazy'
                 />
               </div>
             </div>
@@ -293,7 +290,6 @@ export default function LandingLocation() {
                     priority={false}
                     sizes='540px'
                     quality={75}
-                    // ✅ REMOVED: loading='lazy'
                   />
                 </div>
               </div>

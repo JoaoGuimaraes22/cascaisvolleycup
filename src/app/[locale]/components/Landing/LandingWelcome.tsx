@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import clsx from 'clsx'
@@ -10,6 +10,12 @@ export default function LandingWelcome() {
   const t = useTranslations('LandingPage.Welcome')
   const locale = useLocale()
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  // Refs for parallax (desktop only)
+  const bgRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number>()
+  const lastScrollY = useRef(0)
 
   const ASSETS = useMemo(
     () => ({
@@ -34,10 +40,53 @@ export default function LandingWelcome() {
     return `CVCUP-2026-CONVITE-${langCode}.pdf`
   }, [locale])
 
-  // ✅ Instant load - no delay
+  // Instant load
   useEffect(() => {
     setIsLoaded(true)
   }, [])
+
+  // Desktop detection - only enable parallax on screens 1024px+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1024px)')
+
+    setIsDesktop(mediaQuery.matches)
+
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mediaQuery.addEventListener('change', handler)
+
+    return () => mediaQuery.removeEventListener('change', handler)
+  }, [])
+
+  // Parallax effect - DESKTOP ONLY
+  useEffect(() => {
+    if (!isDesktop || !bgRef.current) return
+
+    const handleScroll = () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+
+      rafRef.current = requestAnimationFrame(() => {
+        const scrollY = window.scrollY
+
+        if (Math.abs(scrollY - lastScrollY.current) < 2) return
+
+        if (scrollY < window.innerHeight && bgRef.current) {
+          lastScrollY.current = scrollY
+          bgRef.current.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
+        }
+      })
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current)
+      }
+    }
+  }, [isDesktop])
 
   return (
     <section
@@ -45,20 +94,25 @@ export default function LandingWelcome() {
       aria-labelledby='hero-heading'
       className='relative -mt-16 min-h-screen w-full overflow-hidden md:-mt-20'
     >
-      {/* ✅ SIMPLIFIED Background - No parallax, no refs, no transform */}
+      {/* Background - parallax on desktop, static on mobile */}
       <div className='absolute inset-0 z-0'>
-        <Image
-          src={ASSETS.BG}
-          alt=''
-          fill
-          priority={true}
-          quality={60}
-          className='object-cover object-center'
-          sizes='100vw'
-          placeholder='blur'
-          blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-        />
-        {/* Gradient overlay */}
+        <div
+          ref={bgRef}
+          className='h-full w-full'
+          style={isDesktop ? { willChange: 'transform' } : undefined}
+        >
+          <Image
+            src={ASSETS.BG}
+            alt=''
+            fill
+            priority={true}
+            quality={60}
+            className='object-cover object-center'
+            sizes='100vw'
+            placeholder='blur'
+            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+          />
+        </div>
         <div className='absolute inset-0 bg-gradient-to-t from-black/35 via-black/25 to-black/15' />
       </div>
 

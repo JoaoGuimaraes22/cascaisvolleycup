@@ -6,7 +6,7 @@ import LandingWelcome from './components/Landing/LandingWelcome'
 import LandingUpdates from './components/Landing/LandingUpdates'
 import LandingLocation from './components/Landing/LandingLocation'
 
-// ✅ Hero Skeleton - LIGHT (consistent with other sections)
+// ✅ Hero Skeleton - LIGHT
 function HeroSkeleton() {
   return (
     <div className='relative min-h-screen bg-gradient-to-br from-slate-50 to-slate-100'>

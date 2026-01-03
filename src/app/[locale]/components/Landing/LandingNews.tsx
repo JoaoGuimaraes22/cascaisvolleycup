@@ -9,6 +9,7 @@ import 'keen-slider/keen-slider.min.css'
 import { useTranslations } from 'next-intl'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import NewsCard from './NewsCard'
+import 'keen-slider/keen-slider.min.css'
 import clsx from 'clsx'
 
 // News-specific assets and constants

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo, useRef } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import clsx from 'clsx'
@@ -10,12 +10,6 @@ export default function LandingWelcome() {
   const t = useTranslations('LandingPage.Welcome')
   const locale = useLocale()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-
-  // Use ref for background element
-  const bgRef = useRef<HTMLDivElement>(null)
-  const rafRef = useRef<number>()
-  const lastScrollY = useRef(0)
 
   const ASSETS = useMemo(
     () => ({
@@ -40,65 +34,9 @@ export default function LandingWelcome() {
     return `CVCUP-2026-CONVITE-${langCode}.pdf`
   }, [locale])
 
-  // Check if mobile once
+  // ✅ Instant load - no delay
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    checkMobile()
-
-    let timeoutId: NodeJS.Timeout
-    const debouncedResize = () => {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(checkMobile, 200)
-    }
-
-    window.addEventListener('resize', debouncedResize, { passive: true })
-    return () => {
-      window.removeEventListener('resize', debouncedResize)
-      clearTimeout(timeoutId)
-    }
-  }, [])
-
-  // ULTRA-SMOOTH parallax with requestAnimationFrame
-  useEffect(() => {
-    if (isMobile || !bgRef.current) return
-
-    const handleScroll = () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-
-      rafRef.current = requestAnimationFrame(() => {
-        const scrollY = window.scrollY
-
-        // Only update if scroll difference is significant (reduces unnecessary updates)
-        if (Math.abs(scrollY - lastScrollY.current) < 2) return
-
-        // Only apply parallax if hero is still visible
-        if (scrollY < window.innerHeight && bgRef.current) {
-          lastScrollY.current = scrollY
-          // Direct DOM manipulation - bypasses React entirely
-          bgRef.current.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
-        }
-      })
-    }
-
-    // Use passive listener for better scroll performance
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-    }
-  }, [isMobile])
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 100)
-    return () => clearTimeout(timer)
+    setIsLoaded(true)
   }, [])
 
   return (
@@ -107,26 +45,19 @@ export default function LandingWelcome() {
       aria-labelledby='hero-heading'
       className='relative -mt-16 min-h-screen w-full overflow-hidden md:-mt-20'
     >
-      {/* Background with CSS-based parallax fallback */}
+      {/* ✅ SIMPLIFIED Background - No parallax, no refs, no transform */}
       <div className='absolute inset-0 z-0'>
-        <div
-          ref={bgRef}
-          className='h-full w-full'
-          style={{ willChange: 'transform' }}
-        >
-          <Image
-            src={ASSETS.BG}
-            alt=''
-            fill
-            priority={true} // ✅ FIXED: Critical hero image
-            quality={75}
-            className='object-cover object-center'
-            sizes='100vw'
-            placeholder='blur'
-            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-            // ✅ REMOVED: No loading='lazy' - let Next.js optimize
-          />
-        </div>
+        <Image
+          src={ASSETS.BG}
+          alt=''
+          fill
+          priority={true}
+          quality={60}
+          className='object-cover object-center'
+          sizes='100vw'
+          placeholder='blur'
+          blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+        />
         {/* Gradient overlay */}
         <div className='absolute inset-0 bg-gradient-to-t from-black/35 via-black/25 to-black/15' />
       </div>
@@ -148,8 +79,8 @@ export default function LandingWelcome() {
               alt='Cascais Câmara Municipal'
               width={300}
               height={80}
-              priority={true} // ✅ CHANGE to true
-              quality={80}
+              priority={true}
+              quality={75}
               sizes='(max-width: 640px) 100px, (max-width: 1024px) 180px, 280px'
               className='h-auto w-[100px] drop-shadow-lg sm:w-[180px] lg:w-[280px]'
             />
@@ -167,11 +98,10 @@ export default function LandingWelcome() {
               alt={t('tagline_alt') || 'feel the ACTION, enjoy the SUMMER'}
               width={400}
               height={100}
-              priority={false}
-              quality={80}
+              priority={true}
+              quality={75}
               sizes='(max-width: 640px) 120px, (max-width: 1024px) 220px, 320px'
               className='h-auto w-[120px] drop-shadow-lg sm:w-[220px] lg:w-[320px]'
-              loading='eager'
             />
           </div>
         </div>
@@ -179,36 +109,31 @@ export default function LandingWelcome() {
 
       {/* Main centered content */}
       <div className='relative z-10 mx-auto flex min-h-screen w-full max-w-screen-2xl flex-col items-center justify-center px-6 sm:px-10 md:px-8'>
-        {/* Main event logo with positioned labels */}
+        {/* Main event logo */}
         <div className='relative'>
-          {/* Portugal label */}
-
-          {/* Logo */}
           <div
             className={clsx(
-              'transition-all delay-500 duration-1000 ease-out',
+              'transition-all delay-300 duration-1000 ease-out',
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             )}
           >
             <Image
               src={ASSETS.LOGO}
               alt='Cascais Volley Cup 2026'
-              width={800}
-              height={280}
-              priority={true} // ✅ FIXED - main logo is critical!
-              quality={85}
+              width={650}
+              height={227}
+              priority={true}
+              quality={75}
               sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
               className='h-auto w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]'
             />
           </div>
-
-          {/* Dates */}
         </div>
 
         {/* Action buttons */}
         <div
           className={clsx(
-            'delay-900 mt-16 flex flex-col gap-3 transition-all duration-700 ease-out',
+            'mt-16 flex flex-col gap-3 transition-all delay-500 duration-700 ease-out',
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
@@ -232,7 +157,7 @@ export default function LandingWelcome() {
       {/* Scroll indicator */}
       <div
         className={clsx(
-          'absolute bottom-8 left-1/2 -translate-x-1/2 text-white transition-all delay-1000 duration-1000 ease-out',
+          'absolute bottom-8 left-1/2 -translate-x-1/2 text-white transition-all delay-700 duration-1000 ease-out',
           isLoaded ? 'translate-y-0 opacity-70' : 'translate-y-4 opacity-0'
         )}
       >
@@ -247,7 +172,7 @@ export default function LandingWelcome() {
       {/* O-Sports logo */}
       <div
         className={clsx(
-          'delay-1200 absolute bottom-4 right-4 z-30 transition-all duration-700 ease-out',
+          'delay-900 absolute bottom-4 right-4 z-30 transition-all duration-700 ease-out',
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
         )}
       >
@@ -258,8 +183,7 @@ export default function LandingWelcome() {
           height={60}
           className='h-auto w-[80px] drop-shadow-lg sm:w-[100px] lg:w-[120px]'
           priority={false}
-          quality={80}
-          loading='eager'
+          quality={75}
         />
       </div>
     </section>

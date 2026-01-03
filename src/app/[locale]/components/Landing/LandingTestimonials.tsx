@@ -7,6 +7,7 @@ import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi'
+import 'keen-slider/keen-slider.min.css'
 import clsx from 'clsx'
 
 const TESTIMONIALS_ASSETS = {

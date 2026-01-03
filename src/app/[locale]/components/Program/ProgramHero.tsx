@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { FiDownload, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import 'keen-slider/keen-slider.min.css'
 import clsx from 'clsx'
 
 export default function ProgramHero() {

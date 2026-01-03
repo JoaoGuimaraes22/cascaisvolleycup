@@ -1,49 +1,48 @@
-// OPTIMIZED Landing Page - Dynamic imports for code splitting
+// OPTIMIZED Landing Page - Skeletons WITHOUT dynamic imports
 // src/app/[locale]/page.tsx
 
 import { Suspense } from 'react'
-import dynamic from 'next/dynamic'
 import LandingWelcome from './components/Landing/LandingWelcome'
+import LandingUpdates from './components/Landing/LandingUpdates'
+import LandingLocation from './components/Landing/LandingLocation'
 
-// ✅ Dynamically import below-fold components
-// This splits them into separate chunks that load on-demand
-const LandingUpdates = dynamic(
-  () => import('./components/Landing/LandingUpdates'),
-  {
-    loading: () => <LandingUpdatesSkeleton />,
-    ssr: true // Keep SSR for SEO
-  }
-)
-
-const LandingLocation = dynamic(
-  () => import('./components/Landing/LandingLocation'),
-  {
-    loading: () => <LandingLocationSkeleton />,
-    ssr: true
-  }
-)
-
-// Skeleton for hero (rarely seen due to fast load)
+// ✅ Hero Skeleton - Dark (matches dark hero background)
 function HeroSkeleton() {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-slate-900 to-slate-800'>
+    <div className='relative min-h-screen bg-gradient-to-br from-slate-900 to-slate-800'>
       <div className='animate-pulse'>
-        <div className='h-screen bg-slate-800' />
+        <div className='flex min-h-screen items-center justify-center'>
+          <div className='space-y-8 text-center'>
+            {/* Logo placeholder */}
+            <div className='mx-auto h-64 w-64 rounded-lg bg-slate-700/50 md:h-80 md:w-80' />
+            {/* Tagline placeholder */}
+            <div className='mx-auto h-16 w-80 rounded-lg bg-slate-700/50 md:w-96' />
+            {/* Buttons placeholder */}
+            <div className='flex justify-center gap-4'>
+              <div className='h-12 w-40 rounded-full bg-slate-700/50' />
+              <div className='h-12 w-40 rounded-full bg-slate-700/50' />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-// Skeleton for Updates section
-function LandingUpdatesSkeleton() {
+// ✅ Updates Skeleton - Light (matches actual section)
+function UpdatesSkeleton() {
   return (
-    <div className='min-h-96 bg-gradient-to-br from-slate-50 to-slate-100'>
+    <div className='relative min-h-96 bg-white'>
       <div className='animate-pulse'>
         <div className='mx-auto max-w-screen-xl px-4 py-16'>
-          <div className='mb-8 h-8 w-48 rounded bg-slate-300' />
-          <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+          <div className='mb-8 h-8 w-48 rounded bg-slate-200' />
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {[1, 2, 3].map(i => (
-              <div key={i} className='h-64 rounded-lg bg-slate-200' />
+              <div key={i} className='space-y-4 rounded-xl bg-slate-100 p-6'>
+                <div className='h-6 w-3/4 rounded bg-slate-200' />
+                <div className='h-4 w-full rounded bg-slate-200' />
+                <div className='h-4 w-5/6 rounded bg-slate-200' />
+              </div>
             ))}
           </div>
         </div>
@@ -52,15 +51,19 @@ function LandingUpdatesSkeleton() {
   )
 }
 
-// Skeleton for Location section
-function LandingLocationSkeleton() {
+// ✅ Location Skeleton - Light (matches actual section)
+function LocationSkeleton() {
   return (
-    <div className='min-h-96 bg-gradient-to-br from-slate-50 to-slate-100'>
+    <div className='relative min-h-96 bg-gradient-to-br from-slate-50 to-slate-100'>
       <div className='animate-pulse'>
         <div className='mx-auto max-w-screen-xl px-4 py-16'>
-          <div className='mb-8 h-8 w-64 rounded bg-slate-300' />
+          <div className='mb-8 h-8 w-64 rounded bg-slate-200' />
           <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
-            <div className='h-96 rounded-lg bg-slate-200' />
+            <div className='space-y-4'>
+              <div className='h-4 w-full rounded bg-slate-200' />
+              <div className='h-4 w-5/6 rounded bg-slate-200' />
+              <div className='h-4 w-4/5 rounded bg-slate-200' />
+            </div>
             <div className='h-96 rounded-lg bg-slate-200' />
           </div>
         </div>
@@ -72,15 +75,20 @@ function LandingLocationSkeleton() {
 export default function DashboardPage() {
   return (
     <div>
-      {/* ✅ Hero loads immediately - it's above the fold */}
+      {/* Hero with skeleton - NO dynamic import */}
       <Suspense fallback={<HeroSkeleton />}>
         <LandingWelcome />
       </Suspense>
 
-      {/* ✅ These components are lazy-loaded (separate chunks) */}
-      {/* They won't block the initial page load */}
-      <LandingUpdates />
-      <LandingLocation />
+      {/* Updates with skeleton - NO dynamic import */}
+      <Suspense fallback={<UpdatesSkeleton />}>
+        <LandingUpdates />
+      </Suspense>
+
+      {/* Location with skeleton - NO dynamic import */}
+      <Suspense fallback={<LocationSkeleton />}>
+        <LandingLocation />
+      </Suspense>
     </div>
   )
 }

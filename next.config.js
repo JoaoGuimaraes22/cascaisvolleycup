@@ -13,7 +13,9 @@ const nextConfig = {
     removeConsole:
       process.env.NODE_ENV === 'production'
         ? { exclude: ['error', 'warn'] }
-        : false
+        : false,
+    // ✅ Remove React properties in production
+    reactRemoveProperties: process.env.NODE_ENV === 'production'
   },
 
   // ✅ IMPROVED: Image configuration

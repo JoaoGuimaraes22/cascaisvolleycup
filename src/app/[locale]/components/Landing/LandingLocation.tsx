@@ -107,7 +107,7 @@ export default function LandingLocation() {
   return (
     <section
       ref={sectionRef}
-      className='relative isolate min-h-[720px] overflow-hidden sm:min-h-[800px] lg:min-h-[880px]'
+      className='relative isolate min-h-[720px] overflow-hidden bg-white sm:min-h-[800px] lg:min-h-[880px]'
       style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
     >
       {/* ✅ OPTIMIZED: Only render images when section is visible */}

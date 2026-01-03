@@ -53,7 +53,7 @@ export default function LandingUpdates() {
   return (
     <section
       ref={sectionRef}
-      className='relative isolate overflow-hidden pb-6 sm:pb-8'
+      className='relative isolate overflow-hidden bg-white pb-6 sm:pb-8'
     >
       {/* ✅ OPTIMIZED: Only render images when section is visible */}
       {isVisible && (

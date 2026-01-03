@@ -17,13 +17,6 @@ export default function LandingUpdates() {
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
-  // Memoized blur data URL
-  const blurDataURL = useMemo(
-    () =>
-      'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==',
-    []
-  )
-
   // ✅ ADD: Intersection Observer to only load when section becomes visible
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -68,8 +61,6 @@ export default function LandingUpdates() {
               className='bg-white object-cover'
               quality={70}
               sizes='100vw'
-              placeholder='blur'
-              blurDataURL={blurDataURL}
               // ✅ REMOVED: loading='lazy' - Next.js handles this automatically
             />
           </div>

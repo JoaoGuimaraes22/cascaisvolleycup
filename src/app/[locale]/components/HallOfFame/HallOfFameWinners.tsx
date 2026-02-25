@@ -1,80 +1,34 @@
+// src/app/[locale]/components/HallOfFame/HallOfFameWinners.tsx
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FaMedal, FaChevronDown, FaTrophy } from 'react-icons/fa'
 import { BiAward } from 'react-icons/bi'
 import clsx from 'clsx'
-
-type DivisionKey = 'Sub15' | 'Sub17' | 'Open'
-const DIVISIONS: DivisionKey[] = ['Sub15', 'Sub17', 'Open']
-
-// Updated winners data with the new structure
-const WINNERS: Record<
-  string,
-  Record<DivisionKey, { name: string; country: string }[]>
-> = {
-  '2025': {
-    Sub15: [
-      { name: 'PEL Amora SC A', country: 'PT' },
-      { name: 'Cascais Volley4all', country: 'PT' },
-      { name: 'PEL Amora SC B', country: 'PT' }
-    ],
-    Sub17: [
-      { name: 'SC Arcozelo', country: 'PT' },
-      { name: 'PEL Amora SC', country: 'PT' },
-      { name: 'São Francisco AD', country: 'PT' }
-    ],
-    Open: [
-      { name: 'Cascais Volley4all', country: 'PT' },
-      { name: 'CV Madrid', country: 'ES' },
-      { name: 'AS Mónaco', country: 'MC' }
-    ]
-  },
-  '2024': {
-    Sub15: [
-      { name: 'SC Arcozelo A', country: 'PT' },
-      { name: 'SC Arcozelo B', country: 'PT' },
-      { name: 'GDC Gueifães', country: 'PT' }
-    ],
-    Sub17: [
-      { name: 'SC Arcozelo', country: 'PT' },
-      { name: 'SC Vila Real', country: 'PT' },
-      { name: 'Cascais Volley4all', country: 'PT' }
-    ],
-    Open: []
-  },
-  '2023': {
-    Sub15: [
-      { name: 'CF "Os Belenenses"', country: 'PT' },
-      { name: 'CJS Arouca', country: 'PT' },
-      { name: 'Cascais Volley4all', country: 'PT' }
-    ],
-    Sub17: [
-      { name: 'Madeira Torres', country: 'PT' },
-      { name: 'Cascais Volley4all', country: 'PT' },
-      { name: 'Lusófona VC', country: 'PT' }
-    ],
-    Open: []
-  }
-}
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
+import {
+  WINNERS,
+  DIVISIONS,
+  getAvailableYears,
+  type DivisionKey
+} from '@/src/data/winners'
 
 export default function HallOfFameWinners() {
   const t = useTranslations('HallOfFamePage.Winners')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Assets with better organization
   const ASSETS = {
     background: '/img/hall-of-fame/hero-bg.webp',
     winnersImg: '/img/program/players.webp',
-    tagline: '/img/global/tagline.webp',
-    wave: '/img/global/ondas-3.webp'
+    tagline: GLOBAL_ASSETS.tagline,
+    wave: GLOBAL_ASSETS.wave
   } as const
 
-  const WAVE_HEIGHT = 135
-  const years = Object.keys(WINNERS).sort((a, b) => Number(b) - Number(a))
+  const years = getAvailableYears()
   const [openYear, setOpenYear] = useState(years[0])
   const [animatingYear, setAnimatingYear] = useState<string | null>(null)
 
@@ -129,24 +83,6 @@ export default function HallOfFameWinners() {
         return 'from-gray-200 to-gray-300'
     }
   }
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
@@ -207,8 +143,8 @@ export default function HallOfFameWinners() {
                         className={clsx(
                           'transition-all duration-500 ease-out',
                           isVisible
-                            ? 'translate-x-0 opacity-100'
-                            : '-translate-x-8 opacity-0'
+                            ? 'translate-y-0 opacity-100'
+                            : 'translate-y-4 opacity-0'
                         )}
                         style={{
                           transitionDelay: `${500 + yearIndex * 100}ms`
@@ -216,24 +152,15 @@ export default function HallOfFameWinners() {
                       >
                         {/* Year Header - Clickable */}
                         <button
-                          type='button'
                           onClick={() => toggleYear(year)}
-                          className={clsx(
-                            'flex w-full items-center justify-between px-4 py-3 text-left transition-all duration-200',
-                            openYear === year
-                              ? 'bg-gradient-to-r from-sky-50 to-blue-50'
-                              : 'hover:bg-slate-50'
-                          )}
+                          className='flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-slate-50/80'
+                          aria-expanded={openYear === year}
+                          aria-controls={`winners-${year}`}
                         >
                           <div className='flex items-center gap-3'>
-                            <BiAward
-                              className={clsx(
-                                'h-5 w-5 transition-colors duration-200',
-                                openYear === year
-                                  ? 'text-sky-600'
-                                  : 'text-slate-400'
-                              )}
-                            />
+                            <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-500 to-sky-600 shadow-sm'>
+                              <FaMedal className='h-4 w-4 text-white' />
+                            </div>
                             <span className='text-lg font-bold text-slate-800'>
                               {year}
                             </span>
@@ -248,6 +175,7 @@ export default function HallOfFameWinners() {
 
                         {/* Collapsible Content */}
                         <div
+                          id={`winners-${year}`}
                           className={clsx(
                             'duration-350 grid overflow-hidden transition-all ease-out',
                             openYear === year
@@ -299,31 +227,25 @@ export default function HallOfFameWinners() {
                                               )}
                                             >
                                               {idx === 0 ? (
-                                                <FaMedal className='h-3 w-3' />
+                                                <FaTrophy className='h-3 w-3' />
                                               ) : (
-                                                idx + 1
+                                                <span>{idx + 1}</span>
                                               )}
                                             </div>
 
-                                            {/* Team info */}
-                                            <div className='flex flex-1 items-center gap-2'>
-                                              {/* Flag */}
-                                              <div className='relative inline-block h-[16px] w-[24px] shrink-0 overflow-hidden rounded-[3px] ring-1 ring-black/10'>
-                                                <Image
-                                                  src={flagSrc(country)}
-                                                  alt={`${country} flag`}
-                                                  fill
-                                                  sizes='24px'
-                                                  className='object-cover'
-                                                  quality={75}
-                                                />
-                                              </div>
+                                            {/* Flag */}
+                                            <Image
+                                              src={flagSrc(country)}
+                                              alt={country}
+                                              width={20}
+                                              height={14}
+                                              className='h-3.5 w-5 shrink-0 rounded-[2px] object-cover shadow-sm ring-1 ring-black/10'
+                                            />
 
-                                              {/* Team Name */}
-                                              <span className='flex-1 text-sm font-medium text-slate-800'>
-                                                {name}
-                                              </span>
-                                            </div>
+                                            {/* Team Name */}
+                                            <span className='text-sm font-medium text-slate-700'>
+                                              {name}
+                                            </span>
                                           </div>
                                         )
                                       })}
@@ -341,39 +263,33 @@ export default function HallOfFameWinners() {
               </div>
             </div>
 
-            {/* Right Column: Content Space Only */}
-            <div className='col-span-5'>
-              {/* This column is now just for layout spacing */}
+            {/* Right Column: Image */}
+            <div className='hidden items-center justify-center lg:col-span-5 lg:flex'>
+              <div
+                className={clsx(
+                  'relative h-[400px] w-full max-w-[520px] transition-all duration-1000 ease-out',
+                  '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
+                  '[mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
+                  isVisible
+                    ? 'translate-y-0 scale-100 opacity-100'
+                    : 'translate-y-8 scale-95 opacity-0'
+                )}
+              >
+                {/* Decorative background */}
+                <div className='absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-sky-200/30 to-blue-300/20 blur-2xl lg:blur-3xl' />
+
+                <Image
+                  src={ASSETS.winnersImg}
+                  alt='Tournament winners celebrating with trophies'
+                  fill
+                  sizes='(max-width: 1024px) 240px, 520px'
+                  className='object-contain object-center drop-shadow-xl transition-transform duration-300 hover:scale-105 lg:drop-shadow-2xl'
+                  quality={80}
+                  priority
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Players Image - Positioned Above Wave (Tablet & Desktop Only) with FADE EFFECT */}
-      <div className='absolute bottom-[105px] right-4 z-10 hidden sm:block lg:right-[10%]'>
-        <div
-          className={clsx(
-            'relative h-[240px] w-[240px] transition-all delay-700 duration-1000 ease-out lg:h-[520px] lg:w-[520px]',
-            // Add the fade mask effect here
-            '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
-            '[mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
-            isVisible
-              ? 'translate-y-0 scale-100 opacity-100'
-              : 'translate-y-8 scale-95 opacity-0'
-          )}
-        >
-          {/* Decorative background */}
-          <div className='absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-sky-200/30 to-blue-300/20 blur-2xl lg:blur-3xl' />
-
-          <Image
-            src={ASSETS.winnersImg}
-            alt='Tournament winners celebrating with trophies'
-            fill
-            sizes='(max-width: 1024px) 240px, 520px'
-            className='object-contain object-center drop-shadow-xl transition-transform duration-300 hover:scale-105 lg:drop-shadow-2xl'
-            quality={80}
-            priority
-          />
         </div>
       </div>
 

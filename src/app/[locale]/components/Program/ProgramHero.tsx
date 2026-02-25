@@ -3,13 +3,17 @@
 
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { FiDownload, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
-import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
+import {
+  WAVE_HEIGHT,
+  GLOBAL_ASSETS,
+  getBrochureFileName
+} from '@/src/lib/constants'
 
 export default function ProgramHero() {
   const t = useTranslations('ProgramPage.Hero')
@@ -25,25 +29,6 @@ export default function ProgramHero() {
     players: '/img/program/players.webp',
     wave: GLOBAL_ASSETS.wave
   } as const
-
-  // Language mapping for brochure files
-  const getLanguageCode = (locale: string) => {
-    const languageMap = {
-      en: 'UK',
-      es: 'ESP',
-      pt: 'PT',
-      fr: 'FRAN'
-    } as const
-
-    return languageMap[locale as keyof typeof languageMap] || 'UK'
-  }
-
-  const getBrochureFileName = () => {
-    const langCode = getLanguageCode(locale)
-    return `CVCUP-2026-CONVITE-${langCode}.pdf`
-  }
-
-  const WAVE_HEIGHT = 135
 
   // Days configuration with new design
   const DAYS = [
@@ -99,37 +84,18 @@ export default function ProgramHero() {
     }
   ] as const
 
-  // Slider setup for mobile/tablet - days boxes
+  // Slider setup
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: false,
-    defaultAnimation: { duration: 600 },
-    slides: {
-      perView: 1.2,
-      spacing: 16
-    },
+    initial: 0,
+    slides: { perView: 1.2, spacing: 16 },
     breakpoints: {
-      '(min-width: 640px)': {
-        slides: { perView: 2.2, spacing: 20 }
-      },
-      '(min-width: 768px)': {
-        slides: { perView: 3.2, spacing: 20 }
-      },
-      '(min-width: 1024px)': {
-        disabled: true // Disable slider on desktop
-      }
+      '(min-width: 480px)': { slides: { perView: 2.2, spacing: 16 } },
+      '(min-width: 768px)': { slides: { perView: 3.2, spacing: 16 } }
     },
-    slideChanged(s) {
-      setCurrentSlide(s.track.details.rel)
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel)
     }
   })
-
-  // Navigation functions
-  const goToSlide = useCallback(
-    (index: number) => {
-      instanceRef.current?.moveToIdx(index)
-    },
-    [instanceRef]
-  )
 
   const goToPrevious = useCallback(() => {
     instanceRef.current?.prev()
@@ -139,41 +105,30 @@ export default function ProgramHero() {
     instanceRef.current?.next()
   }, [instanceRef])
 
+  const goToSlide = useCallback(
+    (index: number) => {
+      instanceRef.current?.moveToIdx(index)
+    },
+    [instanceRef]
+  )
+
   return (
     <section
       ref={sectionRef}
-      className='relative w-full overflow-hidden pb-[155px] lg:pb-[85px]'
+      className='relative w-full overflow-hidden'
       aria-labelledby='program-title'
     >
-      {/* Enhanced Background */}
+      {/* Background */}
       <div className='absolute inset-0 -z-10'>
-        <div className='absolute inset-0 bg-gradient-to-br from-slate-50 to-slate-100' />
         <Image
           src={ASSETS.background}
           alt=''
           role='presentation'
           fill
+          onLoad={() => setBackgroundLoaded(true)}
           className={clsx(
             'object-cover transition-opacity duration-700',
-            backgroundLoaded ? 'opacity-100' : 'opacity-0'
-          )}
-          sizes='100vw'
-          priority
-          quality={75}
-          onLoad={() => setBackgroundLoaded(true)}
-        />
-      </div>
-
-      {/* Mobile: Players Image Behind Content */}
-      <div className='pointer-events-none absolute inset-x-0 bottom-24 top-0 z-0 lg:hidden'>
-        <Image
-          src={ASSETS.players}
-          alt=''
-          role='presentation'
-          fill
-          className={clsx(
-            'object-contain object-bottom grayscale-[75%] transition-opacity duration-1000',
-            isVisible ? 'opacity-20' : 'opacity-0'
+            backgroundLoaded ? 'opacity-20' : 'opacity-0'
           )}
           sizes='100vw'
           quality={80}
@@ -387,7 +342,7 @@ export default function ProgramHero() {
                 )}
                 style={{ transitionDelay: '1800ms' }}
               >
-                <DownloadButton filename={getBrochureFileName()}>
+                <DownloadButton filename={getBrochureFileName(locale)}>
                   {t('downloadBrochure')}
                 </DownloadButton>
               </div>

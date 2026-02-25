@@ -1,12 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config = {
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}'
-  ],
+  content: ['./src/**/*.{ts,tsx}'],
   theme: {
     container: {
       center: true,
@@ -17,7 +12,7 @@ const config = {
     },
     extend: {
       backgroundImage: {
-        'span-bg': 'var(--span-bg)' // keep only if used elsewhere
+        'span-bg': 'var(--span-bg)'
       },
       colors: {
         background: 'var(--background)',

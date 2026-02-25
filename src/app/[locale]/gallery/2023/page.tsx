@@ -47,7 +47,7 @@ function generateStructuredData2023(locale: string) {
     '@type': 'ImageGallery',
     name: `Cascais Cup 2023 Photo Gallery`,
     description: `Official photo gallery of Cascais Cup 2023 volleyball tournament`,
-    url: `https://yourdomain.com/${locale}/gallery/2023`,
+    url: `https://cascaisvolley.com/${locale}/gallery/2023`,
     dateCreated: `2023-01-01`,
     about: {
       '@type': 'SportsEvent',
@@ -67,7 +67,7 @@ function generateStructuredData2023(locale: string) {
     publisher: {
       '@type': 'Organization',
       name: 'Cascais Cup',
-      url: 'https://yourdomain.com'
+      url: 'https://cascaisvolley.com'
     }
   }
 }

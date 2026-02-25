@@ -47,7 +47,7 @@ function generateStructuredData2025(locale: string) {
     '@type': 'ImageGallery',
     name: `Cascais Cup 2025 Photo Gallery`,
     description: `Official photo gallery of Cascais Cup 2025 volleyball tournament`,
-    url: `https://yourdomain.com/${locale}/gallery/2025`,
+    url: `https://cascaisvolley.com/${locale}/gallery/2025`,
     dateCreated: `2025-01-01`,
     about: {
       '@type': 'SportsEvent',
@@ -67,7 +67,7 @@ function generateStructuredData2025(locale: string) {
     publisher: {
       '@type': 'Organization',
       name: 'Cascais Cup',
-      url: 'https://yourdomain.com'
+      url: 'https://cascaisvolley.com'
     }
   }
 }

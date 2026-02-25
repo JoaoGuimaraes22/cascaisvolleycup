@@ -2,44 +2,26 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
 import { FiMail } from 'react-icons/fi'
 import clsx from 'clsx'
 import ContactToast from '../Global/ContactToast'
 
 export default function AccommodationHero() {
   const t = useTranslations('AccommodationPage.Hero')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
   const [showContactToast, setShowContactToast] = useState(false)
 
   // ===== Constants =====
   const ASSETS = {
     background: '/img/accommodation/hero-bg.webp',
-    wave: '/img/global/ondas-3.webp',
+    wave: GLOBAL_ASSETS.wave,
     player: '/img/accommodation/ac-player.webp'
   } as const
-
-  const WAVE_HEIGHT = 135
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section

@@ -3,15 +3,15 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
-import { useMemo, useEffect, useRef, useState } from 'react'
+import { useMemo } from 'react'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 // Constants for better maintainability
 const ASSETS = {
   background: '/img/competition/rulles-bg.webp',
   wave: '/img/global/ondas-3.webp'
 } as const
-
-const WAVE_HEIGHT = 135
 
 // Types for better type safety
 interface FactItem {
@@ -27,26 +27,7 @@ interface StatsListProps {
 
 export default function CompetitionFacts() {
   const t = useTranslations('CompetitionPage.Facts')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  // Intersection observer for scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Memoize fact items to prevent unnecessary re-renders
   const factItems = useMemo<FactItem[]>(

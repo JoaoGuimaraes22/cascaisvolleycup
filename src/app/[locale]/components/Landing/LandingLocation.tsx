@@ -7,8 +7,10 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FiMapPin } from 'react-icons/fi'
 import clsx from 'clsx'
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import RegistrationToast from './RegistrationToast'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 interface StatsListProps {
   items: string[]
@@ -56,8 +58,9 @@ function StatsList({ items, compact = false }: StatsListProps) {
 export default function LandingLocation() {
   const t = useTranslations('LandingPage.Location')
   const [showRegistrationToast, setShowRegistrationToast] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>({
+    rootMargin: '200px'
+  })
 
   const ASSETS = {
     background: '/img/landing/home-page-2-2.webp',
@@ -66,39 +69,12 @@ export default function LandingLocation() {
     wave: '/img/global/ondas-3.webp'
   } as const
 
-  const WAVE_HEIGHT = 135
   const STATS_DATA = [
     t('stats_teams'),
     t('stats_athletes'),
     t('stats_countries'),
     t('stats_games')
   ]
-
-  // ✅ ADD: Intersection Observer to only load when section becomes visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-            observer.disconnect() // Stop observing once visible
-          }
-        })
-      },
-      {
-        rootMargin: '200px', // Start loading 200px before section is visible
-        threshold: 0.1
-      }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
 
   const handlePlanTripClick = () => {
     setShowRegistrationToast(true)

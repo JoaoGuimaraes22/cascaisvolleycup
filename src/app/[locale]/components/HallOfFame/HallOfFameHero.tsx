@@ -2,9 +2,11 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { MouseEvent, useEffect, useRef, useState } from 'react'
+import { MouseEvent } from 'react'
 import { FiArrowDown, FiUsers, FiAward } from 'react-icons/fi'
 import clsx from 'clsx'
+import { useStaggeredAnimation } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT_TALL as WAVE_HEIGHT } from '@/src/lib/constants'
 
 // Assets constant for better maintainability
 const ASSETS = {
@@ -14,33 +16,6 @@ const ASSETS = {
   logo: '/img/global/cascais-volley-cup-1-w.webp',
   mvpLogo: '/img/hall-of-fame/mvp-logo.webp'
 } as const
-
-const WAVE_HEIGHT = 150
-
-// Custom hook for intersection observer with staggered animations
-function useStaggeredAnimation(threshold = 0.1) {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold, rootMargin: '100px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { isVisible, sectionRef }
-}
 
 // Enhanced CTA button with animations
 interface CTAButtonProps {

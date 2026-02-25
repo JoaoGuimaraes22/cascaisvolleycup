@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { FiUsers, FiArrowDown, FiFlag } from 'react-icons/fi'
 import clsx from 'clsx'
+import { useStaggeredAnimation } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT } from '@/src/lib/constants'
 
 // Assets constant for better maintainability
 const ASSETS = {
@@ -12,8 +14,6 @@ const ASSETS = {
   players: '/img/hall-of-fame/players-2.webp',
   wave: '/img/global/ondas-7.webp'
 } as const
-
-const WAVE_HEIGHT = 135
 
 // Team data type
 interface Team {
@@ -58,31 +58,6 @@ const SAMPLE_TEAMS: Team[] = [
   { name: 'CRCD Luzense', country: 'PT' },
   { name: 'Sporting CT', country: 'PT' }
 ] as const
-
-// Custom hook for intersection observer with staggered animations
-function useStaggeredAnimation(threshold = 0.15) {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { isVisible, sectionRef }
-}
 
 // Team item component without hover animations
 interface TeamItemProps {

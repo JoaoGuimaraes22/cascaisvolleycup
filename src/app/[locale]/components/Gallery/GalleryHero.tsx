@@ -3,12 +3,13 @@
 
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/src/navigation'
 import { FiImage, FiArrowRight, FiWifiOff } from 'react-icons/fi'
 import clsx from 'clsx'
+import { useStaggeredAnimation } from '@/src/hooks/useIntersectionObserver'
 
 // Import our optimized components
 import {
@@ -31,31 +32,6 @@ const YEAR_ROUTES = {
   2024: '/gallery/2024',
   2023: '/gallery/2023'
 } as const
-
-// Custom hook for intersection observer with staggered animations
-function useStaggeredAnimation(threshold = 0.2) {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { isVisible, sectionRef }
-}
 
 // Loading skeleton component for year cards
 function YearCardSkeleton() {

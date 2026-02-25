@@ -3,45 +3,27 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 import { FiExternalLink } from 'react-icons/fi'
 import clsx from 'clsx'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 export default function AboutVilla() {
   const t = useTranslations('AboutPage.Villa')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
 
   // ===== Constants =====
   const ASSETS = {
     background: '/img/about/villa-bg.webp',
-    bottomWave: '/img/global/ondas-3.webp',
-    tagline: '/img/global/tagline-w.webp',
-    logo: '/img/global/cascais-volley-cup-1-w.webp',
+    bottomWave: GLOBAL_ASSETS.wave,
+    tagline: GLOBAL_ASSETS.taglineWhite,
+    logo: GLOBAL_ASSETS.logoWhite,
     sponsor: '/img/sponsors/cascais-camara-w.webp'
   } as const
 
   const PARAGRAPHS = ['p1', 'p2', 'p3', 'p4'] as const
-  const WAVE_HEIGHT = 135
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section

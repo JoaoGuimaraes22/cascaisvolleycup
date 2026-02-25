@@ -1,28 +1,29 @@
+// src/app/[locale]/components/Program/ProgramHero.tsx
 'use client'
 
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { FiDownload, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import 'keen-slider/keen-slider.min.css'
 import clsx from 'clsx'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 export default function ProgramHero() {
   const t = useTranslations('ProgramPage.Hero')
   const locale = useLocale()
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
 
   // ===== Constants =====
   const ASSETS = {
     background: '/img/program/program-bg.webp',
-    tagline: '/img/global/tagline.webp',
+    tagline: GLOBAL_ASSETS.tagline,
     players: '/img/program/players.webp',
-    wave: '/img/global/ondas-3.webp'
+    wave: GLOBAL_ASSETS.wave
   } as const
 
   // Language mapping for brochure files
@@ -137,24 +138,6 @@ export default function ProgramHero() {
   const goToNext = useCallback(() => {
     instanceRef.current?.next()
   }, [instanceRef])
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section

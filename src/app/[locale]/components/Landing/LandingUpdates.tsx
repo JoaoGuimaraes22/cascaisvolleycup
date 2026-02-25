@@ -3,7 +3,8 @@
 
 'use client'
 
-import { useMemo, useState, useEffect, useRef } from 'react'
+import { useMemo } from 'react'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 import Image from 'next/image'
 import LandingTestimonials from './LandingTestimonials'
 
@@ -14,34 +15,9 @@ const SHARED_ASSETS = {
 } as const
 
 export default function LandingUpdates() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  // ✅ ADD: Intersection Observer to only load when section becomes visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-            observer.disconnect() // Stop observing once visible
-          }
-        })
-      },
-      {
-        rootMargin: '200px', // Start loading 200px before section is visible
-        threshold: 0.1
-      }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>({
+    rootMargin: '200px'
+  })
 
   return (
     <section

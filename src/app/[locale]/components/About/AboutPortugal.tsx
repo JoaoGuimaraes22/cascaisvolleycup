@@ -2,16 +2,17 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
+import { WAVE_HEIGHT } from '@/src/lib/constants'
 
 export default function AboutPortugal() {
   const t = useTranslations('AboutPage.Portugal')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [imageLoaded, setImageLoaded] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
 
@@ -44,8 +45,6 @@ export default function AboutPortugal() {
       alt: t('cards.sec1719.alt')
     }
   ] as const
-
-  const WAVE_HEIGHT = 135
 
   // Slider setup - only for mobile/tablet
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -83,24 +82,6 @@ export default function AboutPortugal() {
   const goToNext = useCallback(() => {
     instanceRef.current?.next()
   }, [instanceRef])
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section

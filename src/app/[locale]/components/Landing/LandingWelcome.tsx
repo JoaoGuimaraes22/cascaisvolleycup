@@ -1,3 +1,4 @@
+// src/app/[locale]/components/Landing/LandingWelcome.tsx
 'use client'
 
 import { useEffect, useState, useMemo, useRef } from 'react'
@@ -5,6 +6,7 @@ import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import clsx from 'clsx'
 import { Link } from '@/src/navigation'
+import { getBrochureFileName } from '@/src/lib/constants'
 
 export default function LandingWelcome() {
   const t = useTranslations('LandingPage.Welcome')
@@ -28,17 +30,7 @@ export default function LandingWelcome() {
     []
   )
 
-  const getBrochureFileName = useMemo(() => {
-    const languageMap = {
-      en: 'UK',
-      es: 'ESP',
-      pt: 'PT',
-      fr: 'FRAN'
-    } as const
-
-    const langCode = languageMap[locale as keyof typeof languageMap] || 'UK'
-    return `CVCUP-2026-CONVITE-${langCode}.pdf`
-  }, [locale])
+  const brochureFile = useMemo(() => getBrochureFileName(locale), [locale])
 
   // Instant load
   useEffect(() => {
@@ -105,67 +97,45 @@ export default function LandingWelcome() {
             src={ASSETS.BG}
             alt=''
             fill
-            priority={true}
-            quality={60}
-            className='object-cover object-center'
+            priority
             sizes='100vw'
+            className='object-cover'
+            quality={75}
           />
         </div>
-        <div className='absolute inset-0 bg-gradient-to-t from-black/35 via-black/25 to-black/15' />
       </div>
 
-      {/* Top overlay content */}
-      <div className='absolute left-0 right-0 top-0 z-20 px-6 pt-20 sm:px-10 sm:pt-24 md:px-8 md:pt-28'>
-        <div className='mx-auto flex max-w-screen-2xl items-start justify-between'>
-          {/* Sponsor logo - top left */}
-          <div
-            className={clsx(
-              'transition-all duration-1000 ease-out',
-              isLoaded
-                ? 'translate-x-0 opacity-100'
-                : '-translate-x-8 opacity-0'
-            )}
-          >
-            <Image
-              src={ASSETS.SPONSOR}
-              alt='Cascais Câmara Municipal'
-              width={300}
-              height={80}
-              priority={true}
-              quality={75}
-              sizes='(max-width: 640px) 100px, (max-width: 1024px) 180px, 280px'
-              className='h-auto w-[100px] drop-shadow-lg sm:w-[180px] lg:w-[280px]'
-            />
-          </div>
-
-          {/* Tagline - top right */}
-          <div
-            className={clsx(
-              'transition-all duration-1000 ease-out',
-              isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
-            )}
-          >
-            <Image
-              src={ASSETS.TAGLINE}
-              alt={t('tagline_alt') || 'feel the ACTION, enjoy the SUMMER'}
-              width={400}
-              height={100}
-              priority={true}
-              quality={75}
-              sizes='(max-width: 640px) 120px, (max-width: 1024px) 220px, 320px'
-              className='h-auto w-[120px] drop-shadow-lg sm:w-[220px] lg:w-[320px]'
-            />
-          </div>
+      {/* Content overlay */}
+      <div className='relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center'>
+        {/* Tagline */}
+        <div
+          className={clsx(
+            'mb-6 transition-all delay-100 duration-700 ease-out',
+            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          )}
+        >
+          <Image
+            src={ASSETS.TAGLINE}
+            alt={t('taglineAlt') || 'Feel the action, enjoy the summer'}
+            width={400}
+            height={86}
+            priority
+            quality={75}
+            sizes='(max-width: 640px) 280px, 400px'
+            className='h-auto w-[280px] drop-shadow-2xl sm:w-[400px]'
+          />
         </div>
-      </div>
 
-      {/* Main centered content */}
-      <div className='relative z-10 mx-auto flex min-h-screen w-full max-w-screen-2xl flex-col items-center justify-center px-6 sm:px-10 md:px-8'>
-        {/* Main event logo */}
-        <div className='relative'>
+        {/* Main heading (visually hidden but accessible) */}
+        <h1 id='hero-heading' className='sr-only'>
+          {t('heading') || 'Cascais Volley Cup 2026'}
+        </h1>
+
+        {/* Logo */}
+        <div className='flex flex-col items-center gap-4'>
           <div
             className={clsx(
-              'transition-all delay-300 duration-1000 ease-out',
+              'transition-all delay-300 duration-700 ease-out',
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             )}
           >
@@ -197,8 +167,8 @@ export default function LandingWelcome() {
           </Link>
 
           <a
-            href={`/docs/${getBrochureFileName}`}
-            download={getBrochureFileName}
+            href={`/docs/${brochureFile}`}
+            download={brochureFile}
             className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-sky-500 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl sm:px-8 sm:py-4 sm:text-lg'
           >
             {t('brochure') || 'BROCHURES'}

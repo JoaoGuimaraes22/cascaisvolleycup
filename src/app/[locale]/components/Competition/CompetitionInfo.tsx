@@ -2,9 +2,10 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
 import { FiDownload } from 'react-icons/fi'
 import clsx from 'clsx'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { BLUR_DATA_URL } from '@/src/lib/constants'
 
 // Types
 interface RuleItemProps {
@@ -28,8 +29,7 @@ const ASSETS = {
 
 export default function CompetitionInfo() {
   const t = useTranslations('CompetitionPage.Info')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Sponsor data for the 2x2 grid
   const sponsors = [
@@ -58,24 +58,6 @@ export default function CompetitionInfo() {
       height: 64
     }
   ] as const
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   // Prepare rule items
   const ruleItems = [
@@ -168,9 +150,8 @@ function BackgroundImage() {
         className='object-cover'
         quality={75}
         placeholder='blur'
-        blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+        blurDataURL={BLUR_DATA_URL}
         loading='eager'
-        draggable={false}
         aria-hidden='true'
       />
     </div>

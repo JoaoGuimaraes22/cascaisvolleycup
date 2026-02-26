@@ -1,3 +1,4 @@
+// src/app/[locale]/components/Landing/RegistrationToast.tsx
 // RegistrationToast component with registration form functionality
 'use client'
 
@@ -5,20 +6,12 @@ import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import clsx from 'clsx'
-
-interface FormData {
-  name: string
-  email: string
-  mobile: string
-  club: string
-  city: string
-  country: string
-  questions: string
-}
-
-interface FormErrors {
-  [key: string]: string
-}
+import {
+  validateRegistrationForm,
+  REGISTRATION_INITIAL_DATA,
+  type RegistrationFormData,
+  type FormErrors
+} from '@/src/lib/validation'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
@@ -30,69 +23,19 @@ interface RegistrationToastProps {
 function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
   const t = useTranslations('RegistrationPage.Form')
 
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    mobile: '',
-    club: '',
-    city: '',
-    country: '',
-    questions: ''
-  })
+  const [formData, setFormData] = useState<RegistrationFormData>(
+    REGISTRATION_INITIAL_DATA
+  )
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
 
-  // Form validation
+  // Form validation (using shared validation)
   const validateForm = useCallback(
-    (data: FormData): FormErrors => {
-      const newErrors: FormErrors = {}
-
-      if (!data.name.trim()) {
-        newErrors.name =
-          t('ValidationErrors.nameRequired') || 'Name is required'
-      } else if (data.name.trim().length < 2) {
-        newErrors.name =
-          t('ValidationErrors.nameMinLength') ||
-          'Name must be at least 2 characters'
-      }
-
-      if (!data.email.trim()) {
-        newErrors.email =
-          t('ValidationErrors.emailRequired') || 'Email is required'
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        newErrors.email =
-          t('ValidationErrors.emailInvalid') || 'Please enter a valid email'
-      }
-
-      if (!data.club.trim()) {
-        newErrors.club =
-          t('ValidationErrors.clubRequired') || 'Club is required'
-      }
-
-      if (!data.city.trim()) {
-        newErrors.city =
-          t('ValidationErrors.cityRequired') || 'City is required'
-      }
-
-      if (!data.country.trim()) {
-        newErrors.country =
-          t('ValidationErrors.countryRequired') || 'Country is required'
-      }
-
-      if (
-        data.mobile &&
-        !/^[\+]?[1-9]\d{1,14}$/.test(data.mobile.replace(/\s/g, ''))
-      ) {
-        newErrors.mobile =
-          t('ValidationErrors.mobileInvalid') ||
-          'Please enter a valid phone number'
-      }
-
-      return newErrors
-    },
+    (data: RegistrationFormData): FormErrors =>
+      validateRegistrationForm(data, key => t(`ValidationErrors.${key}`)),
     [t]
   )
 
@@ -125,13 +68,12 @@ function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
     setMessageType(null)
 
     try {
-      // Fixed API endpoint - changed from '/api/registration' to '/api/register'
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData) // Removed the type field since it's not needed
+        body: JSON.stringify(formData)
       })
 
       const data = await response.json()
@@ -143,15 +85,7 @@ function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
             'Registration submitted successfully! We will contact you soon.'
         )
         setMessageType('success')
-        setFormData({
-          name: '',
-          email: '',
-          mobile: '',
-          club: '',
-          city: '',
-          country: '',
-          questions: ''
-        })
+        setFormData({ ...REGISTRATION_INITIAL_DATA })
       } else {
         setMessage(
           data.message ||
@@ -171,15 +105,7 @@ function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
 
   const handleClose = () => {
     // Reset form when closing
-    setFormData({
-      name: '',
-      email: '',
-      mobile: '',
-      club: '',
-      city: '',
-      country: '',
-      questions: ''
-    })
+    setFormData({ ...REGISTRATION_INITIAL_DATA })
     setErrors({})
     setMessage('')
     setMessageType(null)

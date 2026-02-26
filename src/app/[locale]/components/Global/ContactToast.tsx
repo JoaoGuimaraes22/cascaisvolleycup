@@ -1,3 +1,4 @@
+// src/app/[locale]/components/Global/ContactToast.tsx
 // Updated ContactToast component with form functionality
 'use client'
 
@@ -6,21 +7,12 @@ import { useTranslations } from 'next-intl'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import Image from 'next/image'
 import clsx from 'clsx'
-
-interface FormData {
-  teamName: string
-  country: string
-  teamManagerName: string
-  phone: string
-  email: string
-  ageGroup: string
-  numberOfPeople: string
-  message: string
-}
-
-interface FormErrors {
-  [key: string]: string
-}
+import {
+  validateAccommodationForm,
+  ACCOMMODATION_INITIAL_DATA,
+  type AccommodationFormData,
+  type FormErrors
+} from '@/src/lib/validation'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
@@ -32,80 +24,19 @@ interface ContactToastProps {
 function ContactToast({ isOpen, onClose }: ContactToastProps) {
   const t = useTranslations('ContactModal')
 
-  const [formData, setFormData] = useState<FormData>({
-    teamName: '',
-    country: '',
-    teamManagerName: '',
-    phone: '',
-    email: '',
-    ageGroup: '',
-    numberOfPeople: '',
-    message: ''
-  })
+  const [formData, setFormData] = useState<AccommodationFormData>(
+    ACCOMMODATION_INITIAL_DATA
+  )
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
 
-  // Form validation
+  // Form validation (using shared validation)
   const validateForm = useCallback(
-    (data: FormData): FormErrors => {
-      const newErrors: FormErrors = {}
-
-      if (!data.teamName.trim()) {
-        newErrors.teamName =
-          t('validation.teamNameRequired') || 'Team name is required'
-      }
-
-      if (!data.country.trim()) {
-        newErrors.country =
-          t('validation.countryRequired') || 'Country is required'
-      }
-
-      if (!data.teamManagerName.trim()) {
-        newErrors.teamManagerName =
-          t('validation.managerNameRequired') || 'Team manager name is required'
-      } else if (data.teamManagerName.trim().length < 2) {
-        newErrors.teamManagerName =
-          t('validation.managerNameMinLength') ||
-          'Name must be at least 2 characters'
-      }
-
-      if (!data.email.trim()) {
-        newErrors.email = t('validation.emailRequired') || 'Email is required'
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        newErrors.email =
-          t('validation.emailInvalid') || 'Please enter a valid email'
-      }
-
-      if (!data.ageGroup.trim()) {
-        newErrors.ageGroup =
-          t('validation.ageGroupRequired') || 'Age group is required'
-      }
-
-      if (!data.numberOfPeople.trim()) {
-        newErrors.numberOfPeople =
-          t('validation.numberOfPeopleRequired') ||
-          'Number of people is required'
-      } else if (
-        isNaN(Number(data.numberOfPeople)) ||
-        Number(data.numberOfPeople) < 1
-      ) {
-        newErrors.numberOfPeople =
-          t('validation.numberOfPeopleInvalid') || 'Please enter a valid number'
-      }
-
-      if (
-        data.phone &&
-        !/^[\+]?[1-9][\d\s\-\(\)]{7,15}$/.test(data.phone.replace(/\s/g, ''))
-      ) {
-        newErrors.phone =
-          t('validation.phoneInvalid') || 'Please enter a valid phone number'
-      }
-
-      return newErrors
-    },
+    (data: AccommodationFormData): FormErrors =>
+      validateAccommodationForm(data, key => t(`validation.${key}`)),
     [t]
   )
 
@@ -141,7 +72,6 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
     setMessageType(null)
 
     try {
-      // Here you would typically send the data to your API
       const response = await fetch('/api/osports-contact', {
         method: 'POST',
         headers: {
@@ -158,16 +88,7 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
             'Your accommodation request has been sent successfully!'
         )
         setMessageType('success')
-        setFormData({
-          teamName: '',
-          country: '',
-          teamManagerName: '',
-          phone: '',
-          email: '',
-          ageGroup: '',
-          numberOfPeople: '',
-          message: ''
-        })
+        setFormData({ ...ACCOMMODATION_INITIAL_DATA })
         // Close modal after 3 seconds on success
         setTimeout(() => {
           onClose()
@@ -191,16 +112,7 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
 
   const handleClose = () => {
     // Reset form when closing
-    setFormData({
-      teamName: '',
-      country: '',
-      teamManagerName: '',
-      phone: '',
-      email: '',
-      ageGroup: '',
-      numberOfPeople: '',
-      message: ''
-    })
+    setFormData({ ...ACCOMMODATION_INITIAL_DATA })
     setErrors({})
     setMessage('')
     setMessageType(null)

@@ -1,3 +1,4 @@
+// src/app/[locale]/components/Registration/RegistrationForm.tsx
 'use client'
 
 import Image from 'next/image'
@@ -5,20 +6,12 @@ import { useTranslations } from 'next-intl'
 import { useState, useCallback } from 'react'
 import { FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import clsx from 'clsx'
-
-interface FormData {
-  name: string
-  email: string
-  mobile: string
-  club: string
-  city: string
-  country: string
-  questions: string
-}
-
-interface FormErrors {
-  [key: string]: string
-}
+import {
+  validateRegistrationForm,
+  REGISTRATION_INITIAL_DATA,
+  type RegistrationFormData,
+  type FormErrors
+} from '@/src/lib/validation'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
@@ -30,69 +23,19 @@ export default function RegistrationForm() {
   const PLAYER_LEFT = '/img/registration/player-left.webp'
   const PLAYER_RIGHT = '/img/registration/player.webp'
 
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    mobile: '',
-    club: '',
-    city: '',
-    country: '',
-    questions: ''
-  })
+  const [formData, setFormData] = useState<RegistrationFormData>(
+    REGISTRATION_INITIAL_DATA
+  )
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
 
-  // Form validation
+  // Form validation (using shared validation)
   const validateForm = useCallback(
-    (data: FormData): FormErrors => {
-      const newErrors: FormErrors = {}
-
-      if (!data.name.trim()) {
-        newErrors.name =
-          t('ValidationErrors.nameRequired') || 'Name is required'
-      } else if (data.name.trim().length < 2) {
-        newErrors.name =
-          t('ValidationErrors.nameMinLength') ||
-          'Name must be at least 2 characters'
-      }
-
-      if (!data.email.trim()) {
-        newErrors.email =
-          t('ValidationErrors.emailRequired') || 'Email is required'
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        newErrors.email =
-          t('ValidationErrors.emailInvalid') || 'Please enter a valid email'
-      }
-
-      if (!data.club.trim()) {
-        newErrors.club =
-          t('ValidationErrors.clubRequired') || 'Club is required'
-      }
-
-      if (!data.city.trim()) {
-        newErrors.city =
-          t('ValidationErrors.cityRequired') || 'City is required'
-      }
-
-      if (!data.country.trim()) {
-        newErrors.country =
-          t('ValidationErrors.countryRequired') || 'Country is required'
-      }
-
-      if (
-        data.mobile &&
-        !/^[\+]?[\s\-\(\)]*([0-9][\s\-\(\)]*){6,}$/.test(data.mobile)
-      ) {
-        newErrors.mobile =
-          t('ValidationErrors.mobileInvalid') ||
-          'Please enter a valid phone number'
-      }
-
-      return newErrors
-    },
+    (data: RegistrationFormData): FormErrors =>
+      validateRegistrationForm(data, key => t(`ValidationErrors.${key}`)),
     [t]
   )
 
@@ -151,15 +94,7 @@ export default function RegistrationForm() {
             'Registration successful! We will contact you soon.'
         )
         setMessageType('success')
-        setFormData({
-          name: '',
-          email: '',
-          mobile: '',
-          club: '',
-          city: '',
-          country: '',
-          questions: ''
-        })
+        setFormData({ ...REGISTRATION_INITIAL_DATA })
       } else {
         setMessage(
           data.message ||

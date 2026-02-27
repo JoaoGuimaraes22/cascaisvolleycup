@@ -6,7 +6,6 @@ import { Link } from '@/src/navigation'
 import { FiMail, FiPhone, FiMapPin, FiGlobe } from 'react-icons/fi'
 import { FaInstagram, FaYoutube } from 'react-icons/fa'
 import { useTranslations, useLocale } from 'next-intl'
-import clsx from 'clsx'
 import { getBrochureFileName } from '@/src/lib/constants'
 
 interface Props {

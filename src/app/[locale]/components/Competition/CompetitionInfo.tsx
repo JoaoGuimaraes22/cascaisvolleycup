@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { FiDownload } from 'react-icons/fi'
 import clsx from 'clsx'
 import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
-import { BLUR_DATA_URL } from '@/src/lib/constants'
+import { BLUR_DATA_URL, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 // Types
 interface RuleItemProps {
@@ -18,7 +18,7 @@ interface RuleItemProps {
 const ASSETS = {
   background: '/img/about/about-bg.webp',
   waveTop: '/img/global/ondas-5.webp',
-  waveBottom: '/img/global/ondas-3.webp',
+  waveBottom: GLOBAL_ASSETS.wave,
   sponsors: {
     fpv: '/img/sponsors/fpv.webp',
     cascais: '/img/sponsors/cascais-camara.webp',

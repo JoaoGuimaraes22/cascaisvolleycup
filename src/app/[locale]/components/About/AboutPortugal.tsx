@@ -2,13 +2,13 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
-import { WAVE_HEIGHT } from '@/src/lib/constants'
+import { GLOBAL_ASSETS, WAVE_HEIGHT } from '@/src/lib/constants'
 
 export default function AboutPortugal() {
   const t = useTranslations('AboutPage.Portugal')
@@ -19,8 +19,8 @@ export default function AboutPortugal() {
   // ===== Constants =====
   const ASSETS = {
     background: '/img/about/portugal-bg.webp',
-    logo: '/img/global/cascais-volley-cup-2.webp',
-    wave: '/img/global/ondas-3.webp'
+    logo: GLOBAL_ASSETS.logo,
+    wave: GLOBAL_ASSETS.wave
   } as const
 
   const SPOTS = [

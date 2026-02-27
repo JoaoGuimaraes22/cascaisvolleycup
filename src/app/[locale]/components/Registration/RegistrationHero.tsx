@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { MouseEvent, useState } from 'react'
 import { FiMail } from 'react-icons/fi'
 import ContactToast from '../Global/ContactToast'
+import { getBrochureFileName, WAVE_HEIGHT } from '@/src/lib/constants'
 
 export default function RegistrationHero() {
   const t = useTranslations('RegistrationPage.RegistrationHero')
@@ -17,25 +18,6 @@ export default function RegistrationHero() {
     player: '/img/global/players-1.webp',
     wave: '/img/global/ondas-3.webp'
   } as const
-
-  // Language mapping for brochure files
-  const getLanguageCode = (locale: string) => {
-    const languageMap = {
-      en: 'UK',
-      es: 'ESP',
-      pt: 'PT',
-      fr: 'FRAN'
-    } as const
-
-    return languageMap[locale as keyof typeof languageMap] || 'UK'
-  }
-
-  const getBrochureFileName = () => {
-    const langCode = getLanguageCode(locale)
-    return `CVCUP-2026-CONVITE-${langCode}.pdf`
-  }
-
-  const WAVE_HEIGHT = 135
 
   const handleScrollToForm = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -212,8 +194,8 @@ export default function RegistrationHero() {
                 {/* Action Buttons */}
                 <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
                   <a
-                    href={`/docs/${getBrochureFileName()}`}
-                    download={getBrochureFileName()}
+                    href={`/docs/${getBrochureFileName(locale)}`}
+                    download={getBrochureFileName(locale)}
                     className='inline-flex items-center justify-center rounded-lg bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
                   >
                     {t('buttons.brochure')}

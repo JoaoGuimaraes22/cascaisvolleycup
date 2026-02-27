@@ -7,6 +7,7 @@ import { FiMail, FiPhone, FiMapPin, FiGlobe } from 'react-icons/fi'
 import { FaInstagram, FaYoutube } from 'react-icons/fa'
 import { useTranslations, useLocale } from 'next-intl'
 import clsx from 'clsx'
+import { getBrochureFileName } from '@/src/lib/constants'
 
 interface Props {
   locale: string
@@ -30,23 +31,6 @@ const Footer: FC<Props> = ({ locale }) => {
   const WEBSITE_URL = 'https://www.volley4all.com'
   const INSTAGRAM_URL = 'https://www.instagram.com/cascais_volley_cup'
   const YOUTUBE_URL = 'https://www.youtube.com/@cascais_volley4all/'
-
-  // Language mapping for brochure files
-  const getLanguageCode = (locale: string) => {
-    const languageMap = {
-      en: 'UK',
-      es: 'ESP',
-      pt: 'PT',
-      fr: 'FRAN'
-    } as const
-
-    return languageMap[locale as keyof typeof languageMap] || 'UK'
-  }
-
-  const getBrochureFileName = () => {
-    const langCode = getLanguageCode(currentLocale)
-    return `CVCUP-2026-CONVITE-${langCode}.pdf`
-  }
 
   // Memoized sponsors data with potential links
   const sponsors: Sponsor[] = useMemo(
@@ -132,46 +116,47 @@ const Footer: FC<Props> = ({ locale }) => {
           </div>
 
           {/* Quick Links */}
-          <nav className='lg:col-span-1' aria-labelledby='quick-links-heading'>
-            <h3
-              id='quick-links-heading'
-              className='mb-4 text-sm font-semibold uppercase tracking-wider text-slate-800'
-            >
+          <div>
+            <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-slate-800'>
               {t('quickLinks') || 'Quick Links'}
             </h3>
-            <ul className='space-y-2'>
-              {[
-                { href: '/about', label: t('about') || 'About' },
-                { href: '/program', label: t('program') || 'Program' },
-                {
-                  href: '/competition',
-                  label: t('competition') || 'Competition'
-                },
-                {
-                  href: '/accommodation',
-                  label: t('accommodation') || 'Accommodation'
-                },
-                { href: '/gallery', label: t('gallery') || 'Gallery' },
-                {
-                  href: '/hall-of-fame',
-                  label: t('hallOfFame') || 'Hall of Fame'
-                }
-              ].map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    lang={locale}
-                    href={href as any}
-                    className='rounded-sm text-sm text-sky-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 sm:text-slate-600 sm:hover:text-sky-700'
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+            <nav aria-label='Footer navigation'>
+              <ul className='space-y-2'>
+                {[
+                  {
+                    href: '/competition' as const,
+                    label: t('competition') || 'Competition'
+                  },
+                  {
+                    href: '/program' as const,
+                    label: t('program') || 'Program'
+                  },
+                  {
+                    href: '/accommodation' as const,
+                    label: t('accommodation') || 'Accommodation'
+                  },
+                  {
+                    href: '/hall-of-fame' as const,
+                    label: t('hallOfFame') || 'Hall of Fame'
+                  },
+                  { href: '/about' as const, label: t('about') || 'About' }
+                ].map(link => (
+                  <li key={link.href}>
+                    <Link
+                      lang={locale}
+                      href={link.href}
+                      className='text-sm text-slate-600 transition-colors hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
-          {/* Contact Info */}
-          <div className='lg:col-span-1'>
+          {/* Contact */}
+          <div>
             <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-slate-800'>
               {t('contact') || 'Contact'}
             </h3>
@@ -260,8 +245,8 @@ const Footer: FC<Props> = ({ locale }) => {
             </div>
             <div className='flex gap-4 text-xs'>
               <a
-                href={`/docs/${getBrochureFileName()}`}
-                download={getBrochureFileName()}
+                href={`/docs/${getBrochureFileName(currentLocale)}`}
+                download={getBrochureFileName(currentLocale)}
                 className='text-sky-700 transition-colors sm:text-slate-500 sm:hover:text-slate-700'
               >
                 {t('brochure') || 'Brochure'}

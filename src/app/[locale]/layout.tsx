@@ -36,7 +36,15 @@ const rubik = Rubik({
 export const metadata: Metadata = {
   title: 'Cascais VolleyCup 2026',
   description: 'Your next summer tournament!',
-  icons: { icon: '/img/icon/icon.svg' }
+  icons: {
+    icon: [
+      { url: '/img/icon/icon.svg', type: 'image/svg+xml' },
+      { url: '/img/icon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/img/icon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/img/icon/favicon.ico' }
+    ],
+    apple: '/img/icon/favicon-180x180.png'
+  }
 }
 
 // ✅ Only the namespaces used by layout-level client components

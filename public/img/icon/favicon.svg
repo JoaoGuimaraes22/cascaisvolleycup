@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <radialGradient id="ballGrad" cx="38%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#93d9f5"/>
+      <stop offset="100%" stop-color="#1a9fd4"/>
+    </radialGradient>
+    <clipPath id="circle">
+      <circle cx="16" cy="16" r="15"/>
+    </clipPath>
+  </defs>
+
+  <!-- Main ball -->
+  <circle cx="16" cy="16" r="15" fill="url(#ballGrad)"/>
+
+  <!-- Volleyball seam lines -->
+  <g clip-path="url(#circle)" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" opacity="0.85">
+    <!-- Vertical curved seam -->
+    <path d="M16 1 C10 6, 10 26, 16 31"/>
+    <path d="M16 1 C22 6, 22 26, 16 31"/>
+
+    <!-- Horizontal top arc seam -->
+    <path d="M1.5 13 C6 8, 14 7.5, 20 10 C25 12.5, 29 10, 30.5 13"/>
+    <!-- Horizontal bottom arc seam -->
+    <path d="M1.5 19 C6 24, 14 24.5, 20 22 C25 19.5, 29 22, 30.5 19"/>
+  </g>
+
+  <!-- Shine highlight -->
+  <ellipse cx="11" cy="10" rx="4" ry="2.5" fill="white" opacity="0.25" transform="rotate(-30 11 10)"/>
+
+  <!-- Border -->
+  <circle cx="16" cy="16" r="15" fill="none" stroke="#1080b0" stroke-width="0.8"/>
+</svg>

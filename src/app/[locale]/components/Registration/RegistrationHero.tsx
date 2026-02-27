@@ -86,8 +86,8 @@ export default function RegistrationHero() {
               fill
               sizes='(max-width: 640px) 300px, 400px'
               className='object-contain object-center opacity-15 grayscale-[60%]'
-              quality={75}
-              priority
+              quality={60}
+              loading='lazy'
             />
           </div>
         </div>

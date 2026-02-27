@@ -40,8 +40,7 @@ export default function AboutVilla() {
           alt=''
           role='presentation'
           fill
-          loading='eager'
-          quality={80}
+          quality={75}
           className={clsx(
             'object-cover transition-opacity duration-700',
             backgroundLoaded ? 'opacity-100' : 'opacity-0'

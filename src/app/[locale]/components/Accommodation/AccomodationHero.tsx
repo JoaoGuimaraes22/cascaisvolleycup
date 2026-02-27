@@ -56,13 +56,13 @@ export default function AccommodationHero() {
           alt=''
           role='presentation'
           fill
-          quality={80}
-          loading='eager'
+          quality={60}
+          loading='lazy'
           className={clsx(
             'object-contain object-top transition-opacity duration-1000',
             isVisible ? 'opacity-20' : 'opacity-10'
           )}
-          sizes='100vw'
+          sizes='(max-width: 1024px) 100vw, 0px'
         />
       </div>
 

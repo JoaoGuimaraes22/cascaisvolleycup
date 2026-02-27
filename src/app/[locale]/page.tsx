@@ -65,22 +65,12 @@ export default function DashboardPage() {
   )
 
   return (
-    <>
-      <head>
-        <link
-          rel='preload'
-          href='/img/landing/hero-bg-new.webp'
-          as='image'
-          fetchPriority='high'
-        />
-      </head>
-      <NextIntlClientProvider messages={pageMessages as AbstractIntlMessages}>
-        <div className='bg-white'>
-          <LandingWelcome />
-          <LandingUpdates />
-          <LandingLocation />
-        </div>
-      </NextIntlClientProvider>
-    </>
+    <NextIntlClientProvider messages={pageMessages as AbstractIntlMessages}>
+      <div className='bg-white'>
+        <LandingWelcome />
+        <LandingUpdates />
+        <LandingLocation />
+      </div>
+    </NextIntlClientProvider>
   )
 }

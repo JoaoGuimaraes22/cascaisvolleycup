@@ -1,3 +1,4 @@
+// src/app/[locale]/layout.tsx
 import type { Metadata } from 'next'
 import {
   AbstractIntlMessages,
@@ -11,23 +12,24 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Header } from './components/Global/Header'
 import Footer from './components/Global/Footer'
 import ScrollToTopButton from './components/Global/ScrollToTopButton'
+import { pickMessages } from '@/src/lib/pickMessages'
 import './globals.css'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
-  display: 'swap', // ✅ Prevent blocking
+  display: 'swap',
   preload: true,
-  adjustFontFallback: true, // ✅ Reduce layout shift
-  fallback: ['system-ui', 'arial'], // ✅ Fast fallback
-  weight: ['400', '700'] // ✅ Only weights you use
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'arial'],
+  weight: ['400', '700']
 })
 
 const rubik = Rubik({
   subsets: ['arabic'],
   variable: '--rubik',
   display: 'swap',
-  preload: false, // ✅ Don't preload secondary font
+  preload: false,
   adjustFontFallback: true
 })
 
@@ -37,6 +39,9 @@ export const metadata: Metadata = {
   icons: { icon: '/img/icon/icon.svg' }
 }
 
+// ✅ Only the namespaces used by layout-level client components
+const LAYOUT_NAMESPACES = ['Header', 'Footer']
+
 export default function RootLayout({
   children,
   params: { locale }
@@ -45,6 +50,10 @@ export default function RootLayout({
   params: { locale: string }
 }) {
   const messages = useMessages()
+  const layoutMessages = pickMessages(
+    messages as Record<string, unknown>,
+    LAYOUT_NAMESPACES
+  )
 
   return (
     <html
@@ -52,13 +61,9 @@ export default function RootLayout({
       className={`${space_grotesk.variable} ${rubik.variable} scroll-smooth`}
       suppressHydrationWarning
     >
-      {/* ✅ ADD PRECONNECT HINTS FOR PERFORMANCE */}
       <head>
-        {/* Preconnect to Cloudinary for faster image loading */}
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <link rel='dns-prefetch' href='https://res.cloudinary.com' />
-
-        {/* Preload critical hero background image */}
         <link
           rel='preload'
           href='/img/landing/hero-bg-new.webp'
@@ -70,7 +75,7 @@ export default function RootLayout({
       <body className='flex min-h-screen flex-col overflow-x-hidden pt-[var(--header-h)]'>
         <NextIntlClientProvider
           locale={locale}
-          messages={messages as AbstractIntlMessages}
+          messages={layoutMessages as AbstractIntlMessages}
         >
           <NextTopLoader
             initialPosition={0.08}
@@ -83,19 +88,11 @@ export default function RootLayout({
             color='var(--primary)'
             showSpinner={false}
           />
-
-          {/* Fixed header (measures itself and updates --header-h) */}
           <Header locale={locale} />
-
-          {/* Content sits below the header thanks to body padding */}
           <main className='w-full flex-1'>{children}</main>
-
           <Footer locale={locale} />
           <ScrollToTopButton />
         </NextIntlClientProvider>
-
-        {/* Add Vercel Analytics */}
-
         <Analytics />
         <SpeedInsights />
       </body>

@@ -1,13 +1,22 @@
-// About Page
-
-import { useTranslations } from 'next-intl'
+import { NextIntlClientProvider, useMessages } from 'next-intl'
+import type { AbstractIntlMessages } from 'next-intl'
+import { pickMessages } from '@/src/lib/pickMessages'
 import AccomodationHero from '../components/Accommodation/AccomodationHero'
 
+const PAGE_NAMESPACES = ['AccommodationPage', 'ContactModal']
+
 export default function Accommodation() {
-  const t = useTranslations('AccommodationPage')
+  const messages = useMessages()
+  const pageMessages = pickMessages(
+    messages as Record<string, unknown>,
+    PAGE_NAMESPACES
+  )
+
   return (
-    <main>
-      <AccomodationHero />
-    </main>
+    <NextIntlClientProvider messages={pageMessages as AbstractIntlMessages}>
+      <main>
+        <AccomodationHero />
+      </main>
+    </NextIntlClientProvider>
   )
 }

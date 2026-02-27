@@ -1,5 +1,7 @@
-// ===== src/app/[locale]/gallery/2024/page.tsx =====
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getMessages } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import type { AbstractIntlMessages } from 'next-intl'
+import { pickMessages } from '@/src/lib/pickMessages'
 import OptimizedGallery from '../../components/Gallery/Gallery'
 
 interface Gallery2024PageProps {
@@ -8,7 +10,6 @@ interface Gallery2024PageProps {
   }
 }
 
-// Generate metadata for 2024 gallery
 export async function generateMetadata({ params }: Gallery2024PageProps) {
   const t = await getTranslations('GalleryPage')
 
@@ -40,7 +41,6 @@ export async function generateMetadata({ params }: Gallery2024PageProps) {
   }
 }
 
-// JSON-LD structured data for 2024
 function generateStructuredData2024(locale: string) {
   return {
     '@context': 'https://schema.org',
@@ -72,30 +72,36 @@ function generateStructuredData2024(locale: string) {
   }
 }
 
+const PAGE_NAMESPACES = ['GalleryPage']
+
 export default async function Gallery2024Page({
   params
 }: Gallery2024PageProps) {
   const t = await getTranslations('GalleryPage')
+  const messages = await getMessages()
+  const pageMessages = pickMessages(
+    messages as Record<string, unknown>,
+    PAGE_NAMESPACES
+  )
   const structuredData = generateStructuredData2024(params.locale)
 
   return (
     <>
-      {/* JSON-LD Structured Data */}
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData)
         }}
       />
-
-      {/* Main gallery component */}
-      <main>
-        <OptimizedGallery
-          year={2024}
-          title={`${t('title')} 2024`}
-          description={`${t('yearDescription')} 2024 - ${t('yearSubtitle')} volleyball tournament in Cascais, Portugal.`}
-        />
-      </main>
+      <NextIntlClientProvider messages={pageMessages as AbstractIntlMessages}>
+        <main>
+          <OptimizedGallery
+            year={2024}
+            title={`${t('title')} 2024`}
+            description={`${t('yearDescription')} 2024 - ${t('yearSubtitle')} volleyball tournament in Cascais, Portugal.`}
+          />
+        </main>
+      </NextIntlClientProvider>
     </>
   )
 }

@@ -190,7 +190,7 @@ export default function AccommodationHero() {
       </div>
 
       {/* Simple Wave without Stats */}
-      <SimpleWave waveHeight={WAVE_HEIGHT} />
+      <SimpleWave waveSrc={ASSETS.wave} waveHeight={WAVE_HEIGHT} />
 
       {/* ContactToast Modal - Outside of content containers */}
       <ContactToast
@@ -244,12 +244,18 @@ function ContactOSportsButton({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
-function SimpleWave({ waveHeight }: { waveHeight: number }) {
+function SimpleWave({
+  waveSrc,
+  waveHeight
+}: {
+  waveSrc: string
+  waveHeight: number
+}) {
   return (
     <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
       <div className='relative'>
         <Image
-          src='/img/global/ondas-3.webp'
+          src={waveSrc}
           alt=''
           role='presentation'
           width={2048}

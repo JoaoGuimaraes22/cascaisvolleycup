@@ -401,7 +401,7 @@ export default function ProgramHero() {
         {/* Desktop */}
         <div className='relative hidden lg:block'>
           <Image
-            src='/img/global/ondas-3.webp'
+            src={ASSETS.wave}
             alt=''
             role='presentation'
             width={2048}
@@ -417,7 +417,7 @@ export default function ProgramHero() {
         <div
           className='relative block lg:hidden'
           style={{
-            backgroundImage: 'url(/img/global/ondas-3.webp)',
+            backgroundImage: `url(${ASSETS.wave})`,
             backgroundSize: '100% 100%',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

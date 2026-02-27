@@ -64,12 +64,6 @@ export default function RootLayout({
       <head>
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <link rel='dns-prefetch' href='https://res.cloudinary.com' />
-        <link
-          rel='preload'
-          href='/img/landing/hero-bg-new.webp'
-          as='image'
-          fetchPriority='high'
-        />
       </head>
 
       <body className='flex min-h-screen flex-col overflow-x-hidden pt-[var(--header-h)]'>

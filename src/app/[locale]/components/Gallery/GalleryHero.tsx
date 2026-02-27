@@ -3,7 +3,7 @@
 
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/src/navigation'
@@ -17,11 +17,12 @@ import {
   ProcessedImage
 } from '@/src/hooks/useOptimizedGallery'
 import OptimizedCloudinaryImage from './OptimizedCloudinaryImage'
+import { GLOBAL_ASSETS } from '@/src/lib/constants'
 
 // Assets constant for better maintainability
 const ASSETS = {
   background: '/img/gallery/hero-bg.webp',
-  tagline: '/img/global/tagline-w.webp'
+  tagline: GLOBAL_ASSETS.taglineWhite
 } as const
 
 const IMAGES_PER_YEAR = 6

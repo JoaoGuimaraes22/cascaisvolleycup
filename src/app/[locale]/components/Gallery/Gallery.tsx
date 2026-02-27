@@ -1,7 +1,7 @@
 // src/app/[locale]/components/Gallery/Gallery.tsx
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 import { FiGrid, FiList, FiRefreshCw, FiPlus } from 'react-icons/fi'

@@ -3,7 +3,6 @@
 
 'use client'
 
-import { useMemo } from 'react'
 import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 import Image from 'next/image'
 import LandingTestimonials from './LandingTestimonials'

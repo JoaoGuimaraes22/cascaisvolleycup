@@ -2,7 +2,7 @@
 // RegistrationToast component with registration form functionality
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import clsx from 'clsx'

@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import { FiUsers, FiArrowDown, FiFlag } from 'react-icons/fi'
+import { FiUsers, FiArrowDown } from 'react-icons/fi'
 import clsx from 'clsx'
 import { useStaggeredAnimation } from '@/src/hooks/useIntersectionObserver'
 import { WAVE_HEIGHT } from '@/src/lib/constants'

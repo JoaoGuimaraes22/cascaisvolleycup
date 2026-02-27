@@ -2,6 +2,8 @@ import { NextIntlClientProvider, useMessages } from 'next-intl'
 import type { AbstractIntlMessages } from 'next-intl'
 import { pickMessages } from '@/src/lib/pickMessages'
 
+export const revalidate = 3600
+
 // This page uses root-level translation key — adjust once proper namespace is added
 const PAGE_NAMESPACES = ['NewsPage']
 

@@ -5,6 +5,8 @@ import AboutHero from '../components/About/AboutHero'
 import AboutPortugal from '../components/About/AboutPortugal'
 import AboutVilla from '../components/About/AboutVilla'
 
+export const revalidate = 86400 // Revalidate every 24 hours
+
 const PAGE_NAMESPACES = ['AboutPage']
 
 export default function About() {

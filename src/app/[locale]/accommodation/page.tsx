@@ -3,6 +3,8 @@ import type { AbstractIntlMessages } from 'next-intl'
 import { pickMessages } from '@/src/lib/pickMessages'
 import AccomodationHero from '../components/Accommodation/AccomodationHero'
 
+export const revalidate = 86400
+
 const PAGE_NAMESPACES = ['AccommodationPage', 'ContactModal']
 
 export default function Accommodation() {

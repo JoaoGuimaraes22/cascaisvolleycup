@@ -5,6 +5,8 @@ import type { AbstractIntlMessages } from 'next-intl'
 import { pickMessages } from '@/src/lib/pickMessages'
 import LandingWelcome from './components/Landing/LandingWelcome'
 
+export const revalidate = 3600 // Revalidate every hour
+
 const LandingUpdates = dynamic(
   () => import('./components/Landing/LandingUpdates'),
   {

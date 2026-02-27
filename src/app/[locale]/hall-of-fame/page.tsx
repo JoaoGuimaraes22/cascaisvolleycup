@@ -5,6 +5,8 @@ import HallOfFameHero from '../components/HallOfFame/HallOfFameHero'
 import HallOfFameParticipants from '../components/HallOfFame/HallOfFameParticipants'
 import HallOfFameWinners from '../components/HallOfFame/HallOfFameWinners'
 
+export const revalidate = 86400
+
 const PAGE_NAMESPACES = ['HallOfFamePage']
 
 export default function HallOfFamePage() {

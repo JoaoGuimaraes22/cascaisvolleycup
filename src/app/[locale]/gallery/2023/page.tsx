@@ -4,6 +4,8 @@ import type { AbstractIntlMessages } from 'next-intl'
 import { pickMessages } from '@/src/lib/pickMessages'
 import OptimizedGallery from '../../components/Gallery/Gallery'
 
+export const revalidate = 86400 // Past year — rarely changes
+
 interface Gallery2023PageProps {
   params: {
     locale: string

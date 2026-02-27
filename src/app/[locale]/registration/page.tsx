@@ -4,6 +4,8 @@ import { pickMessages } from '@/src/lib/pickMessages'
 import RegistrationHero from '../components/Registration/RegistrationHero'
 import RegistrationForm from '../components/Registration/RegistrationForm'
 
+export const revalidate = 3600 // Hourly — in case registration details change
+
 // ContactModal needed because RegistrationHero renders ContactToast
 const PAGE_NAMESPACES = ['RegistrationPage', 'ContactModal']
 

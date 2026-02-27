@@ -5,6 +5,8 @@ import CompetitionHero from '../components/Competition/CompetitionHero'
 import CompetitionFacts from '../components/Competition/CompetitionFacts'
 import CompetitionInfo from '../components/Competition/CompetitionInfo'
 
+export const revalidate = 86400
+
 const PAGE_NAMESPACES = ['CompetitionPage']
 
 export default function Competition() {

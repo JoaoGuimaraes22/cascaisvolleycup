@@ -3,6 +3,8 @@ import type { AbstractIntlMessages } from 'next-intl'
 import { pickMessages } from '@/src/lib/pickMessages'
 import OptimizedGalleryHero from '../components/Gallery/GalleryHero'
 
+export const revalidate = 3600 // Hourly — gallery images may update
+
 const PAGE_NAMESPACES = ['GalleryPage']
 
 export default function GalleryPage() {

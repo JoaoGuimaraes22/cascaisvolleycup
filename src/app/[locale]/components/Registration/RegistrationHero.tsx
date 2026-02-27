@@ -5,7 +5,11 @@ import { useTranslations, useLocale } from 'next-intl'
 import { MouseEvent, useState } from 'react'
 import { FiMail } from 'react-icons/fi'
 import ContactToast from '../Global/ContactToast'
-import { getBrochureFileName, WAVE_HEIGHT } from '@/src/lib/constants'
+import {
+  getBrochureFileName,
+  GLOBAL_ASSETS,
+  WAVE_HEIGHT
+} from '@/src/lib/constants'
 
 export default function RegistrationHero() {
   const t = useTranslations('RegistrationPage.RegistrationHero')
@@ -16,7 +20,7 @@ export default function RegistrationHero() {
   const ASSETS = {
     background: '/img/registration/hero-bg.webp',
     player: '/img/global/players-1.webp',
-    wave: '/img/global/ondas-3.webp'
+    wave: GLOBAL_ASSETS.wave
   } as const
 
   const handleScrollToForm = (e: MouseEvent<HTMLButtonElement>) => {

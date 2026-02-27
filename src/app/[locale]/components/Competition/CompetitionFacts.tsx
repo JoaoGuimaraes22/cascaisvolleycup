@@ -10,7 +10,7 @@ import { WAVE_HEIGHT, GLOBAL_ASSETS } from '@/src/lib/constants'
 // Constants for better maintainability
 const ASSETS = {
   background: '/img/competition/rulles-bg.webp',
-  wave: '/img/global/ondas-3.webp'
+  wave: GLOBAL_ASSETS.wave
 } as const
 
 // Types for better type safety

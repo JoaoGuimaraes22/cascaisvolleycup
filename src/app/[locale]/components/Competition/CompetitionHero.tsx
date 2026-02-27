@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { MouseEvent } from 'react'
-import { BLUR_DATA_URL } from '@/src/lib/constants'
+import { BLUR_DATA_URL, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 // Constants for better maintainability
 const ASSETS = {
@@ -11,8 +11,8 @@ const ASSETS = {
   PHONE: '/img/global/hand-phone.webp',
   MOSAIC: '/img/competition/mosaic.webp',
   MOSAIC_MOBILE: '/img/competition/mosaic-2.webp',
-  LOGO: '/img/global/cascais-volley-cup-1-w.webp',
-  TAGLINE: '/img/global/tagline-w.webp'
+  LOGO: GLOBAL_ASSETS.logoWhite,
+  TAGLINE: GLOBAL_ASSETS.taglineWhite
 } as const
 
 const PHONE_DIMENSIONS = {

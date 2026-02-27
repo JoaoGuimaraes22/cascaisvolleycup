@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import clsx from 'clsx'
 import { Link } from '@/src/navigation'
-import { getBrochureFileName } from '@/src/lib/constants'
+import { getBrochureFileName, GLOBAL_ASSETS } from '@/src/lib/constants'
 
 export default function LandingWelcome() {
   const t = useTranslations('LandingPage.Welcome')
@@ -22,7 +22,7 @@ export default function LandingWelcome() {
   const ASSETS = useMemo(
     () => ({
       BG: '/img/landing/hero-bg-new.webp',
-      TAGLINE: '/img/global/tagline-w.webp',
+      TAGLINE: GLOBAL_ASSETS.taglineWhite,
       LOGO: '/img/landing/hero-logo.png',
       SPONSOR: '/img/sponsors/cascais-camara-w.webp',
       OSPORTS: '/img/sponsors/o-sports-w.webp'

@@ -65,8 +65,8 @@ export default function LandingLocation() {
   const ASSETS = {
     background: '/img/landing/home-page-2-2.webp',
     map: '/img/landing/mapa.webp',
-    tagline: '/img/global/tagline.webp',
-    wave: '/img/global/ondas-3.webp'
+    tagline: GLOBAL_ASSETS.tagline,
+    wave: GLOBAL_ASSETS.wave
   } as const
 
   const STATS_DATA = [

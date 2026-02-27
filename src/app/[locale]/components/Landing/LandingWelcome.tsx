@@ -23,7 +23,7 @@ export default function LandingWelcome() {
     () => ({
       BG: '/img/landing/hero-bg-new.webp',
       TAGLINE: GLOBAL_ASSETS.taglineWhite,
-      LOGO: '/img/landing/hero-logo.png',
+      LOGO: '/img/landing/hero-logo.webp',
       SPONSOR: '/img/sponsors/cascais-camara-w.webp',
       OSPORTS: '/img/sponsors/o-sports-w.webp'
     }),
@@ -100,7 +100,7 @@ export default function LandingWelcome() {
             priority
             sizes='100vw'
             className='object-cover'
-            quality={75}
+            quality={65}
           />
         </div>
       </div>

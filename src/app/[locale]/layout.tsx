@@ -1,5 +1,5 @@
 // src/app/[locale]/layout.tsx
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import {
   AbstractIntlMessages,
   NextIntlClientProvider,
@@ -33,9 +33,67 @@ const rubik = Rubik({
   adjustFontFallback: true
 })
 
+export const viewport: Viewport = {
+  themeColor: '#333366'
+}
+
 export const metadata: Metadata = {
-  title: 'Cascais VolleyCup 2026',
-  description: 'Your next summer tournament!',
+  title: {
+    default: 'Cascais VolleyCup 2026',
+    template: '%s | Cascais VolleyCup 2026'
+  },
+  description:
+    'Join the Cascais VolleyCup 2026 — an international beach volleyball tournament in Cascais, Portugal. July 2026. Register now!',
+  keywords: [
+    'volleyball',
+    'beach volleyball',
+    'Cascais',
+    'Portugal',
+    'tournament',
+    'VolleyCup',
+    '2026',
+    'voleibol'
+  ],
+  authors: [{ name: 'Volley4All', url: 'https://cascaisvolley.com' }],
+  metadataBase: new URL('https://cascaisvolley.com'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      en: '/en',
+      pt: '/pt',
+      es: '/es',
+      fr: '/fr'
+    }
+  },
+  openGraph: {
+    title: 'Cascais VolleyCup 2026',
+    description:
+      'International beach volleyball tournament in Cascais, Portugal. July 2026.',
+    url: 'https://cascaisvolley.com',
+    siteName: 'Cascais VolleyCup',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: '/img/og-image.jpg', // create a 1200x630px image
+        width: 1200,
+        height: 630,
+        alt: 'Cascais VolleyCup 2026'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cascais VolleyCup 2026',
+    description:
+      'International beach volleyball tournament in Cascais, Portugal. July 2026.',
+    images: ['/img/og-image.jpg']
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true }
+  },
   icons: {
     icon: [
       { url: '/img/icon/icon.svg', type: 'image/svg+xml' },

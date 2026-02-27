@@ -369,7 +369,6 @@ export default function ProgramHero() {
                 className='h-auto w-full object-contain transition-transform duration-300 hover:scale-105'
                 sizes='(max-width:1024px) 100vw, 42vw'
                 quality={80}
-                loading='eager'
               />
             </div>
           </div>

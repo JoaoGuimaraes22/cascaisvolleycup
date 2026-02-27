@@ -393,23 +393,23 @@
       "try_again": "Try again"
     },
     "Main": {
-      "loading": "Cargando galería...",
-      "failed_title": "Error al cargar galería",
-      "try_again": "Intentar Nuevamente",
-      "image": "imagen",
-      "images": "imágenes",
-      "more_available": "más disponibles",
-      "all_loaded": "Todas las imágenes cargadas",
-      "load_more": "Cargar Más Imágenes",
-      "loading_more": "Cargando más...",
-      "grid_size": "Tamaño de cuadrícula",
+      "loading": "Loading gallery...",
+      "failed_title": "Failed to load gallery",
+      "try_again": "Try Again",
+      "image": "image",
+      "images": "images",
+      "more_available": "more available",
+      "all_loaded": "All images loaded",
+      "load_more": "Load More Images",
+      "loading_more": "Loading more...",
+      "grid_size": "Grid size",
       "grid_sizes": {
-        "small": "Pequeño",
-        "medium": "Mediano",
-        "large": "Grande"
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
       },
-      "gallery_image": "Imagen de galería",
-      "close_lightbox": "Cerrar lightbox"
+      "gallery_image": "Gallery image",
+      "close_lightbox": "Close lightbox"
     }
   },
 

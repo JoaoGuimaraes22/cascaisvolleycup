@@ -234,7 +234,6 @@ export default function HallOfFameParticipants() {
           alt=''
           role='presentation'
           fill
-          priority
           sizes='100vw'
           className='object-cover'
           quality={75}
@@ -249,7 +248,6 @@ export default function HallOfFameParticipants() {
           alt=''
           role='presentation'
           fill
-          priority
           sizes='100vw'
           className='object-cover'
           quality={75}

@@ -103,7 +103,7 @@ export default function CompetitionHero() {
           fill
           className='object-contain object-center opacity-30 grayscale'
           sizes='100vw'
-          loading='eager'
+          loading='lazy'
         />
       </div>
 

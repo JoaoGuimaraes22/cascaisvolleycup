@@ -125,9 +125,9 @@ export default function RegistrationForm() {
         role='presentation'
         fill
         sizes='100vw'
-        priority
         className='absolute inset-0 -z-20 object-cover'
         quality={75}
+        loading='lazy'
       />
 
       {/* Decorative players (desktop only) */}

@@ -176,8 +176,8 @@ export default function AccommodationHero() {
               style={{ transitionDelay: '600ms' }}
             >
               <Image
-                quality={80}
-                loading='eager'
+                quality={70}
+                loading='lazy'
                 src={ASSETS.player}
                 alt={t('playerAlt')}
                 fill

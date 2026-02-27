@@ -41,18 +41,18 @@ html {
     font-size: 83%;
   }
 
-  @screen md {
+  /* @screen md {
     html {
       font-size: 80%;
     }
-  }
+  } */
 
   /* lg ≥ 1024px */
-  @screen lg {
+  /* @screen lg {
     html {
       font-size: 78%;
     }
-  }
+  } */
 
   div::selection,
   h1::selection,

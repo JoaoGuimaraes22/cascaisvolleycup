@@ -7,7 +7,6 @@ import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi'
-import 'keen-slider/keen-slider.min.css'
 import clsx from 'clsx'
 
 const TESTIMONIALS_ASSETS = {
@@ -258,7 +257,6 @@ export default function LandingTestimonials({
             priority={false} // Changed to false
             quality={70} // Reduced from 80
             sizes='100vw'
-            loading='lazy' // Explicit lazy loading
             placeholder='blur'
             blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA//2Q=='
           />

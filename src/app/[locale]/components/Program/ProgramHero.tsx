@@ -136,7 +136,7 @@ export default function ProgramHero() {
         />
       </div>
 
-      <div className='mx-auto max-w-screen-xl px-4 pb-16 pt-8 sm:pb-20 sm:pt-12 lg:pb-0'>
+      <div className='mx-auto max-w-screen-xl px-4 pb-48 pt-8 sm:pb-36 sm:pt-12 lg:pb-0'>
         {/* Title & Tagline Section */}
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-12'>
           {/* Left: Title */}

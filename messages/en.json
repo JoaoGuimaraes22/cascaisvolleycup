@@ -37,6 +37,41 @@
       "loadingTestimonials": "Loading testimonials...",
       "testimonialsError": "Unable to load testimonials at this time."
     },
+    "Testimonials": {
+      "heading": "WHAT THEY SAY",
+      "items": {
+        "t1": {
+          "team": "SC Arcozelo",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…once again Sporting Clube de Arcozelo participated in the tournament\""
+        },
+        "t2": {
+          "team": "Pel Amora SC",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…an unforgettable experience, both competitively and socially.\""
+        },
+        "t3": {
+          "team": "CRCD Luzense",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…a tournament guaranteed by the organization and a fantastic atmosphere.\""
+        },
+        "t4": {
+          "team": "São Francisco AD",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…the girls loved it and of course they want to come back next year.\""
+        },
+        "t5": {
+          "team": "CD Foz do Porto",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"...the tournament was very well organized, with space for us to grow as a team, not only competitively, but also with moments dedicated to leisure.\""
+        }
+      }
+    },
     "Location": {
       "title": "How to get to Cascais?",
       "p1": "There are several ways to travel from Lisbon Airport to Cascais: train, taxi, car rental, or booking a transfer service. Just choose the option that best suits your needs, knowing that it’s only 30 km away — about 20–30 minutes from Cascais.",

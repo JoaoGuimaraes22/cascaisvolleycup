@@ -1,5 +1,7 @@
-// Optimized LandingTestimonials - Lazy load wave image
+// Optimized LandingTestimonials - Translated testimonials
 // src/app/[locale]/components/Landing/LandingTestimonials.tsx
+
+'use client'
 
 import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
@@ -32,40 +34,7 @@ interface Testimonial {
   year?: string
 }
 
-const testimonials: Testimonial[] = [
-  {
-    team: 'SC Arcozelo',
-    country: 'Portugal',
-    year: '2025',
-    quote: '"…mais uma vez o Sporting Clube de Arcozelo participou no torneio"'
-  },
-  {
-    team: 'Pel Amora SC',
-    country: 'Portugal',
-    year: '2025',
-    quote:
-      '"…uma experiência inesquecível, tanto a nível competitivo como de convívio."'
-  },
-  {
-    team: 'CRCD Luzense',
-    country: 'Portugal',
-    year: '2025',
-    quote: '"…um torneio garantido pela organização e ambiente fantástico."'
-  },
-  {
-    team: 'São Francisco AD',
-    country: 'Portugal',
-    year: '2025',
-    quote: '"…as miúdas adoraram e claro que para o ano querem voltar."'
-  },
-  {
-    team: 'CD Foz do Porto',
-    country: 'Portugal',
-    year: '2025',
-    quote:
-      '"...o torneio foi muito bem organizado, com espaço para crescermos enquanto equipa, não só a nível competitivo, mas também com momentos dedicados ao lazer."'
-  }
-]
+const TESTIMONIAL_KEYS = ['t1', 't2', 't3', 't4', 't5'] as const
 
 // Star Rating Component
 const StarRating = React.memo(() => {
@@ -124,10 +93,22 @@ interface LandingTestimonialsProps {
 export default function LandingTestimonials({
   isVisible = true
 }: LandingTestimonialsProps) {
-  const t = useTranslations('LandingPage.Updates')
+  const t = useTranslations('LandingPage.Testimonials')
   const [currentSlide, setCurrentSlide] = useState(0)
   const autoplayRef = useRef<NodeJS.Timeout | null>(null)
   const [isMounted, setIsMounted] = useState(false)
+
+  // Build testimonials from translations
+  const testimonials: Testimonial[] = useMemo(
+    () =>
+      TESTIMONIAL_KEYS.map(key => ({
+        team: t(`items.${key}.team`),
+        country: t(`items.${key}.country`),
+        year: t(`items.${key}.year`),
+        quote: t(`items.${key}.quote`)
+      })),
+    [t]
+  )
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -153,11 +134,10 @@ export default function LandingTestimonials({
       setCurrentSlide(s.track.details.rel)
     },
     created(s) {
-      // Only start autoplay if component is mounted
       if (isMounted) {
         autoplayRef.current = setInterval(() => {
           s.next()
-        }, 5000) // Increased from 4s to 5s for better UX
+        }, 5000)
       }
     },
     destroyed() {
@@ -171,7 +151,6 @@ export default function LandingTestimonials({
   const goToSlide = useCallback(
     (index: number) => {
       instanceRef.current?.moveToIdx(index)
-      // Reset autoplay timer
       if (autoplayRef.current) {
         clearInterval(autoplayRef.current)
         autoplayRef.current = setInterval(() => {
@@ -184,7 +163,6 @@ export default function LandingTestimonials({
 
   const goToPrevious = useCallback(() => {
     instanceRef.current?.prev()
-    // Reset autoplay timer
     if (autoplayRef.current) {
       clearInterval(autoplayRef.current)
       autoplayRef.current = setInterval(() => {
@@ -195,7 +173,6 @@ export default function LandingTestimonials({
 
   const goToNext = useCallback(() => {
     instanceRef.current?.next()
-    // Reset autoplay timer
     if (autoplayRef.current) {
       clearInterval(autoplayRef.current)
       autoplayRef.current = setInterval(() => {
@@ -214,7 +191,10 @@ export default function LandingTestimonials({
   }, [])
 
   // First three testimonials for mobile static view
-  const mobileTestimonials = useMemo(() => testimonials.slice(0, 3), [])
+  const mobileTestimonials = useMemo(
+    () => testimonials.slice(0, 3),
+    [testimonials]
+  )
 
   // All testimonials for slider
   const testimonialSlides = useMemo(
@@ -227,7 +207,7 @@ export default function LandingTestimonials({
           <TestimonialCard testimonial={item} />
         </div>
       )),
-    []
+    [testimonials]
   )
 
   return (
@@ -239,7 +219,7 @@ export default function LandingTestimonials({
             id='testimonials-heading'
             className='mb-2 mt-8 text-xl font-extrabold uppercase tracking-wide text-sky-500 sm:mb-3 sm:mt-12 sm:text-2xl lg:text-3xl'
           >
-            {t('What_they_say') || 'WHAT THEY SAY'}
+            {t('heading')}
           </h3>
         </div>
       </div>
@@ -247,15 +227,15 @@ export default function LandingTestimonials({
       {/* Wave section */}
       <div className='relative w-full overflow-hidden'>
         <div className='relative min-h-[600px] sm:min-h-[280px] lg:min-h-[320px]'>
-          {/* Wave background - LAZY LOAD */}
+          {/* Wave background */}
           <Image
             src={TESTIMONIALS_ASSETS.waveTestimonials}
             alt=''
             role='presentation'
             fill
             className='object-cover'
-            priority={false} // Changed to false
-            quality={70} // Reduced from 80
+            priority={false}
+            quality={70}
             sizes='100vw'
             placeholder='blur'
             blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA//2Q=='

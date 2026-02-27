@@ -37,6 +37,41 @@
       "loadingTestimonials": "Carregando testemunhos...",
       "testimonialsError": "Não foi possível carregar os testemunhos neste momento."
     },
+    "Testimonials": {
+      "heading": "O QUE DIZEM",
+      "items": {
+        "t1": {
+          "team": "SC Arcozelo",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…mais uma vez o Sporting Clube de Arcozelo participou no torneio\""
+        },
+        "t2": {
+          "team": "Pel Amora SC",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…uma experiência inesquecível, tanto a nível competitivo como de convívio.\""
+        },
+        "t3": {
+          "team": "CRCD Luzense",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…um torneio garantido pela organização e ambiente fantástico.\""
+        },
+        "t4": {
+          "team": "São Francisco AD",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"…as miúdas adoraram e claro que para o ano querem voltar.\""
+        },
+        "t5": {
+          "team": "CD Foz do Porto",
+          "country": "Portugal",
+          "year": "2025",
+          "quote": "\"...o torneio foi muito bem organizado, com espaço para crescermos enquanto equipa, não só a nível competitivo, mas também com momentos dedicados ao lazer.\""
+        }
+      }
+    },
     "Location": {
       "title": "Como chegar a Cascais?",
       "p1": "Existem várias formas de viajar do Aeroporto de Lisboa para Cascais: comboio, táxi, aluguer de automóvel, ou reservar um serviço de transfer. Apenas escolha a opção que melhor se adequa às suas necessidades, sabendo que fica apenas a 30 km de distância — cerca de 20–30 minutos de Cascais.",

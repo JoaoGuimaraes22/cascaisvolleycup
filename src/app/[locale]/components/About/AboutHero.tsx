@@ -2,8 +2,9 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
-import { FiExternalLink, FiArrowRight } from 'react-icons/fi'
+import { useState } from 'react'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
+import { FiArrowRight } from 'react-icons/fi'
 import clsx from 'clsx'
 
 // Types
@@ -25,8 +26,7 @@ interface ClubInfo {
 
 export default function AboutHero() {
   const t = useTranslations('AboutPage.Hero')
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [imageLoaded, setImageLoaded] = useState(false)
 
   // Constants for better maintainability
@@ -76,24 +76,6 @@ export default function AboutHero() {
   }
 
   const PARAGRAPHS = ['p1', 'p2', 'p3'] as const
-
-  // Intersection observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   const handleCtaClick = () => {
     // Handle CTA click if needed
@@ -351,27 +333,16 @@ function CtaButton({
         'bg-gradient-to-r from-sky-600 to-sky-700',
         'hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300',
         'inline-flex items-center gap-2',
-        mobile ? 'px-6 py-3 text-sm' : 'px-6 py-3 text-sm lg:text-base'
+        mobile ? 'px-5 py-2.5 text-sm' : 'px-6 py-3 text-base'
       )}
     >
-      <span className='relative z-10 flex items-center justify-center gap-2'>
+      <span className='relative z-10 flex items-center gap-2'>
         {children}
-        {mobile ? (
-          <FiExternalLink className='h-4 w-4' />
-        ) : (
-          <FiArrowRight className='h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
-        )}
+        <FiArrowRight className='h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
       </span>
 
-      {/* Shimmer effect */}
-      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
+      {/* Hover shimmer effect */}
+      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full' />
     </a>
   )
-}
-
-// Extend global Window interface for gtag
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void
-  }
 }

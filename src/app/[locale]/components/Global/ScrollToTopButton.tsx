@@ -77,7 +77,7 @@ export default function ScrollToTopButton({
         'group fixed bottom-6 right-6 z-50',
         'flex h-12 w-12 items-center justify-center',
         'rounded-full bg-sky-700 text-white shadow-lg',
-        'transition-all duration-300 ease-out',
+        'motion-safe:transition-all duration-300 ease-out',
         'hover:scale-110 hover:bg-sky-800 hover:shadow-xl',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2',
         'active:scale-95',
@@ -91,7 +91,7 @@ export default function ScrollToTopButton({
     >
       <FaChevronUp
         className={clsx(
-          'h-5 w-5 transition-transform duration-200',
+          'h-5 w-5 motion-safe:transition-transform duration-200',
           'group-hover:-translate-y-0.5'
         )}
         aria-hidden='true'
@@ -99,7 +99,7 @@ export default function ScrollToTopButton({
 
       {/* Ripple effect background */}
       <span
-        className='absolute inset-0 scale-0 rounded-full bg-white/20 transition-transform duration-300 group-active:scale-100'
+        className='absolute inset-0 scale-0 rounded-full bg-white/20 motion-safe:transition-transform duration-300 group-active:scale-100'
         aria-hidden='true'
       />
     </button>

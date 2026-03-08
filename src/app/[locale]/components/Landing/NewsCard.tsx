@@ -43,7 +43,7 @@ export default function NewsCard({
       <div className='relative overflow-hidden rounded-lg bg-slate-100'>
         {/* Placeholder background while loading */}
         {!imageLoaded && (
-          <div className='h-40 w-full animate-pulse bg-gradient-to-br from-slate-100 to-slate-200 sm:h-44' />
+          <div className='h-40 w-full motion-safe:animate-pulse bg-gradient-to-br from-slate-100 to-slate-200 sm:h-44' />
         )}
 
         {/* Main image */}
@@ -53,7 +53,7 @@ export default function NewsCard({
             alt={title}
             width={400}
             height={240}
-            className={`h-40 w-full object-cover transition-all duration-500 group-hover:scale-[1.02] sm:h-44 ${
+            className={`h-40 w-full object-cover motion-safe:transition-all duration-500 group-hover:scale-[1.02] sm:h-44 ${
               imageLoaded ? 'opacity-100' : 'absolute inset-0 opacity-0'
             }`}
             loading={priority ? 'eager' : 'lazy'}

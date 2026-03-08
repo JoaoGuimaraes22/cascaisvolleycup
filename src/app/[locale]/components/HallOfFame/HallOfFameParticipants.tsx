@@ -73,7 +73,7 @@ function TeamItem({ team, index, isVisible }: TeamItemProps) {
   return (
     <li
       className={clsx(
-        'flex items-center gap-3 rounded-lg bg-white/60 px-3 py-2 shadow-sm ring-1 ring-black/5 backdrop-blur-sm transition-all duration-500 ease-out',
+        'flex items-center gap-3 rounded-lg bg-white/60 px-3 py-2 shadow-sm ring-1 ring-black/5 backdrop-blur-sm motion-safe:transition-all duration-500 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       )}
       style={{
@@ -113,7 +113,7 @@ function PlayersImage({ src, alt, isVisible }: PlayersImageProps) {
     <div className='relative hidden lg:col-span-6 lg:block'>
       <div
         className={clsx(
-          'relative z-10 mx-auto -mt-2 h-[340px] w-full overflow-visible transition-all duration-1000 ease-out sm:-mt-4 sm:h-[420px] lg:-mt-6 lg:h-[520px]',
+          'relative z-10 mx-auto -mt-2 h-[340px] w-full overflow-visible motion-safe:transition-all duration-1000 ease-out sm:-mt-4 sm:h-[420px] lg:-mt-6 lg:h-[520px]',
           '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
           '[mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
@@ -127,7 +127,7 @@ function PlayersImage({ src, alt, isVisible }: PlayersImageProps) {
           alt={alt}
           fill
           sizes='(max-width: 1024px) 90vw, 760px'
-          className='object-contain object-bottom transition-transform duration-300 hover:scale-105'
+          className='object-contain object-bottom motion-safe:transition-transform duration-300 hover:scale-105'
           priority
           quality={80}
         />
@@ -149,8 +149,8 @@ function CTAButton({ onClick, children, isVisible }: CTAButtonProps) {
       type='button'
       onClick={onClick}
       className={clsx(
-        'group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-sky-700 to-sky-800 px-6 py-3 text-sm font-bold text-white shadow-xl ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 sm:text-base',
-        'transition-all duration-700 ease-out',
+        'group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-sky-700 to-sky-800 px-6 py-3 text-sm font-bold text-white shadow-xl ring-1 ring-black/10 motion-safe:transition-all duration-300 hover:scale-105 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 sm:text-base',
+        'motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       )}
       style={{ transitionDelay: '900ms' }}
@@ -158,10 +158,10 @@ function CTAButton({ onClick, children, isVisible }: CTAButtonProps) {
       <span className='relative z-10 flex items-center gap-2'>
         <FiUsers className='h-4 w-4' />
         {children}
-        <FiArrowDown className='h-4 w-4 transition-transform duration-300 group-hover:translate-y-1' />
+        <FiArrowDown className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:translate-y-1' />
       </span>
       {/* Shimmer effect */}
-      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
+      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-700 group-hover:translate-x-full' />
     </button>
   )
 }
@@ -177,7 +177,7 @@ function WaveSection({ statsItems, isVisible }: WaveSectionProps) {
     <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
       <div
         className={clsx(
-          'relative transition-all duration-1000 ease-out',
+          'relative motion-safe:transition-all duration-1000 ease-out',
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
         )}
         style={{
@@ -286,7 +286,7 @@ export default function HallOfFameParticipants() {
               <h2
                 id='participants-title'
                 className={clsx(
-                  'mb-4 text-xl font-extrabold uppercase tracking-wide text-sky-500 transition-all duration-1000 ease-out sm:text-2xl',
+                  'mb-4 text-xl font-extrabold uppercase tracking-wide text-sky-500 motion-safe:transition-all duration-1000 ease-out sm:text-2xl',
                   isVisible
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-6 opacity-0'
@@ -300,7 +300,7 @@ export default function HallOfFameParticipants() {
             {/* Teams grid with mobile limitation */}
             <div
               className={clsx(
-                'transition-all duration-1000 ease-out',
+                'motion-safe:transition-all duration-1000 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-4 opacity-0'
@@ -337,8 +337,8 @@ export default function HallOfFameParticipants() {
                   type='button'
                   onClick={handleSeeMoreTeams}
                   className={clsx(
-                    'mt-4 inline-flex items-center gap-2 rounded-lg bg-white/70 px-4 py-2 text-sm font-semibold text-sky-700 shadow-sm ring-1 ring-black/5 backdrop-blur-sm transition-all duration-300 hover:bg-white/90 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:hidden',
-                    'transition-all duration-700 ease-out',
+                    'mt-4 inline-flex items-center gap-2 rounded-lg bg-white/70 px-4 py-2 text-sm font-semibold text-sky-700 shadow-sm ring-1 ring-black/5 backdrop-blur-sm motion-safe:transition-all duration-300 hover:bg-white/90 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:hidden',
+                    'motion-safe:transition-all duration-700 ease-out',
                     isVisible
                       ? 'translate-y-0 opacity-100'
                       : 'translate-y-6 opacity-0'

@@ -194,7 +194,7 @@ function FactCard({
   return (
     <article
       className={clsx(
-        'flex flex-col items-center gap-4 text-center transition-all duration-700 ease-out',
+        'flex flex-col items-center gap-4 text-center motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -239,7 +239,7 @@ function PinContainer({
   return (
     <div
       className={clsx(
-        'group relative transition-all duration-700 ease-out',
+        'group relative motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
       )}
       style={{
@@ -251,7 +251,7 @@ function PinContainer({
       {/* Pin Shape SVG */}
       <svg
         viewBox='0 0 120 160'
-        className='h-full w-full drop-shadow-2xl transition-transform duration-300 group-hover:scale-105'
+        className='h-full w-full drop-shadow-2xl motion-safe:transition-transform duration-300 group-hover:scale-105'
         aria-hidden='true'
       >
         <defs>
@@ -321,7 +321,7 @@ function PinContainer({
 
       {/* Content overlay */}
       <div className='absolute inset-0 flex items-center justify-center px-6 pb-16'>
-        <div className='transform text-center transition-transform duration-300 group-hover:scale-105'>
+        <div className='transform text-center motion-safe:transition-transform duration-300 group-hover:scale-105'>
           {children}
         </div>
       </div>
@@ -340,26 +340,26 @@ function WaveSection({
   return (
     <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
       {/* Wave Image */}
-      <Image
-        src={ASSETS.wave}
-        alt=''
-        width={2048}
-        height={WAVE_HEIGHT}
-        className='-mb-px block w-full object-cover'
-        style={{ height: `${WAVE_HEIGHT}px` }}
-        sizes='100vw'
-        quality={85}
-        loading='lazy'
-        draggable={false}
-        aria-hidden='true'
-      />
+      <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
+        <Image
+          src={ASSETS.wave}
+          alt=''
+          fill
+          className='-mb-px object-cover'
+          sizes='100vw'
+          unoptimized
+          loading='lazy'
+          draggable={false}
+          aria-hidden='true'
+        />
+      </div>
 
       {/* Statistics Overlay */}
       <div className='pointer-events-none absolute inset-0'>
         <div className='mx-auto flex h-full max-w-screen-xl items-center justify-center px-4 lg:justify-end lg:px-8'>
           <div
             className={clsx(
-              'transition-all duration-1000 ease-out',
+              'motion-safe:transition-all duration-1000 ease-out',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-4 opacity-0'
@@ -405,13 +405,13 @@ function StatsList({ items, compact = false }: StatsListProps) {
           <li
             key={index}
             className={clsx(
-              'flex items-center transition-all duration-300 hover:scale-105',
+              'flex items-center motion-safe:transition-all duration-300 hover:scale-105',
               compact ? 'gap-1' : 'gap-2 lg:gap-4'
             )}
           >
             <span className='relative'>
               {item}
-              <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100' />
+              <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 motion-safe:transition-opacity duration-500 hover:opacity-100' />
             </span>
             {index < items.length - 1 && (
               <span

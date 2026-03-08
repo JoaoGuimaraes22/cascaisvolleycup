@@ -121,7 +121,7 @@ export default function CompetitionHero() {
                 }
                 width={PHONE_DIMENSIONS.xl.width}
                 height={PHONE_DIMENSIONS.xl.height}
-                className='h-auto w-auto max-w-none object-contain object-left drop-shadow-2xl transition-transform duration-300 hover:scale-105'
+                className='h-auto w-auto max-w-none object-contain object-left drop-shadow-2xl motion-safe:transition-transform duration-300 hover:scale-105'
                 sizes='(max-width: 640px) 200px, (max-width: 768px) 230px, (max-width: 1024px) 260px, (max-width: 1280px) 280px, 300px'
                 loading='eager'
                 quality={90}
@@ -154,12 +154,12 @@ export default function CompetitionHero() {
               {/* Regulations Button */}
               <button
                 onClick={handleScrollToRegulations}
-                className='group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-6 py-3 font-bold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-sky-700 hover:to-sky-800 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+                className='group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-6 py-3 font-bold text-white shadow-lg motion-safe:transition-all duration-200 hover:scale-105 hover:from-sky-700 hover:to-sky-800 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
                 aria-describedby='cta-description'
               >
                 <span>{t('cta') || 'Regulamento'}</span>
                 <svg
-                  className='h-4 w-4 transition-transform group-hover:translate-y-1'
+                  className='h-4 w-4 motion-safe:transition-transform group-hover:translate-y-1'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -179,12 +179,12 @@ export default function CompetitionHero() {
                 href='https://volleyball-addict.com/tournament/1/3/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-3 font-bold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-sky-600 hover:to-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+                className='group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-3 font-bold text-white shadow-lg motion-safe:transition-all duration-200 hover:scale-105 hover:from-sky-600 hover:to-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
                 aria-label='Open Cascais Volley Cup 2025 tournament app in new tab'
               >
                 <span>APP 2025</span>
                 <svg
-                  className='h-4 w-4 transition-transform group-hover:-translate-y-0.5'
+                  className='h-4 w-4 motion-safe:transition-transform group-hover:-translate-y-0.5'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'
@@ -246,7 +246,7 @@ function MosaicStrip({
             src={desktopSrc}
             alt={alt}
             fill
-            className='object-cover transition-opacity duration-300'
+            className='object-cover motion-safe:transition-opacity duration-300'
             sizes='100vw'
             quality={80}
             loading='lazy'
@@ -262,7 +262,7 @@ function MosaicStrip({
             src={mobileSrc}
             alt={alt}
             fill
-            className='object-cover transition-opacity duration-300'
+            className='object-cover motion-safe:transition-opacity duration-300'
             sizes='100vw'
             quality={80}
             loading='lazy'
@@ -286,18 +286,19 @@ function LogoTaglineSection({
     <div className='relative hidden lg:block'>
       {/* Wave Background */}
       <div className='relative overflow-hidden'>
-        <Image
-          src='/img/global/ondas-9.webp'
-          alt=''
-          width={2048}
-          height={150}
-          className='block h-[180px] w-full object-cover sm:h-[150px] lg:h-auto lg:object-contain'
-          sizes='100vw'
-          quality={75}
-          loading='lazy'
-          draggable={false}
-          aria-hidden='true'
-        />
+        <div className='relative h-[180px] sm:h-[150px] lg:h-[150px]'>
+          <Image
+            src='/img/global/ondas-9.webp'
+            alt=''
+            fill
+            className='object-cover lg:object-contain'
+            sizes='100vw'
+            unoptimized
+            loading='lazy'
+            draggable={false}
+            aria-hidden='true'
+          />
+        </div>
 
         {/* Overlay Content */}
         <div className='absolute inset-0 flex items-center justify-center'>
@@ -310,7 +311,7 @@ function LogoTaglineSection({
                   alt={logoAlt}
                   width={LOGO_DIMENSIONS.width}
                   height={LOGO_DIMENSIONS.height}
-                  className='h-auto w-[180px] transition-transform duration-300 hover:scale-105 sm:w-[260px] lg:w-[320px] xl:w-[340px]'
+                  className='h-auto w-[180px] motion-safe:transition-transform duration-300 hover:scale-105 sm:w-[260px] lg:w-[320px] xl:w-[340px]'
                   sizes='(max-width: 640px) 180px, (max-width: 1024px) 260px, (max-width: 1280px) 320px, 340px'
                   quality={90}
                   loading='lazy'
@@ -325,7 +326,7 @@ function LogoTaglineSection({
                   alt={taglineAlt}
                   width={TAGLINE_DIMENSIONS.width}
                   height={TAGLINE_DIMENSIONS.height}
-                  className='h-auto w-[240px] transition-transform duration-300 hover:scale-105 sm:w-[280px] md:w-[300px] lg:w-[330px] xl:w-[360px]'
+                  className='h-auto w-[240px] motion-safe:transition-transform duration-300 hover:scale-105 sm:w-[280px] md:w-[300px] lg:w-[330px] xl:w-[360px]'
                   sizes='(max-width: 1024px) 280px, (max-width: 1280px) 330px, 360px'
                   quality={90}
                   loading='lazy'

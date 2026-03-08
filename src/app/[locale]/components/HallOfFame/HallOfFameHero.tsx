@@ -38,7 +38,7 @@ function CTAButton({
   delay = 700
 }: CTAButtonProps) {
   const baseClasses =
-    'group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-bold shadow-xl ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 sm:text-base'
+    'group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-bold shadow-xl ring-1 ring-black/10 motion-safe:transition-all duration-300 hover:scale-105 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 sm:text-base'
 
   const variantClasses =
     variant === 'primary'
@@ -52,7 +52,7 @@ function CTAButton({
       className={clsx(
         baseClasses,
         variantClasses,
-        'transition-all duration-700 ease-out',
+        'motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -60,10 +60,10 @@ function CTAButton({
       <span className='relative z-10 flex items-center gap-2'>
         <Icon className='h-4 w-4' />
         {children}
-        <FiArrowDown className='h-4 w-4 transition-transform duration-300 group-hover:translate-y-1' />
+        <FiArrowDown className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:translate-y-1' />
       </span>
       {/* Shimmer effect */}
-      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
+      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-700 group-hover:translate-x-full' />
     </a>
   )
 }
@@ -80,7 +80,7 @@ function HeroImage({ src, alt, isVisible }: HeroImageProps) {
     <div className='relative lg:col-span-5'>
       <div
         className={clsx(
-          'relative z-10 mx-auto -mt-2 h-[320px] w-full overflow-visible transition-all duration-1000 ease-out sm:-mt-4 sm:h-[380px] lg:-mt-6 lg:h-[460px] xl:h-[520px]',
+          'relative z-10 mx-auto -mt-2 h-[320px] w-full overflow-visible motion-safe:transition-all duration-1000 ease-out sm:-mt-4 sm:h-[380px] lg:-mt-6 lg:h-[460px] xl:h-[520px]',
           '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
           '[mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
           'delay-500',
@@ -92,7 +92,7 @@ function HeroImage({ src, alt, isVisible }: HeroImageProps) {
           alt={alt}
           fill
           sizes='(max-width: 1024px) 90vw, 700px'
-          className='object-contain object-bottom transition-transform duration-300 hover:scale-105'
+          className='object-contain object-bottom motion-safe:transition-transform duration-300 hover:scale-105'
           priority
           quality={75}
         />
@@ -115,22 +115,23 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
       <div className='relative hidden lg:block'>
         <div
           className={clsx(
-            'transition-all duration-1000 ease-out',
+            'motion-safe:transition-all duration-1000 ease-out',
             'delay-900',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           )}
         >
-          <Image
-            src={ASSETS.wave}
-            alt=''
-            role='presentation'
-            width={2048}
-            height={WAVE_HEIGHT}
-            className='z-10 -mb-px block h-auto w-full'
-            sizes='100vw'
-            quality={75}
-            loading='lazy'
-          />
+          <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
+            <Image
+              src={ASSETS.wave}
+              alt=''
+              role='presentation'
+              fill
+              className='z-10 -mb-px object-cover'
+              sizes='100vw'
+              unoptimized
+              loading='lazy'
+            />
+          </div>
         </div>
 
         <div className='pointer-events-none absolute inset-0 z-30'>
@@ -138,7 +139,7 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
             {/* Logo left with staggered animation */}
             <div
               className={clsx(
-                'transition-all duration-700 ease-out',
+                'motion-safe:transition-all duration-700 ease-out',
                 'delay-1000',
                 isVisible
                   ? 'translate-x-0 opacity-100'
@@ -159,7 +160,7 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
             {/* MVP logo right with staggered animation */}
             <div
               className={clsx(
-                'transition-all duration-700 ease-out',
+                'motion-safe:transition-all duration-700 ease-out',
                 'delay-1100',
                 isVisible
                   ? 'translate-x-0 opacity-100'
@@ -183,7 +184,7 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
       {/* Mobile: wave as background with the two images inside */}
       <div
         className={clsx(
-          'relative block transition-all duration-1000 ease-out lg:hidden',
+          'relative block motion-safe:transition-all duration-1000 ease-out lg:hidden',
           'delay-900',
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
         )}
@@ -198,7 +199,7 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
         <div className='pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-4'>
           <div
             className={clsx(
-              'transition-all duration-500 ease-out',
+              'motion-safe:transition-all duration-500 ease-out',
               'delay-1000',
               isVisible
                 ? 'translate-x-0 opacity-100'
@@ -218,7 +219,7 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
 
           <div
             className={clsx(
-              'transition-all duration-500 ease-out',
+              'motion-safe:transition-all duration-500 ease-out',
               'delay-1100',
               isVisible
                 ? 'translate-x-0 opacity-100'
@@ -300,7 +301,7 @@ export default function HallOfFameHero() {
               <h1
                 id='hall-of-fame-title'
                 className={clsx(
-                  'mb-4 text-2xl font-extrabold uppercase tracking-wide text-sky-500 transition-all duration-1000 ease-out sm:text-3xl',
+                  'mb-4 text-2xl font-extrabold uppercase tracking-wide text-sky-500 motion-safe:transition-all duration-1000 ease-out sm:text-3xl',
                   isVisible
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-8 opacity-0'
@@ -312,7 +313,7 @@ export default function HallOfFameHero() {
 
             <div
               className={clsx(
-                'transition-all delay-300 duration-1000 ease-out',
+                'motion-safe:transition-all delay-300 duration-1000 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-6 opacity-0'

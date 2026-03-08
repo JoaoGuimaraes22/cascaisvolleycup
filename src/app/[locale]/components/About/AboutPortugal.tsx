@@ -99,7 +99,7 @@ export default function AboutPortugal() {
           role='presentation'
           fill
           className={clsx(
-            'object-cover transition-opacity duration-700',
+            'object-cover motion-safe:transition-opacity duration-700',
             imageLoaded ? 'opacity-100' : 'opacity-0'
           )}
           sizes='100vw'
@@ -116,7 +116,7 @@ export default function AboutPortugal() {
           {/* LEFT - Content */}
           <div
             className={clsx(
-              'space-y-6 transition-all duration-1000 ease-out',
+              'space-y-6 motion-safe:transition-all duration-1000 ease-out',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -134,7 +134,7 @@ export default function AboutPortugal() {
                 <p
                   key={key}
                   className={clsx(
-                    'leading-relaxed transition-all duration-700 ease-out',
+                    'leading-relaxed motion-safe:transition-all duration-700 ease-out',
                     isVisible
                       ? 'translate-y-0 opacity-100'
                       : 'translate-y-8 opacity-0'
@@ -152,7 +152,7 @@ export default function AboutPortugal() {
           {/* RIGHT - Logo only (desktop only) */}
           <div
             className={clsx(
-              'relative hidden items-start justify-end transition-all duration-1000 ease-out md:flex',
+              'relative hidden items-start justify-end motion-safe:transition-all duration-1000 ease-out md:flex',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -167,7 +167,7 @@ export default function AboutPortugal() {
                 height={180}
                 quality={80}
                 loading='lazy'
-                className='h-auto w-[220px] object-contain transition-transform duration-300 hover:scale-105 lg:w-[260px]'
+                className='h-auto w-[220px] object-contain motion-safe:transition-transform duration-300 hover:scale-105 lg:w-[260px]'
                 sizes='(max-width: 1024px) 220px, 260px'
               />
             </div>
@@ -177,7 +177,7 @@ export default function AboutPortugal() {
         {/* Cards - Desktop Grid */}
         <div
           className={clsx(
-            'mt-10 hidden grid-cols-4 gap-6 transition-all duration-1000 ease-out lg:grid',
+            'mt-10 hidden grid-cols-4 gap-6 motion-safe:transition-all duration-1000 ease-out lg:grid',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
           style={{ transitionDelay: '800ms' }}
@@ -196,7 +196,7 @@ export default function AboutPortugal() {
         {/* Cards - Mobile/Tablet Slider */}
         <div
           className={clsx(
-            'mt-10 transition-all duration-1000 ease-out lg:hidden',
+            'mt-10 motion-safe:transition-all duration-1000 ease-out lg:hidden',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
           style={{ transitionDelay: '800ms' }}
@@ -226,7 +226,7 @@ export default function AboutPortugal() {
               <button
                 onClick={goToPrevious}
                 aria-label='Previous card'
-                className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+                className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
               >
                 <FiChevronLeft className='h-4 w-4 text-sky-500' />
               </button>
@@ -239,7 +239,7 @@ export default function AboutPortugal() {
                     onClick={() => goToSlide(index)}
                     aria-label={`Go to card ${index + 1}`}
                     className={clsx(
-                      'h-2 w-2 rounded-full transition-all',
+                      'h-2 w-2 rounded-full motion-safe:transition-all',
                       currentSlide === index
                         ? 'scale-125 bg-sky-500'
                         : 'bg-sky-500/50 hover:bg-sky-500/80'
@@ -251,7 +251,7 @@ export default function AboutPortugal() {
               <button
                 onClick={goToNext}
                 aria-label='Next card'
-                className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+                className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
               >
                 <FiChevronRight className='h-4 w-4 text-sky-500' />
               </button>
@@ -262,17 +262,18 @@ export default function AboutPortugal() {
 
       {/* Bottom wave without stats */}
       <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
-        <Image
-          src={ASSETS.wave}
-          alt=''
-          role='presentation'
-          width={2048}
-          height={WAVE_HEIGHT}
-          className='-mb-px block w-full object-cover'
-          style={{ height: `${WAVE_HEIGHT}px` }}
-          sizes='100vw'
-          loading='lazy'
-        />
+        <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
+          <Image
+            src={ASSETS.wave}
+            alt=''
+            role='presentation'
+            fill
+            className='-mb-px object-cover'
+            sizes='100vw'
+            loading='lazy'
+            unoptimized
+          />
+        </div>
       </div>
     </section>
   )
@@ -296,7 +297,7 @@ function SpotCard({ spot, index, t, isVisible }: SpotCardProps) {
   return (
     <article
       className={clsx(
-        'group flex h-full flex-col transition-all duration-700 ease-out',
+        'group flex h-full flex-col motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
       )}
       style={{
@@ -321,7 +322,7 @@ function SpotCard({ spot, index, t, isVisible }: SpotCardProps) {
       <div className='relative h-40 w-full overflow-hidden rounded-lg sm:h-48'>
         {/* Loading placeholder */}
         {!imageLoaded && (
-          <div className='absolute inset-0 animate-pulse rounded-lg bg-slate-200' />
+          <div className='absolute inset-0 motion-safe:animate-pulse rounded-lg bg-slate-200' />
         )}
 
         <Image
@@ -329,7 +330,7 @@ function SpotCard({ spot, index, t, isVisible }: SpotCardProps) {
           alt={spot.alt}
           fill
           className={clsx(
-            'rounded-lg object-cover transition-all duration-300 group-hover:scale-105',
+            'rounded-lg object-cover motion-safe:transition-all duration-300 group-hover:scale-105',
             imageLoaded ? 'opacity-100' : 'opacity-0'
           )}
           sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'

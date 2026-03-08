@@ -36,7 +36,7 @@ function StatsList({ items, compact = false }: StatsListProps) {
         >
           <span className='relative'>
             {item}
-            <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100' />
+            <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 motion-safe:transition-opacity duration-500 hover:opacity-100' />
           </span>
           {index < items.length - 1 && (
             <span
@@ -113,9 +113,8 @@ export default function LandingLocation() {
               fill
               priority={false}
               className='object-cover object-center'
-              quality={65}
+              unoptimized
               sizes='100vw'
-              // ✅ REMOVED: loading='lazy'
             />
           </div>
         </>
@@ -148,7 +147,7 @@ export default function LandingLocation() {
           {isVisible && (
             <div className='w-full max-w-lg'>
               <div className='group rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
-                <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
+                <div className='overflow-hidden rounded-md bg-white motion-safe:transition-transform duration-300 group-hover:scale-[1.02]'>
                   <Image
                     src={ASSETS.map}
                     alt={
@@ -177,13 +176,13 @@ export default function LandingLocation() {
             <button
               type='button'
               onClick={handlePlanTripClick}
-              className='group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-6 py-3 text-sm font-bold text-white shadow-xl ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:text-base'
+              className='group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-6 py-3 text-sm font-bold text-white shadow-xl ring-1 ring-black/10 motion-safe:transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:text-base'
             >
               <span className='relative z-10 flex items-center gap-2'>
                 <FiMapPin className='h-4 w-4' />
                 {t('cta')}
               </span>
-              <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
+              <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-700 group-hover:translate-x-full' />
             </button>
           </div>
 
@@ -252,7 +251,7 @@ export default function LandingLocation() {
           {isVisible && (
             <div className='flex items-start justify-start'>
               <div className='group max-w-[540px] rounded-lg bg-gradient-to-br from-sky-600 to-sky-700 p-[3px] shadow-xl ring-1 ring-black/5'>
-                <div className='overflow-hidden rounded-md bg-white transition-transform duration-300 group-hover:scale-[1.02]'>
+                <div className='overflow-hidden rounded-md bg-white motion-safe:transition-transform duration-300 group-hover:scale-[1.02]'>
                   <Image
                     src={ASSETS.map}
                     alt={
@@ -275,13 +274,13 @@ export default function LandingLocation() {
             <button
               type='button'
               onClick={handlePlanTripClick}
-              className='group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-8 py-4 text-base font-bold text-white shadow-xl ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300'
+              className='group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 px-8 py-4 text-base font-bold text-white shadow-xl ring-1 ring-black/10 motion-safe:transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300'
             >
               <span className='relative z-10 flex items-center gap-2'>
                 <FiMapPin className='h-5 w-5' />
                 {t('cta')}
               </span>
-              <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
+              <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-700 group-hover:translate-x-full' />
             </button>
           </div>
         </div>

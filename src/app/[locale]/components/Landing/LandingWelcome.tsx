@@ -100,7 +100,7 @@ export default function LandingWelcome() {
             priority
             sizes='100vw'
             className='object-cover'
-            quality={65}
+            quality={85}
           />
         </div>
       </div>
@@ -110,7 +110,7 @@ export default function LandingWelcome() {
         {/* Tagline */}
         <div
           className={clsx(
-            'mb-6 transition-all delay-100 duration-700 ease-out',
+            'mb-6 delay-100 duration-700 ease-out motion-safe:transition-all',
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
@@ -120,7 +120,7 @@ export default function LandingWelcome() {
             width={400}
             height={86}
             priority
-            quality={75}
+            quality={95}
             sizes='(max-width: 640px) 280px, 400px'
             className='h-auto w-[280px] drop-shadow-2xl sm:w-[400px]'
           />
@@ -135,7 +135,7 @@ export default function LandingWelcome() {
         <div className='flex flex-col items-center gap-4'>
           <div
             className={clsx(
-              'transition-all delay-300 duration-700 ease-out',
+              'delay-300 duration-700 ease-out motion-safe:transition-all',
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             )}
           >
@@ -155,13 +155,13 @@ export default function LandingWelcome() {
         {/* Action buttons */}
         <div
           className={clsx(
-            'mt-16 flex flex-col gap-3 transition-all delay-500 duration-700 ease-out',
+            'mt-16 flex flex-col gap-3 delay-500 duration-700 ease-out motion-safe:transition-all',
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
           <Link
             href='/registration'
-            className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-sky-500 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl sm:px-8 sm:py-4 sm:text-lg'
+            className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-sky-500 drop-shadow-lg duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl motion-safe:transition-all sm:px-8 sm:py-4 sm:text-lg'
           >
             {t('register') || 'REGISTRATION'}
           </Link>
@@ -169,7 +169,7 @@ export default function LandingWelcome() {
           <a
             href={`/docs/${brochureFile}`}
             download={brochureFile}
-            className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-sky-500 drop-shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl sm:px-8 sm:py-4 sm:text-lg'
+            className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-sky-500 drop-shadow-lg duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl motion-safe:transition-all sm:px-8 sm:py-4 sm:text-lg'
           >
             {t('brochure') || 'BROCHURES'}
           </a>
@@ -179,7 +179,7 @@ export default function LandingWelcome() {
       {/* Scroll indicator */}
       <div
         className={clsx(
-          'absolute bottom-8 left-1/2 -translate-x-1/2 text-white transition-all delay-700 duration-1000 ease-out',
+          'absolute bottom-8 left-1/2 -translate-x-1/2 text-white delay-700 duration-1000 ease-out motion-safe:transition-all',
           isLoaded ? 'translate-y-0 opacity-70' : 'translate-y-4 opacity-0'
         )}
       >
@@ -187,14 +187,14 @@ export default function LandingWelcome() {
           <span className='text-xs font-medium uppercase tracking-wider'>
             {t('scrollDown') || 'SCROLL DOWN'}
           </span>
-          <div className='h-8 w-px animate-pulse bg-white/60' />
+          <div className='h-8 w-px bg-white/60 motion-safe:animate-pulse' />
         </div>
       </div>
 
       {/* O-Sports logo */}
       <div
         className={clsx(
-          'delay-900 absolute bottom-4 right-4 z-30 transition-all duration-700 ease-out',
+          'delay-900 absolute bottom-4 right-4 z-30 duration-700 ease-out motion-safe:transition-all',
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
         )}
       >

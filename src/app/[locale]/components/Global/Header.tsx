@@ -154,7 +154,7 @@ export const Header: FC<Props> = ({ locale }) => {
               loading='eager'
               quality={80}
               sizes='(max-width: 640px) 150px, (max-width: 1024px) 190px, 240px'
-              className='h-8 w-auto transition-transform hover:scale-105 sm:h-10 md:h-12 lg:h-14'
+              className='h-8 w-auto motion-safe:transition-transform hover:scale-105 sm:h-10 md:h-12 lg:h-14'
             />
           </Link>
 
@@ -168,7 +168,7 @@ export const Header: FC<Props> = ({ locale }) => {
               }
               aria-expanded={menuOpen}
               aria-controls='mobile-nav'
-              className='rounded-md p-2 transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300'
+              className='rounded-md p-2 motion-safe:transition-colors hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300'
             >
               <span className='sr-only'>
                 {menuOpen ? 'Close menu' : 'Open menu'}
@@ -197,7 +197,7 @@ export const Header: FC<Props> = ({ locale }) => {
           aria-label='Mobile navigation'
           aria-hidden={!menuOpen}
           className={clsx(
-            'w-full flex-col items-start gap-4 overflow-hidden transition-all ease-in-out motion-safe:duration-300 lg:hidden',
+            'w-full flex-col items-start gap-4 overflow-hidden motion-safe:transition-all ease-in-out motion-safe:duration-300 lg:hidden',
             menuOpen
               ? 'mt-3 flex max-h-[65vh] translate-y-0 opacity-100'
               : 'pointer-events-none max-h-0 -translate-y-2 opacity-0'
@@ -277,7 +277,7 @@ const NavLinks: FC<{
             lang={locale}
             href={href}
             className={clsx(
-              'group relative pb-0.5 font-medium transition-colors hover:text-sky-700',
+              'group relative pb-0.5 font-medium motion-safe:transition-colors hover:text-sky-700',
               'rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2',
               active ? 'text-sky-700' : 'text-slate-600',
               isMobile ? 'block w-full py-1 text-sm' : 'text-xs xl:text-sm'
@@ -306,7 +306,7 @@ const LangButton: FC<{ className?: string }> = ({ className }) => {
       className={clsx(
         'lang-sky inline-flex items-center rounded bg-sky-700/90 px-2 py-0.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm',
         'focus-within:outline-none focus-within:ring-2 focus-within:ring-sky-300 focus-within:ring-offset-2',
-        'transition-all hover:bg-sky-800 hover:shadow-md sm:rounded-md sm:px-2.5 sm:py-1 sm:text-sm',
+        'motion-safe:transition-all hover:bg-sky-800 hover:shadow-md sm:rounded-md sm:px-2.5 sm:py-1 sm:text-sm',
         className
       )}
     >

@@ -41,7 +41,7 @@ const LangSwitcher: React.FC = () => {
       <div className='relative'>
         <button
           className={clsx(
-            'inline-flex w-full items-center justify-between gap-2 text-sm font-medium transition-opacity',
+            'inline-flex w-full items-center justify-between gap-2 text-sm font-medium motion-safe:transition-opacity',
             isPending && 'opacity-60'
           )}
           onClick={() => setIsOptionsExpanded(!isOptionsExpanded)}
@@ -75,7 +75,7 @@ const LangSwitcher: React.FC = () => {
                     handleLocaleChange(lang.code)
                   }}
                   className={clsx(
-                    'block w-full px-4 py-2 text-left text-sm transition-colors',
+                    'block w-full px-4 py-2 text-left text-sm motion-safe:transition-colors',
                     currentLocale === lang.code
                       ? 'bg-sky-50 font-medium text-sky-700'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'

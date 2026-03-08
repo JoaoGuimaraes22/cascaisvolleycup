@@ -42,7 +42,7 @@ export default function AboutVilla() {
           fill
           quality={75}
           className={clsx(
-            'object-cover transition-opacity duration-700',
+            'object-cover motion-safe:transition-opacity duration-700',
             backgroundLoaded ? 'opacity-100' : 'opacity-0'
           )}
           sizes='100vw'
@@ -59,7 +59,7 @@ export default function AboutVilla() {
         <div className='hidden md:block'>
           <div
             className={clsx(
-              'mb-8 flex justify-end transition-all duration-1000 ease-out',
+              'mb-8 flex justify-end motion-safe:transition-all duration-1000 ease-out',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -72,7 +72,7 @@ export default function AboutVilla() {
               quality={75}
               loading='lazy'
               height={220}
-              className='h-auto w-[280px] object-contain drop-shadow transition-transform duration-300 hover:scale-105 lg:w-[320px]'
+              className='h-auto w-[280px] object-contain drop-shadow motion-safe:transition-transform duration-300 hover:scale-105 lg:w-[320px]'
               sizes='(max-width: 1024px) 280px, 320px'
               decoding='async'
               draggable={false}
@@ -104,7 +104,7 @@ export default function AboutVilla() {
                 height={80}
                 quality={80}
                 loading='lazy'
-                className='h-auto w-[120px] object-contain drop-shadow transition-transform duration-300 hover:scale-105'
+                className='h-auto w-[120px] object-contain drop-shadow motion-safe:transition-transform duration-300 hover:scale-105'
                 sizes='120px'
                 decoding='async'
                 draggable={false}
@@ -115,7 +115,7 @@ export default function AboutVilla() {
           {/* Content paragraphs */}
           <div
             className={clsx(
-              'mt-6 space-y-4 text-white drop-shadow transition-all duration-1000 ease-out',
+              'mt-6 space-y-4 text-white drop-shadow motion-safe:transition-all duration-1000 ease-out',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -126,7 +126,7 @@ export default function AboutVilla() {
               <p
                 key={key}
                 className={clsx(
-                  'text-sm leading-relaxed transition-all duration-700 ease-out sm:text-base',
+                  'text-sm leading-relaxed motion-safe:transition-all duration-700 ease-out sm:text-base',
                   index === 2 && 'hidden sm:block',
                   isVisible
                     ? 'translate-y-0 opacity-100'
@@ -149,7 +149,7 @@ export default function AboutVilla() {
                 alt={t('sponsorAlt')}
                 width={240}
                 height={80}
-                className='h-auto w-[120px] object-contain drop-shadow transition-transform duration-300 group-hover:scale-105'
+                className='h-auto w-[120px] object-contain drop-shadow motion-safe:transition-transform duration-300 group-hover:scale-105'
                 sizes='120px'
                 decoding='async'
                 draggable={false}
@@ -169,7 +169,7 @@ export default function AboutVilla() {
         {/* Desktop: Bottom Row - Logo left, Sponsor + CTA right */}
         <div
           className={clsx(
-            'mt-8 hidden items-end justify-between transition-all duration-1000 ease-out md:flex',
+            'mt-8 hidden items-end justify-between motion-safe:transition-all duration-1000 ease-out md:flex',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
           style={{ transitionDelay: '800ms' }}
@@ -181,7 +181,7 @@ export default function AboutVilla() {
               alt={t('eventLogoAlt')}
               width={260}
               height={80}
-              className='h-auto w-[220px] object-contain drop-shadow transition-transform duration-300 group-hover:scale-105 lg:w-[260px]'
+              className='h-auto w-[220px] object-contain drop-shadow motion-safe:transition-transform duration-300 group-hover:scale-105 lg:w-[260px]'
               sizes='(max-width: 1024px) 220px, 260px'
               decoding='async'
               draggable={false}
@@ -198,7 +198,7 @@ export default function AboutVilla() {
                 alt={t('sponsorAlt')}
                 width={240}
                 height={80}
-                className='h-auto w-[200px] object-contain drop-shadow transition-transform duration-300 group-hover:scale-105 lg:w-[240px]'
+                className='h-auto w-[200px] object-contain drop-shadow motion-safe:transition-transform duration-300 group-hover:scale-105 lg:w-[240px]'
                 sizes='(max-width: 1024px) 200px, 240px'
                 decoding='async'
                 draggable={false}
@@ -219,18 +219,18 @@ export default function AboutVilla() {
 
       {/* Bottom Wave */}
       <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
-        <Image
-          src={ASSETS.bottomWave}
-          alt=''
-          role='presentation'
-          width={2048}
-          height={WAVE_HEIGHT}
-          className='-mb-px block w-full object-cover'
-          style={{ height: `${WAVE_HEIGHT}px` }}
-          sizes='100vw'
-          loading='lazy'
-          quality={75}
-        />
+        <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
+          <Image
+            src={ASSETS.bottomWave}
+            alt=''
+            role='presentation'
+            fill
+            className='-mb-px object-cover'
+            sizes='100vw'
+            loading='lazy'
+            unoptimized
+          />
+        </div>
       </div>
     </section>
   )
@@ -249,16 +249,16 @@ function EnhancedButton({ href, ariaLabel, children }: EnhancedButtonProps) {
       href={href}
       target='_blank'
       rel='noopener noreferrer'
-      className='group relative inline-flex shrink-0 items-center gap-2 overflow-hidden rounded-full bg-white px-4 py-2 text-sm font-bold text-sky-700 shadow-lg ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:text-white hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 sm:text-base'
+      className='group relative inline-flex shrink-0 items-center gap-2 overflow-hidden rounded-full bg-white px-4 py-2 text-sm font-bold text-sky-700 shadow-lg ring-1 ring-black/10 motion-safe:transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:text-white hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 sm:text-base'
       aria-label={ariaLabel}
     >
       <span className='relative z-10 flex items-center gap-2'>
         {children}
-        <FiExternalLink className='h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5' />
+        <FiExternalLink className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5' />
       </span>
 
       {/* Hover shimmer effect */}
-      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full' />
+      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-500 group-hover:translate-x-full' />
     </Link>
   )
 }

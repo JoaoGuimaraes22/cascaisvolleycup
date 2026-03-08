@@ -3,6 +3,8 @@ import type { AbstractIntlMessages } from 'next-intl'
 import { pickMessages } from '@/src/lib/pickMessages'
 import ProgramHero from '../components/Program/ProgramHero'
 
+export const revalidate = 86400
+
 const PAGE_NAMESPACES = ['ProgramPage']
 
 export default function ProgramPage() {

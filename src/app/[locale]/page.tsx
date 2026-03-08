@@ -12,7 +12,7 @@ const LandingUpdates = dynamic(
   {
     loading: () => (
       <div className='relative min-h-96 bg-white'>
-        <div className='animate-pulse'>
+        <div className='motion-safe:animate-pulse'>
           <div className='mx-auto max-w-screen-xl px-4 py-16'>
             <div className='mb-8 h-8 w-48 rounded bg-slate-200' />
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -36,7 +36,7 @@ const LandingLocation = dynamic(
   {
     loading: () => (
       <div className='relative min-h-96 bg-white'>
-        <div className='animate-pulse'>
+        <div className='motion-safe:animate-pulse'>
           <div className='mx-auto max-w-screen-xl px-4 py-16'>
             <div className='mb-8 h-8 w-64 rounded bg-slate-200' />
             <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>

@@ -155,7 +155,7 @@ function GalleryImageItem({
   return (
     <div
       className={clsx(
-        'group relative aspect-[4/3] overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200 transition-all duration-300',
+        'group relative aspect-[4/3] overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200 motion-safe:transition-all duration-300',
         'hover:-translate-y-1 hover:shadow-lg hover:shadow-black/25 hover:ring-2 hover:ring-sky-300',
         onImageClick && 'cursor-pointer'
       )}
@@ -168,19 +168,19 @@ function GalleryImageItem({
           width={dimensions[size].width}
           height={dimensions[size].height}
           quality={70}
-          className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-110'
+          className='h-full w-full object-cover motion-safe:transition-transform duration-500 group-hover:scale-110'
           loading='lazy'
           sizes={`(max-width: 768px) 50vw, (max-width: 1024px) 33vw, ${100 / (size === 'small' ? 5 : size === 'medium' ? 4 : 3)}vw`}
         />
       ) : (
-        <div className='h-full w-full animate-pulse bg-slate-200' />
+        <div className='h-full w-full motion-safe:animate-pulse bg-slate-200' />
       )}
 
       {/* Hover overlay */}
-      <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+      <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 motion-safe:transition-opacity duration-300 group-hover:opacity-100' />
 
       {/* Image info on hover */}
-      <div className='absolute bottom-2 left-2 right-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
+      <div className='absolute bottom-2 left-2 right-2 text-white opacity-0 motion-safe:transition-opacity duration-300 group-hover:opacity-100'>
         <p className='truncate text-xs'>
           {image.format?.toUpperCase()} • {image.width} × {image.height}
         </p>
@@ -230,7 +230,7 @@ function LoadMoreButton({
         onClick={onLoadMore}
         disabled={loading}
         className={clsx(
-          'inline-flex items-center gap-3 rounded-full px-8 py-4 font-medium transition-all duration-200',
+          'inline-flex items-center gap-3 rounded-full px-8 py-4 font-medium motion-safe:transition-all duration-200',
           'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg',
           'hover:-translate-y-0.5 hover:from-sky-600 hover:to-blue-700 hover:shadow-xl',
           'focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2',
@@ -239,7 +239,7 @@ function LoadMoreButton({
       >
         {loading ? (
           <>
-            <div className='h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent' />
+            <div className='h-5 w-5 motion-safe:animate-spin rounded-full border-2 border-white border-t-transparent' />
             {loadingMoreText}
           </>
         ) : (
@@ -320,7 +320,7 @@ export default function OptimizedGallery({
     return (
       <div className='container mx-auto px-4 py-12'>
         <div className='text-center'>
-          <div className='mx-auto h-12 w-12 animate-spin rounded-full border-4 border-sky-500 border-t-transparent' />
+          <div className='mx-auto h-12 w-12 motion-safe:animate-spin rounded-full border-4 border-sky-500 border-t-transparent' />
           <p className='mt-4 text-slate-600'>{t('loading')}</p>
         </div>
       </div>
@@ -380,7 +380,7 @@ export default function OptimizedGallery({
               key={value}
               onClick={() => setGridSize(value)}
               className={clsx(
-                'rounded-lg p-2 text-sm transition-colors',
+                'rounded-lg p-2 text-sm motion-safe:transition-colors',
                 gridSize === value
                   ? 'bg-sky-500 text-white'
                   : 'bg-slate-200 text-slate-600 hover:bg-slate-300'

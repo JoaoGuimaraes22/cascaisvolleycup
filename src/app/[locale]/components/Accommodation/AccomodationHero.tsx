@@ -39,7 +39,7 @@ export default function AccommodationHero() {
           role='presentation'
           fill
           className={clsx(
-            'object-cover transition-opacity duration-700',
+            'object-cover duration-700 motion-safe:transition-opacity',
             backgroundLoaded ? 'opacity-100' : 'opacity-0'
           )}
           sizes='100vw'
@@ -59,7 +59,7 @@ export default function AccommodationHero() {
           quality={60}
           loading='lazy'
           className={clsx(
-            'object-contain object-top transition-opacity duration-1000',
+            'object-contain object-top duration-1000 motion-safe:transition-opacity',
             isVisible ? 'opacity-20' : 'opacity-10'
           )}
           sizes='(max-width: 1024px) 100vw, 0px'
@@ -74,7 +74,7 @@ export default function AccommodationHero() {
             {/* Title */}
             <div
               className={clsx(
-                'mb-8 transition-all duration-1000 ease-out',
+                'mb-8 duration-1000 ease-out motion-safe:transition-all',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-8 opacity-0'
@@ -165,7 +165,7 @@ export default function AccommodationHero() {
           <div className='relative lg:col-span-5'>
             <div
               className={clsx(
-                'absolute inset-y-0 hidden w-[45vw] max-w-[900px] transition-all duration-1000 ease-out lg:block',
+                'absolute inset-y-0 hidden w-[45vw] max-w-[900px] duration-1000 ease-out motion-safe:transition-all lg:block',
                 // Add the fade mask effect here
                 '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
                 '[mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
@@ -181,7 +181,7 @@ export default function AccommodationHero() {
                 src={ASSETS.player}
                 alt={t('playerAlt')}
                 fill
-                className='object-contain object-bottom transition-transform duration-300 hover:scale-105'
+                className='object-contain object-bottom duration-300 hover:scale-105 motion-safe:transition-transform'
                 sizes='(max-width: 1280px) 65vw, 900px'
               />
             </div>
@@ -219,7 +219,7 @@ function AccommodationSection({
   return (
     <section
       className={clsx(
-        'mb-8 space-y-4 transition-all duration-700 ease-out',
+        'mb-8 space-y-4 duration-700 ease-out motion-safe:transition-all',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -236,9 +236,9 @@ function ContactOSportsButton({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <button
       onClick={onOpenModal}
-      className='group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:text-base'
+      className='group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg ring-1 ring-black/10 duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 motion-safe:transition-all sm:text-base'
     >
-      <FiMail className='h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5' />
+      <FiMail className='h-4 w-4 duration-300 group-hover:-translate-y-0.5 motion-safe:transition-transform' />
       <span>Contact O&apos;Sports</span>
     </button>
   )
@@ -253,18 +253,16 @@ function SimpleWave({
 }) {
   return (
     <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
-      <div className='relative'>
+      <div className='relative' style={{ height: `${waveHeight}px` }}>
         <Image
           src={waveSrc}
           alt=''
           role='presentation'
-          width={2048}
-          height={waveHeight}
+          fill
           sizes='100vw'
-          className='block h-auto w-full'
-          style={{ height: `${waveHeight}px` }}
+          className='object-cover object-top'
           loading='lazy'
-          quality={75}
+          unoptimized
         />
       </div>
     </div>

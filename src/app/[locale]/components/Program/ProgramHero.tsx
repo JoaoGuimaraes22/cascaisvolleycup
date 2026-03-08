@@ -127,7 +127,7 @@ export default function ProgramHero() {
           fill
           onLoad={() => setBackgroundLoaded(true)}
           className={clsx(
-            'object-cover transition-opacity duration-700',
+            'object-cover motion-safe:transition-opacity duration-700',
             backgroundLoaded ? 'opacity-20' : 'opacity-0'
           )}
           sizes='100vw'
@@ -142,7 +142,7 @@ export default function ProgramHero() {
           {/* Left: Title */}
           <div
             className={clsx(
-              'transition-all duration-1000 ease-out lg:col-span-7',
+              'motion-safe:transition-all duration-1000 ease-out lg:col-span-7',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -159,7 +159,7 @@ export default function ProgramHero() {
           {/* Right: Tagline - Hidden on mobile, will be shown at bottom */}
           <div
             className={clsx(
-              'hidden items-start justify-end transition-all duration-1000 ease-out lg:col-span-5 lg:flex',
+              'hidden items-start justify-end motion-safe:transition-all duration-1000 ease-out lg:col-span-5 lg:flex',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -171,7 +171,7 @@ export default function ProgramHero() {
               alt={t('taglineAlt')}
               width={400}
               height={140}
-              className='h-auto w-[240px] object-contain transition-transform duration-300 hover:scale-105 sm:w-[320px] lg:w-[420px]'
+              className='h-auto w-[240px] object-contain motion-safe:transition-transform duration-300 hover:scale-105 sm:w-[320px] lg:w-[420px]'
               sizes='(max-width:640px) 240px, (max-width:1024px) 320px, 420px'
               quality={80}
               loading='eager'
@@ -194,7 +194,7 @@ export default function ProgramHero() {
           {/* Desktop Grid */}
           <div
             className={clsx(
-              'hidden transition-all duration-1000 ease-out lg:block',
+              'hidden motion-safe:transition-all duration-1000 ease-out lg:block',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -216,7 +216,7 @@ export default function ProgramHero() {
           {/* Mobile/Tablet Slider */}
           <div
             className={clsx(
-              'transition-all duration-1000 ease-out lg:hidden',
+              'motion-safe:transition-all duration-1000 ease-out lg:hidden',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -247,7 +247,7 @@ export default function ProgramHero() {
                 <button
                   onClick={goToPrevious}
                   aria-label='Previous day'
-                  className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+                  className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
                 >
                   <FiChevronLeft className='h-4 w-4 text-sky-500' />
                 </button>
@@ -260,7 +260,7 @@ export default function ProgramHero() {
                       onClick={() => goToSlide(index)}
                       aria-label={`Go to day ${index + 1}`}
                       className={clsx(
-                        'h-2 w-2 rounded-full transition-all',
+                        'h-2 w-2 rounded-full motion-safe:transition-all',
                         currentSlide === index
                           ? 'scale-125 bg-sky-500'
                           : 'bg-sky-500/50 hover:bg-sky-500/80'
@@ -272,7 +272,7 @@ export default function ProgramHero() {
                 <button
                   onClick={goToNext}
                   aria-label='Next day'
-                  className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+                  className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
                 >
                   <FiChevronRight className='h-4 w-4 text-sky-500' />
                 </button>
@@ -304,7 +304,7 @@ export default function ProgramHero() {
               {/* Lay Day Section */}
               <div
                 className={clsx(
-                  'space-y-4 transition-all duration-700 ease-out',
+                  'space-y-4 motion-safe:transition-all duration-700 ease-out',
                   isVisible
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-4 opacity-0'
@@ -335,7 +335,7 @@ export default function ProgramHero() {
               {/* Download Brochure Button */}
               <div
                 className={clsx(
-                  'transition-all duration-700 ease-out',
+                  'motion-safe:transition-all duration-700 ease-out',
                   isVisible
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-4 opacity-0'
@@ -351,7 +351,7 @@ export default function ProgramHero() {
             {/* Right: Players Image - Desktop Only, Hidden on Mobile WITH FADE EFFECT */}
             <div
               className={clsx(
-                'hidden transition-all duration-1000 ease-out lg:col-span-5 lg:block',
+                'hidden motion-safe:transition-all duration-1000 ease-out lg:col-span-5 lg:block',
                 // Add the fade mask effect here
                 '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
                 '[mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
@@ -366,7 +366,7 @@ export default function ProgramHero() {
                 alt={t('playersAlt')}
                 width={600}
                 height={400}
-                className='h-auto w-full object-contain transition-transform duration-300 hover:scale-105'
+                className='h-auto w-full object-contain motion-safe:transition-transform duration-300 hover:scale-105'
                 sizes='(max-width:1024px) 100vw, 42vw'
                 quality={80}
               />
@@ -377,7 +377,7 @@ export default function ProgramHero() {
         {/* Mobile: Tagline at bottom right */}
         <div
           className={clsx(
-            'mt-6 flex justify-end transition-all duration-1000 ease-out lg:hidden',
+            'mt-6 flex justify-end motion-safe:transition-all duration-1000 ease-out lg:hidden',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
           style={{ transitionDelay: '2200ms' }}
@@ -387,7 +387,7 @@ export default function ProgramHero() {
             alt={t('taglineAlt')}
             width={320}
             height={120}
-            className='h-auto w-[200px] object-contain transition-transform duration-300 hover:scale-105 sm:w-[240px]'
+            className='h-auto w-[200px] object-contain motion-safe:transition-transform duration-300 hover:scale-105 sm:w-[240px]'
             sizes='(max-width:640px) 200px, 240px'
             quality={80}
             loading='lazy'
@@ -398,16 +398,15 @@ export default function ProgramHero() {
       {/* Wave positioned responsively */}
       <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2 lg:bottom-[50px]'>
         {/* Desktop */}
-        <div className='relative hidden lg:block'>
+        <div className='relative hidden lg:block' style={{ height: `${WAVE_HEIGHT}px` }}>
           <Image
             src={ASSETS.wave}
             alt=''
             role='presentation'
-            width={2048}
-            height={WAVE_HEIGHT}
-            className='z-10 -mb-px block h-auto w-full'
+            fill
+            className='z-10 -mb-px object-cover'
             sizes='100vw'
-            quality={75}
+            unoptimized
             loading='lazy'
           />
         </div>
@@ -449,7 +448,7 @@ function DayCard({ day, index, isVisible }: DayCardProps) {
   return (
     <article
       className={clsx(
-        'group text-center text-white transition-all duration-300 ease-out',
+        'group text-center text-white motion-safe:transition-all duration-300 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
       )}
       style={{
@@ -467,7 +466,7 @@ function DayCard({ day, index, isVisible }: DayCardProps) {
       </div>
 
       {/* Main Blue Box: Group Stage and Game Times */}
-      <div className='overflow-hidden rounded-2xl bg-sky-500 shadow-lg ring-1 ring-black/10 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:ring-sky-400/30'>
+      <div className='overflow-hidden rounded-2xl bg-sky-500 shadow-lg ring-1 ring-black/10 motion-safe:transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:ring-sky-400/30'>
         <div className='flex min-h-[200px] flex-col items-center justify-center gap-2 px-4 py-5 sm:min-h-[220px]'>
           {day.blocks.map((block, blockIndex) => {
             if (block.title) {
@@ -547,7 +546,7 @@ function InfoSection({
   return (
     <div
       className={clsx(
-        'transition-all duration-700 ease-out',
+        'motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -586,9 +585,9 @@ function DownloadButton({
     <a
       href={`/docs/${filename}`}
       download={filename}
-      className='group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg ring-1 ring-black/10 transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:text-base'
+      className='group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg ring-1 ring-black/10 motion-safe:transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:text-base'
     >
-      <FiDownload className='h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5' />
+      <FiDownload className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:-translate-y-0.5' />
       <span>{children}</span>
     </a>
   )

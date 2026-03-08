@@ -313,7 +313,7 @@ export default function RegistrationForm() {
                 type='submit'
                 disabled={loading}
                 className={clsx(
-                  'flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-white shadow-lg transition-all',
+                  'flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-white shadow-lg motion-safe:transition-all',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2',
                   loading
                     ? 'cursor-not-allowed bg-slate-400'
@@ -324,7 +324,7 @@ export default function RegistrationForm() {
                 {loading ? (
                   <>
                     <FiLoader
-                      className='h-5 w-5 animate-spin'
+                      className='h-5 w-5 motion-safe:animate-spin'
                       aria-hidden='true'
                     />
                     {t('Submitting') || 'Submitting...'}
@@ -409,7 +409,7 @@ const FormField: React.FC<FormFieldProps> = ({
 
 const inputClassName = (error?: string) =>
   clsx(
-    'w-full rounded-lg border px-3 py-2 text-sm transition-colors',
+    'w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors',
     'focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500',
     error
       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300'

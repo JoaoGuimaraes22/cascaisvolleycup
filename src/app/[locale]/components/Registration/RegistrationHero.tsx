@@ -200,14 +200,14 @@ export default function RegistrationHero() {
                   <a
                     href={`/docs/${getBrochureFileName(locale)}`}
                     download={getBrochureFileName(locale)}
-                    className='inline-flex items-center justify-center rounded-lg bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+                    className='inline-flex items-center justify-center rounded-lg bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg motion-safe:transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
                   >
                     {t('buttons.brochure')}
                   </a>
 
                   <button
                     onClick={handleScrollToForm}
-                    className='inline-flex items-center justify-center rounded-lg bg-sky-700 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sky-800 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+                    className='inline-flex items-center justify-center rounded-lg bg-sky-700 px-6 py-3 text-sm font-bold text-white shadow-lg motion-safe:transition-all duration-300 hover:scale-105 hover:bg-sky-800 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
                   >
                     {t('buttons.registerTeams')}
                   </button>
@@ -248,7 +248,7 @@ export default function RegistrationHero() {
                   alt={t('playerAlt') || 'Beach volleyball player'}
                   fill
                   sizes='(max-width: 1280px) 400px, 480px'
-                  className='object-contain object-bottom transition-transform duration-300 hover:scale-105'
+                  className='object-contain object-bottom motion-safe:transition-transform duration-300 hover:scale-105'
                   priority
                   quality={80}
                 />
@@ -282,16 +282,14 @@ function WaveSection({ waveAsset, waveHeight }: WaveSectionProps) {
   return (
     <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
       {/* Desktop Version */}
-      <div className='relative hidden lg:block'>
+      <div className='relative hidden lg:block' style={{ height: `${waveHeight}px` }}>
         <Image
           src={waveAsset}
           alt=''
-          width={2048}
-          height={waveHeight}
+          fill
           sizes='100vw'
-          className='-mb-px block h-auto w-full'
-          style={{ height: `${waveHeight}px` }}
-          quality={75}
+          className='-mb-px object-cover'
+          unoptimized
           loading='lazy'
         />
       </div>
@@ -324,9 +322,9 @@ function ContactOSportsButton({ onOpenModal }: ContactOSportsButtonProps) {
   return (
     <button
       onClick={onOpenModal}
-      className='group inline-flex items-center gap-2 rounded-lg bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+      className='group inline-flex items-center gap-2 rounded-lg bg-sky-600 px-6 py-3 text-sm font-bold text-white shadow-lg motion-safe:transition-all duration-300 hover:scale-105 hover:bg-sky-700 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
     >
-      <FiMail className='h-4 w-4 transition-transform duration-300 group-hover:rotate-12' />
+      <FiMail className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:rotate-12' />
       <span>{t('buttons.osports')}</span>
     </button>
   )

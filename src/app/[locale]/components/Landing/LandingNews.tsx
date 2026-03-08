@@ -130,7 +130,7 @@ export default function LandingNews({ isVisible }: LandingNewsProps) {
     <div className='mx-auto max-w-screen-xl px-4'>
       <div
         className={clsx(
-          'transition-all duration-1000 ease-out',
+          'motion-safe:transition-all duration-1000 ease-out',
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         )}
       >
@@ -161,7 +161,7 @@ export default function LandingNews({ isVisible }: LandingNewsProps) {
             <button
               onClick={goToNewsPrevious}
               aria-label='Previous news'
-              className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+              className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
             >
               <FiChevronLeft className='h-4 w-4 text-sky-500' />
             </button>
@@ -174,7 +174,7 @@ export default function LandingNews({ isVisible }: LandingNewsProps) {
                   onClick={() => goToNewsSlide(index)}
                   aria-label={`Go to news item ${index + 1}`}
                   className={clsx(
-                    'h-2 w-2 rounded-full transition-all',
+                    'h-2 w-2 rounded-full motion-safe:transition-all',
                     currentNewsSlide === index
                       ? 'scale-125 bg-sky-500'
                       : 'bg-sky-500/50 hover:bg-sky-500/80'
@@ -186,7 +186,7 @@ export default function LandingNews({ isVisible }: LandingNewsProps) {
             <button
               onClick={goToNewsNext}
               aria-label='Next news'
-              className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+              className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
             >
               <FiChevronRight className='h-4 w-4 text-sky-500' />
             </button>

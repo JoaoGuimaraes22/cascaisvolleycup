@@ -96,7 +96,7 @@ const Footer: FC<Props> = ({ locale }) => {
               lang={locale}
               href='/'
               aria-label={t('logoAria') || 'Cascais Volley Cup - Home'}
-              className='inline-block rounded-sm transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+              className='inline-block rounded-sm motion-safe:transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
             >
               <Image
                 src={LOGO}
@@ -144,7 +144,7 @@ const Footer: FC<Props> = ({ locale }) => {
                     <Link
                       lang={locale}
                       href={link.href}
-                      className='text-sm text-slate-600 transition-colors hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+                      className='text-sm text-slate-600 motion-safe:transition-colors hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
                     >
                       {link.label}
                     </Link>
@@ -212,7 +212,7 @@ const Footer: FC<Props> = ({ locale }) => {
             <Link
               lang={locale}
               href='/registration'
-              className='inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-sky-600 to-sky-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm ring-1 ring-black/10 transition-all hover:scale-105 hover:from-sky-700 hover:to-sky-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+              className='inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-sky-600 to-sky-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm ring-1 ring-black/10 motion-safe:transition-all hover:scale-105 hover:from-sky-700 hover:to-sky-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
               aria-label={t('registrationCTA') || 'Register for the tournament'}
             >
               {t('registration') || 'Registration'}
@@ -246,14 +246,14 @@ const Footer: FC<Props> = ({ locale }) => {
               <a
                 href={`/docs/${getBrochureFileName(currentLocale)}`}
                 download={getBrochureFileName(currentLocale)}
-                className='text-sky-700 transition-colors sm:text-slate-500 sm:hover:text-slate-700'
+                className='text-sky-700 motion-safe:transition-colors sm:text-slate-500 sm:hover:text-slate-700'
               >
                 {t('brochure') || 'Brochure'}
               </a>
               <a
                 href='/docs/CVCUP-2026-Regulamento-PT.pdf'
                 download='CVCUP-2026-Regulamento-PT.pdf'
-                className='text-sky-700 transition-colors sm:text-slate-500 sm:hover:text-slate-700'
+                className='text-sky-700 motion-safe:transition-colors sm:text-slate-500 sm:hover:text-slate-700'
               >
                 {t('regulations') || 'Regulations'}
               </a>
@@ -287,7 +287,7 @@ const ContactItem: FC<{
       <a
         href={href}
         aria-label={label}
-        className='block rounded-sm transition-colors hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+        className='block rounded-sm motion-safe:transition-colors hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
       >
         {content}
       </a>
@@ -307,7 +307,7 @@ const SocialIcon: FC<{
     href={href}
     aria-label={ariaLabel}
     title={title}
-    className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-sky-700 shadow-sm ring-1 ring-slate-300 transition-all hover:scale-105 hover:bg-sky-50 hover:text-sky-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+    className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-sky-700 shadow-sm ring-1 ring-slate-300 motion-safe:transition-all hover:scale-105 hover:bg-sky-50 hover:text-sky-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
     rel='noopener noreferrer'
     target='_blank'
   >
@@ -322,7 +322,7 @@ const SponsorLogo: FC<{ sponsor: Sponsor }> = ({ sponsor }) => {
       alt={sponsor.alt}
       width={sponsor.w}
       height={sponsor.h}
-      className='h-auto max-h-16 w-auto object-contain transition-all hover:scale-105'
+      className='h-auto max-h-16 w-auto object-contain motion-safe:transition-all hover:scale-105'
       sizes='(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 160px'
       loading='lazy'
       quality={80}
@@ -335,7 +335,7 @@ const SponsorLogo: FC<{ sponsor: Sponsor }> = ({ sponsor }) => {
         href={sponsor.url}
         target='_blank'
         rel='noopener noreferrer'
-        className='block rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
+        className='block rounded-sm opacity-70 motion-safe:transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2'
         aria-label={`Visit ${sponsor.alt} website`}
       >
         {logoElement}
@@ -344,7 +344,7 @@ const SponsorLogo: FC<{ sponsor: Sponsor }> = ({ sponsor }) => {
   }
 
   return (
-    <div className='opacity-70 transition-opacity hover:opacity-100'>
+    <div className='opacity-70 motion-safe:transition-opacity hover:opacity-100'>
       {logoElement}
     </div>
   )

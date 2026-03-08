@@ -125,7 +125,7 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
     <>
       {/* Backdrop - Exact same as Registration Hero */}
       <div
-        className='fixed inset-0 z-50 bg-black/10 transition-opacity'
+        className='fixed inset-0 z-50 bg-black/10 motion-safe:transition-opacity'
         onClick={handleClose}
       />
 
@@ -150,7 +150,7 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
             </div>
             <button
               onClick={handleClose}
-              className='rounded-full p-1 transition-colors hover:bg-gray-100'
+              className='rounded-full p-1 motion-safe:transition-colors hover:bg-gray-100'
               aria-label={t('closeButton') || 'Close modal'}
             >
               <FiX className='h-5 w-5 text-gray-500' />
@@ -324,7 +324,7 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
                 type='submit'
                 disabled={loading}
                 className={clsx(
-                  'flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white transition-all duration-300',
+                  'flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white motion-safe:transition-all duration-300',
                   loading
                     ? 'cursor-not-allowed bg-slate-400'
                     : 'bg-sky-700 hover:scale-105 hover:bg-sky-800 hover:shadow-xl active:scale-95'
@@ -333,7 +333,7 @@ function ContactToast({ isOpen, onClose }: ContactToastProps) {
                 {loading ? (
                   <>
                     <FiLoader
-                      className='h-5 w-5 animate-spin'
+                      className='h-5 w-5 motion-safe:animate-spin'
                       aria-hidden='true'
                     />
                     {t('submitting') || 'Sending...'}
@@ -415,7 +415,7 @@ const FormField: React.FC<FormFieldProps> = ({
 /* Helper Functions */
 const inputClassName = (error?: string) =>
   clsx(
-    'w-full rounded-lg border px-3 py-2 text-sm transition-colors',
+    'w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors',
     'focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500',
     error
       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300'
@@ -424,7 +424,7 @@ const inputClassName = (error?: string) =>
 
 const textareaClassName = (error?: string) =>
   clsx(
-    'w-full rounded-lg border px-3 py-2 text-sm transition-colors resize-none',
+    'w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors resize-none',
     'focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500',
     error
       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300'

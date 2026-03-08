@@ -41,8 +41,8 @@ function YearCardSkeleton() {
       <div className='flex h-full flex-col'>
         {/* Header skeleton */}
         <div className='mb-6 flex items-center justify-between'>
-          <div className='h-8 w-16 animate-pulse rounded bg-white/20' />
-          <div className='h-8 w-20 animate-pulse rounded-full bg-white/20' />
+          <div className='h-8 w-16 motion-safe:animate-pulse rounded bg-white/20' />
+          <div className='h-8 w-20 motion-safe:animate-pulse rounded-full bg-white/20' />
         </div>
 
         {/* Images grid skeleton */}
@@ -50,7 +50,7 @@ function YearCardSkeleton() {
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
-              className='aspect-square animate-pulse rounded-lg bg-white/20'
+              className='aspect-square motion-safe:animate-pulse rounded-lg bg-white/20'
               style={{
                 animationDelay: `${index * 100}ms`
               }}
@@ -59,7 +59,7 @@ function YearCardSkeleton() {
         </div>
 
         {/* Footer skeleton */}
-        <div className='mx-auto h-4 w-32 animate-pulse rounded bg-white/20' />
+        <div className='mx-auto h-4 w-32 motion-safe:animate-pulse rounded bg-white/20' />
       </div>
     </div>
   )
@@ -87,7 +87,7 @@ function CompactImageGrid({
         <div
           key={img.public_id}
           className={clsx(
-            'group relative aspect-square overflow-hidden rounded-lg ring-1 ring-white/20 transition-all duration-500 ease-out',
+            'group relative aspect-square overflow-hidden rounded-lg ring-1 ring-white/20 motion-safe:transition-all duration-500 ease-out',
             'hover:-translate-y-1 hover:shadow-lg hover:shadow-black/25 hover:ring-2 hover:ring-white/50',
             onImageClick && 'cursor-pointer',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
@@ -103,7 +103,7 @@ function CompactImageGrid({
             width={200}
             height={200}
             quality={60}
-            className='h-full w-full object-cover transition-all duration-500 group-hover:scale-110'
+            className='h-full w-full object-cover motion-safe:transition-all duration-500 group-hover:scale-110'
             loading='lazy'
             sizes='(max-width: 768px) 33vw, (max-width: 1024px) 16vw, 12vw'
             crop='fill'
@@ -111,10 +111,10 @@ function CompactImageGrid({
           />
 
           {/* Hover overlay */}
-          <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+          <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 motion-safe:transition-opacity duration-300 group-hover:opacity-100' />
 
           {/* Image indicator icon */}
-          <div className='absolute bottom-1 right-1 rounded-full bg-white/90 p-1 opacity-0 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:opacity-100'>
+          <div className='absolute bottom-1 right-1 rounded-full bg-white/90 p-1 opacity-0 shadow-sm motion-safe:transition-all duration-300 group-hover:scale-110 group-hover:opacity-100'>
             <FiImage className='h-2.5 w-2.5 text-sky-600' />
           </div>
         </div>
@@ -194,14 +194,14 @@ function YearCard({
   return (
     <div
       className={clsx(
-        'w-full transition-all duration-700 ease-out',
+        'w-full motion-safe:transition-all duration-700 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
       )}
       style={{
         transitionDelay: `${200 + cardIndex * 150}ms`
       }}
     >
-      <div className='flex min-h-[300px] w-full flex-col rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 sm:min-h-[350px] sm:p-6 lg:min-h-[400px]'>
+      <div className='flex min-h-[300px] w-full flex-col rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm motion-safe:transition-all duration-300 hover:bg-white/15 sm:min-h-[350px] sm:p-6 lg:min-h-[400px]'>
         {/* Year header with link */}
         <div className='mb-4 flex items-center justify-between sm:mb-6'>
           <h3 className='text-2xl font-extrabold text-white drop-shadow-lg sm:text-3xl'>
@@ -210,10 +210,10 @@ function YearCard({
           {yearRoute && (
             <Link
               href={yearRoute}
-              className='group inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 text-xs font-medium text-white backdrop-blur-sm transition-all hover:scale-105 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:px-4 sm:text-sm'
+              className='group inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 text-xs font-medium text-white backdrop-blur-sm motion-safe:transition-all hover:scale-105 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:px-4 sm:text-sm'
             >
               {t('view_all') || 'View all'}
-              <FiArrowRight className='h-3 w-3 transition-transform group-hover:translate-x-1 sm:h-4 sm:w-4' />
+              <FiArrowRight className='h-3 w-3 motion-safe:transition-transform group-hover:translate-x-1 sm:h-4 sm:w-4' />
             </Link>
           )}
         </div>
@@ -224,7 +224,7 @@ function YearCard({
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
-                className='aspect-square animate-pulse rounded-lg bg-white/20'
+                className='aspect-square motion-safe:animate-pulse rounded-lg bg-white/20'
                 style={{
                   animationDelay: `${index * 100}ms`
                 }}
@@ -298,7 +298,7 @@ export default function OptimizedGalleryHero() {
             {/* Main title */}
             <div
               className={clsx(
-                'mb-8 transition-all duration-1000 ease-out',
+                'mb-8 motion-safe:transition-all duration-1000 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-12 opacity-0'
@@ -342,7 +342,7 @@ export default function OptimizedGalleryHero() {
                 // Empty state
                 <div
                   className={clsx(
-                    'mx-auto max-w-md rounded-2xl bg-white/10 p-12 text-center backdrop-blur-sm transition-all duration-1000 ease-out',
+                    'mx-auto max-w-md rounded-2xl bg-white/10 p-12 text-center backdrop-blur-sm motion-safe:transition-all duration-1000 ease-out',
                     isVisible
                       ? 'translate-y-0 opacity-100'
                       : 'translate-y-8 opacity-0'

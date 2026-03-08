@@ -180,7 +180,7 @@ function ContentSection({
           id='competition-info-title'
           className={clsx(
             'text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl lg:text-4xl',
-            'transition-all duration-1000 ease-out',
+            'motion-safe:transition-all duration-1000 ease-out',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
@@ -192,7 +192,7 @@ function ContentSection({
       {intro && (
         <div
           className={clsx(
-            'transition-all delay-200 duration-1000 ease-out',
+            'motion-safe:transition-all delay-200 duration-1000 ease-out',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
@@ -206,7 +206,7 @@ function ContentSection({
       {ruleItems.length > 0 && (
         <div
           className={clsx(
-            'delay-400 transition-all duration-1000 ease-out',
+            'delay-400 motion-safe:transition-all duration-1000 ease-out',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
@@ -218,7 +218,7 @@ function ContentSection({
       {noteItems.length > 0 && (
         <div
           className={clsx(
-            'delay-600 space-y-4 transition-all duration-1000 ease-out',
+            'delay-600 space-y-4 motion-safe:transition-all duration-1000 ease-out',
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           )}
         >
@@ -236,7 +236,7 @@ function ContentSection({
       {/* Regulations Download Button */}
       <div
         className={clsx(
-          'delay-800 transition-all duration-1000 ease-out',
+          'delay-800 motion-safe:transition-all duration-1000 ease-out',
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         )}
       >
@@ -270,7 +270,7 @@ function RuleItem({ children, index, isVisible }: RuleItemProps) {
   return (
     <li
       className={clsx(
-        'relative text-sm leading-relaxed text-slate-800/90 transition-all duration-700 ease-out sm:text-base lg:text-lg',
+        'relative text-sm leading-relaxed text-slate-800/90 motion-safe:transition-all duration-700 ease-out sm:text-base lg:text-lg',
         'before:absolute before:-left-5 before:top-2 before:h-1.5 before:w-1.5 before:rounded-full before:bg-sky-500',
         isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
       )}
@@ -301,7 +301,7 @@ function SponsorsSection({
       <div
         className={clsx(
           'sponsors-container relative z-20 mx-auto flex h-auto w-full max-w-[400px] flex-col items-center justify-center',
-          'transition-all delay-300 duration-1000 ease-out',
+          'motion-safe:transition-all delay-300 duration-1000 ease-out',
           isVisible
             ? 'translate-y-0 scale-100 opacity-100'
             : 'translate-y-12 scale-95 opacity-0'
@@ -313,7 +313,7 @@ function SponsorsSection({
             <div
               key={sponsor.alt}
               className={clsx(
-                'flex items-center justify-center transition-all duration-700 ease-out',
+                'flex items-center justify-center motion-safe:transition-all duration-700 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-8 opacity-0'
@@ -327,7 +327,7 @@ function SponsorsSection({
                 alt={sponsor.alt}
                 width={sponsor.width}
                 height={sponsor.height}
-                className='h-auto w-full max-w-[160px] object-contain drop-shadow-lg transition-transform duration-300 hover:scale-105'
+                className='h-auto w-full max-w-[160px] object-contain drop-shadow-lg motion-safe:transition-transform duration-300 hover:scale-105'
                 sizes='(max-width: 1024px) 160px, 160px'
                 quality={80}
                 loading='lazy'
@@ -343,7 +343,7 @@ function SponsorsSection({
             <div
               key={sponsor.alt}
               className={clsx(
-                'flex items-center justify-center transition-all duration-700 ease-out',
+                'flex items-center justify-center motion-safe:transition-all duration-700 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-8 opacity-0'
@@ -357,7 +357,7 @@ function SponsorsSection({
                 alt={sponsor.alt}
                 width={sponsor.width}
                 height={sponsor.height}
-                className='h-auto w-full max-w-[120px] object-contain drop-shadow-lg transition-transform duration-300 hover:scale-105'
+                className='h-auto w-full max-w-[120px] object-contain drop-shadow-lg motion-safe:transition-transform duration-300 hover:scale-105'
                 sizes='120px'
                 quality={80}
                 loading='lazy'
@@ -378,7 +378,7 @@ function RegulationsButton() {
       href='/docs/CVCUP-2026-Regulamento-PT.pdf'
       download='CVCUP-2026-Regulamento-PT.pdf'
       className={clsx(
-        'group inline-flex items-center gap-3 rounded-lg px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300',
+        'group inline-flex items-center gap-3 rounded-lg px-6 py-3 font-semibold text-white shadow-lg motion-safe:transition-all duration-300',
         'bg-gradient-to-r from-sky-600 to-sky-700',
         'hover:scale-105 hover:from-sky-700 hover:to-sky-800 hover:shadow-xl',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2',
@@ -387,7 +387,7 @@ function RegulationsButton() {
       aria-label='Download tournament regulations PDF'
     >
       <FiDownload
-        className='h-4 w-4 transition-transform duration-300 group-hover:scale-110'
+        className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:scale-110'
         aria-hidden='true'
       />
       <span className='text-sm sm:text-base'>Regulations</span>
@@ -400,17 +400,19 @@ function WaveSection({ isVisible }: { isVisible: boolean }) {
   return (
     <div className='relative -mt-6 sm:-mt-8 lg:-mt-10'>
       {/* Wave Image */}
-      <Image
-        src={ASSETS.waveBottom}
-        alt=''
-        width={2048}
-        height={160}
-        className='block h-[110px] w-full object-cover sm:h-[130px] lg:h-auto lg:object-contain'
-        quality={75}
-        loading='lazy'
-        draggable={false}
-        aria-hidden='true'
-      />
+      <div className='relative h-[110px] sm:h-[130px] lg:h-[160px]'>
+        <Image
+          src={ASSETS.waveBottom}
+          alt=''
+          fill
+          className='object-cover lg:object-contain'
+          unoptimized
+          sizes='100vw'
+          loading='lazy'
+          draggable={false}
+          aria-hidden='true'
+        />
+      </div>
     </div>
   )
 }

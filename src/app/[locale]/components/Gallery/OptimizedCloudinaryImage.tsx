@@ -212,7 +212,7 @@ export default function OptimizedCloudinaryImage({
       {/* Loading state */}
       {showLoadingState && !imageLoaded && (
         <div
-          className='absolute inset-0 animate-pulse bg-gradient-to-br from-slate-100 to-slate-200'
+          className='absolute inset-0 motion-safe:animate-pulse bg-gradient-to-br from-slate-100 to-slate-200'
           style={{ aspectRatio: finalWidth / finalHeight }}
         />
       )}
@@ -225,7 +225,7 @@ export default function OptimizedCloudinaryImage({
           width={finalWidth}
           height={finalHeight}
           className={clsx(
-            'transition-opacity duration-500',
+            'motion-safe:transition-opacity duration-500',
             imageLoaded ? 'opacity-100' : 'opacity-0',
             showLoadingState && !imageLoaded && 'absolute inset-0'
           )}
@@ -259,7 +259,7 @@ export default function OptimizedCloudinaryImage({
       {/* Loading indicator */}
       {showLoadingState && !imageLoaded && !imageError && (
         <div className='absolute inset-0 flex items-center justify-center'>
-          <div className='h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-slate-500' />
+          <div className='h-6 w-6 motion-safe:animate-spin rounded-full border-2 border-slate-300 border-t-slate-500' />
         </div>
       )}
     </div>

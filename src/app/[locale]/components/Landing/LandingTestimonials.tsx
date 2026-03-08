@@ -235,10 +235,8 @@ export default function LandingTestimonials({
             fill
             className='object-cover'
             priority={false}
-            quality={70}
+            unoptimized
             sizes='100vw'
-            placeholder='blur'
-            blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA//2Q=='
           />
 
           {/* Testimonials Content */}
@@ -272,7 +270,7 @@ export default function LandingTestimonials({
                     <button
                       onClick={goToPrevious}
                       aria-label='Previous testimonial'
-                      className='rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
+                      className='rounded-full bg-white/25 p-1.5 motion-safe:transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
                     >
                       <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
                     </button>
@@ -291,7 +289,7 @@ export default function LandingTestimonials({
                           role='tab'
                           aria-selected={currentSlide === index}
                           className={clsx(
-                            'h-3 w-3 rounded-full transition-colors sm:h-2 sm:w-2',
+                            'h-3 w-3 rounded-full motion-safe:transition-colors sm:h-2 sm:w-2',
                             currentSlide === index
                               ? 'bg-white'
                               : 'bg-white/60 hover:bg-white/80'
@@ -303,7 +301,7 @@ export default function LandingTestimonials({
                     <button
                       onClick={goToNext}
                       aria-label='Next testimonial'
-                      className='rounded-full bg-white/25 p-1.5 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
+                      className='rounded-full bg-white/25 p-1.5 motion-safe:transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:p-2'
                     >
                       <FiChevronRight className='h-3 w-3 sm:h-4 sm:w-4' />
                     </button>
@@ -314,14 +312,14 @@ export default function LandingTestimonials({
                     <button
                       onClick={goToPrevious}
                       aria-label='Previous testimonial'
-                      className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                      className='absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 motion-safe:transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
                     >
                       <FiChevronLeft className='h-5 w-5' />
                     </button>
                     <button
                       onClick={goToNext}
                       aria-label='Next testimonial'
-                      className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/25 p-2 transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
+                      className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-white/25 p-2 motion-safe:transition-colors hover:bg-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50'
                     >
                       <FiChevronRight className='h-5 w-5' />
                     </button>

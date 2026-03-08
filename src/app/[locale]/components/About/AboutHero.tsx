@@ -96,7 +96,7 @@ export default function AboutHero() {
           role='presentation'
           fill
           className={clsx(
-            'object-cover transition-opacity duration-700',
+            'object-cover motion-safe:transition-opacity duration-700',
             imageLoaded ? 'opacity-100' : 'opacity-0'
           )}
           sizes='100vw'
@@ -129,7 +129,7 @@ export default function AboutHero() {
           {/* Animated Title */}
           <div
             className={clsx(
-              'transition-all duration-1000 ease-out',
+              'motion-safe:transition-all duration-1000 ease-out',
               isVisible
                 ? 'translate-y-0 opacity-100'
                 : 'translate-y-8 opacity-0'
@@ -149,7 +149,7 @@ export default function AboutHero() {
               <div
                 key={key}
                 className={clsx(
-                  'transition-all duration-700 ease-out',
+                  'motion-safe:transition-all duration-700 ease-out',
                   isVisible
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-8 opacity-0'
@@ -172,7 +172,7 @@ export default function AboutHero() {
           <div className='md:hidden'>
             <div
               className={clsx(
-                'mx-auto w-full max-w-[360px] transition-all duration-1000 ease-out',
+                'mx-auto w-full max-w-[360px] motion-safe:transition-all duration-1000 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-8 opacity-0'
@@ -230,7 +230,7 @@ export default function AboutHero() {
           <div className='hidden md:block'>
             <div
               className={clsx(
-                'transition-all duration-1000 ease-out',
+                'motion-safe:transition-all duration-1000 ease-out',
                 isVisible
                   ? 'translate-y-0 opacity-100'
                   : 'translate-y-8 opacity-0'
@@ -273,7 +273,7 @@ function LogoCard({ logo, index, mobile = false }: LogoCardProps) {
   return (
     <div
       className={clsx(
-        'group flex items-center justify-center transition-all duration-300',
+        'group flex items-center justify-center motion-safe:transition-all duration-300',
         mobile ? 'min-h-[60px]' : 'min-h-[80px]'
       )}
       style={{
@@ -282,7 +282,7 @@ function LogoCard({ logo, index, mobile = false }: LogoCardProps) {
     >
       {/* Loading placeholder */}
       {!imageLoaded && (
-        <div className='absolute inset-0 animate-pulse rounded-lg bg-slate-200/30' />
+        <div className='absolute inset-0 motion-safe:animate-pulse rounded-lg bg-slate-200/30' />
       )}
 
       <Image
@@ -291,7 +291,7 @@ function LogoCard({ logo, index, mobile = false }: LogoCardProps) {
         width={logo.w}
         height={logo.h}
         className={clsx(
-          'w-auto object-contain transition-all duration-300 group-hover:scale-105',
+          'w-auto object-contain motion-safe:transition-all duration-300 group-hover:scale-105',
           mobile ? 'h-10 sm:h-12' : 'h-12 lg:h-14',
           imageLoaded ? 'opacity-100' : 'opacity-0'
         )}
@@ -329,7 +329,7 @@ function CtaButton({
       rel='noopener noreferrer'
       onClick={onClick}
       className={clsx(
-        'group relative overflow-hidden rounded-lg font-bold text-white shadow-lg ring-1 ring-black/10 transition-all duration-300',
+        'group relative overflow-hidden rounded-lg font-bold text-white shadow-lg ring-1 ring-black/10 motion-safe:transition-all duration-300',
         'bg-gradient-to-r from-sky-600 to-sky-700',
         'hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300',
         'inline-flex items-center gap-2',
@@ -338,11 +338,11 @@ function CtaButton({
     >
       <span className='relative z-10 flex items-center gap-2'>
         {children}
-        <FiArrowRight className='h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
+        <FiArrowRight className='h-4 w-4 motion-safe:transition-transform duration-300 group-hover:translate-x-1' />
       </span>
 
       {/* Hover shimmer effect */}
-      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full' />
+      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-500 group-hover:translate-x-full' />
     </a>
   )
 }

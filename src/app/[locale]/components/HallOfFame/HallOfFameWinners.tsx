@@ -113,7 +113,7 @@ export default function HallOfFameWinners() {
                 <h2
                   id='winners-title'
                   className={clsx(
-                    'mb-2 text-xl font-extrabold uppercase tracking-wide text-sky-500 transition-all duration-1000 ease-out sm:text-2xl',
+                    'mb-2 text-xl font-extrabold uppercase tracking-wide text-sky-500 motion-safe:transition-all duration-1000 ease-out sm:text-2xl',
                     isVisible
                       ? 'translate-y-0 opacity-100'
                       : 'translate-y-8 opacity-0'
@@ -127,7 +127,7 @@ export default function HallOfFameWinners() {
               {/* Minimalist Winners by Year */}
               <div
                 className={clsx(
-                  'space-y-3 transition-all duration-1000 ease-out',
+                  'space-y-3 motion-safe:transition-all duration-1000 ease-out',
                   isVisible
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-6 opacity-0'
@@ -140,7 +140,7 @@ export default function HallOfFameWinners() {
                       <div
                         key={year}
                         className={clsx(
-                          'transition-all duration-500 ease-out',
+                          'motion-safe:transition-all duration-500 ease-out',
                           isVisible
                             ? 'translate-y-0 opacity-100'
                             : 'translate-y-4 opacity-0'
@@ -152,7 +152,7 @@ export default function HallOfFameWinners() {
                         {/* Year Header - Clickable */}
                         <button
                           onClick={() => toggleYear(year)}
-                          className='flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-slate-50/80'
+                          className='flex w-full items-center justify-between px-4 py-3 text-left motion-safe:transition-colors hover:bg-slate-50/80'
                           aria-expanded={openYear === year}
                           aria-controls={`winners-${year}`}
                         >
@@ -166,7 +166,7 @@ export default function HallOfFameWinners() {
                           </div>
                           <FaChevronDown
                             className={clsx(
-                              'h-4 w-4 text-slate-400 transition-transform duration-300',
+                              'h-4 w-4 text-slate-400 motion-safe:transition-transform duration-300',
                               openYear === year ? 'rotate-180' : 'rotate-0'
                             )}
                           />
@@ -176,7 +176,7 @@ export default function HallOfFameWinners() {
                         <div
                           id={`winners-${year}`}
                           className={clsx(
-                            'duration-350 grid overflow-hidden transition-all ease-out',
+                            'duration-350 grid overflow-hidden motion-safe:transition-all ease-out',
                             openYear === year
                               ? 'grid-rows-[1fr] opacity-100'
                               : 'grid-rows-[0fr] opacity-0'
@@ -266,7 +266,7 @@ export default function HallOfFameWinners() {
             <div className='hidden items-center justify-center lg:col-span-5 lg:flex'>
               <div
                 className={clsx(
-                  'relative h-[400px] w-full max-w-[520px] transition-all duration-1000 ease-out',
+                  'relative h-[400px] w-full max-w-[520px] motion-safe:transition-all duration-1000 ease-out',
                   '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
                   '[mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
                   isVisible
@@ -282,7 +282,7 @@ export default function HallOfFameWinners() {
                   alt='Tournament winners celebrating with trophies'
                   fill
                   sizes='(max-width: 1024px) 240px, 520px'
-                  className='object-contain object-center drop-shadow-xl transition-transform duration-300 hover:scale-105 lg:drop-shadow-2xl'
+                  className='object-contain object-center drop-shadow-xl motion-safe:transition-transform duration-300 hover:scale-105 lg:drop-shadow-2xl'
                   quality={80}
                   priority
                 />
@@ -294,18 +294,16 @@ export default function HallOfFameWinners() {
 
       {/* Bottom wave */}
       <div className='pointer-events-none absolute bottom-0 left-1/2 z-0 w-screen -translate-x-1/2'>
-        <div className='relative'>
+        <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
           <Image
             src={ASSETS.wave}
             alt=''
             role='presentation'
-            width={2048}
-            height={WAVE_HEIGHT}
+            fill
             sizes='100vw'
-            className='block h-auto w-full'
-            style={{ height: `${WAVE_HEIGHT}px` }}
+            className='object-cover'
             loading='lazy'
-            quality={75}
+            unoptimized
           />
         </div>
       </div>

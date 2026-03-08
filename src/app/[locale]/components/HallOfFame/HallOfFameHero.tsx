@@ -120,18 +120,17 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           )}
         >
-          <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
-            <Image
-              src={ASSETS.wave}
-              alt=''
-              role='presentation'
-              fill
-              className='z-10 -mb-px object-cover'
-              sizes='100vw'
-              unoptimized
-              loading='lazy'
-            />
-          </div>
+          <Image
+            src={ASSETS.wave}
+            alt=''
+            role='presentation'
+            width={2048}
+            height={WAVE_HEIGHT}
+            className='z-10 -mb-px block h-auto w-full'
+            sizes='100vw'
+            unoptimized
+            loading='lazy'
+          />
         </div>
 
         <div className='pointer-events-none absolute inset-0 z-30'>

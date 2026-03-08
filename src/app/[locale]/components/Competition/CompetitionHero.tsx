@@ -286,19 +286,18 @@ function LogoTaglineSection({
     <div className='relative hidden lg:block'>
       {/* Wave Background */}
       <div className='relative overflow-hidden'>
-        <div className='relative h-[180px] sm:h-[150px] lg:h-[150px]'>
-          <Image
-            src='/img/global/ondas-9.webp'
-            alt=''
-            fill
-            className='object-cover lg:object-contain'
-            sizes='100vw'
-            unoptimized
-            loading='lazy'
-            draggable={false}
-            aria-hidden='true'
-          />
-        </div>
+        <Image
+          src='/img/global/ondas-9.webp'
+          alt=''
+          width={2048}
+          height={150}
+          className='block h-[180px] w-full object-cover sm:h-[150px] lg:h-auto lg:object-contain'
+          sizes='100vw'
+          unoptimized
+          loading='lazy'
+          draggable={false}
+          aria-hidden='true'
+        />
 
         {/* Overlay Content */}
         <div className='absolute inset-0 flex items-center justify-center'>

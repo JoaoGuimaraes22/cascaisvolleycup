@@ -2,5 +2,5 @@
 
 ## TODO
 
-- Image quality improving (HERO!)
+- Image quality improving (Logo?)
 - Animations: hero, competição, register

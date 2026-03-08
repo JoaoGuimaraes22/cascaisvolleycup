@@ -2,7 +2,8 @@
 // RegistrationToast component with registration form functionality
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslations } from 'next-intl'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import clsx from 'clsx'
@@ -112,19 +113,22 @@ function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
     onClose()
   }
 
-  if (!isOpen) return null
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
 
-  return (
+  if (!isOpen || !mounted) return null
+
+  return createPortal(
     <>
       {/* Backdrop */}
       <div
-        className='fixed inset-0 z-50 bg-black/10 motion-safe:transition-opacity'
+        className='fixed inset-0 z-[300] bg-black/10 motion-safe:transition-opacity'
         onClick={handleClose}
       />
 
       {/* Modal */}
-      <div className='fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-2xl -translate-x-1/2 -translate-y-1/2 transform px-4 sm:mx-4 sm:w-full'>
-        <div className='max-h-[90vh] overflow-y-auto rounded-lg border border-gray-200 bg-white p-4 shadow-2xl sm:max-h-[95vh] sm:p-6'>
+      <div className='fixed inset-0 z-[300] flex items-center justify-center px-4 pt-20 pb-4 sm:pt-4'>
+        <div className='max-h-[80vh] w-[95vw] max-w-2xl overflow-y-auto rounded-lg border border-gray-200 bg-white p-4 shadow-2xl sm:max-h-[90vh] sm:p-6'>
           {/* Header */}
           <div className='mb-4 flex items-center justify-between'>
             <div className='flex items-center gap-2 sm:gap-3'>
@@ -327,7 +331,8 @@ function RegistrationToast({ isOpen, onClose }: RegistrationToastProps) {
           </form>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   )
 }
 

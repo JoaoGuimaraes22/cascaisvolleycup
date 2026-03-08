@@ -145,7 +145,7 @@ export default function LandingWelcome() {
               width={650}
               height={227}
               priority={true}
-              quality={75}
+              quality={95}
               sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
               className='h-auto w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]'
             />

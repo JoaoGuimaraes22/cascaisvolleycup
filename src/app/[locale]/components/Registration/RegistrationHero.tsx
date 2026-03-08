@@ -4,17 +4,20 @@ import Image from 'next/image'
 import { useTranslations, useLocale } from 'next-intl'
 import { MouseEvent, useState } from 'react'
 import { FiMail } from 'react-icons/fi'
+import clsx from 'clsx'
 import ContactToast from '../Global/ContactToast'
 import {
   getBrochureFileName,
   GLOBAL_ASSETS,
   WAVE_HEIGHT
 } from '@/src/lib/constants'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 
 export default function RegistrationHero() {
   const t = useTranslations('RegistrationPage.RegistrationHero')
   const locale = useLocale()
   const [showContactToast, setShowContactToast] = useState(false)
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Assets
   const ASSETS = {
@@ -44,6 +47,7 @@ export default function RegistrationHero() {
 
   return (
     <section
+      ref={sectionRef}
       className='relative w-full overflow-hidden'
       style={{
         minHeight: '89svh',
@@ -106,13 +110,24 @@ export default function RegistrationHero() {
               {/* Main Title */}
               <h1
                 id='registration-title'
-                className='text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl lg:text-4xl'
+                className={clsx(
+                  'text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl lg:text-4xl',
+                  'motion-safe:transition-all duration-1000 ease-out',
+                  isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                )}
               >
                 {t('title')}
               </h1>
 
               {/* School Accommodation Section */}
-              <div className='space-y-4'>
+              <div
+                className={clsx(
+                  'space-y-4',
+                  'motion-safe:transition-all duration-1000 ease-out',
+                  isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                )}
+                style={{ transitionDelay: '200ms' }}
+              >
                 <h2 className='text-lg font-extrabold uppercase tracking-wide text-sky-600 sm:text-xl'>
                   {t('schoolAccommodation.title')}
                 </h2>
@@ -196,7 +211,14 @@ export default function RegistrationHero() {
                 </p>
 
                 {/* Action Buttons */}
-                <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
+                <div
+                  className={clsx(
+                    'flex flex-col gap-4 pt-4 sm:flex-row',
+                    'motion-safe:transition-all duration-1000 ease-out',
+                    isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                  )}
+                  style={{ transitionDelay: '400ms' }}
+                >
                   <a
                     href={`/docs/${getBrochureFileName(locale)}`}
                     download={getBrochureFileName(locale)}
@@ -215,7 +237,14 @@ export default function RegistrationHero() {
               </div>
 
               {/* Hotel Accommodation Section */}
-              <div className='space-y-4 border-t border-sky-200 pt-6'>
+              <div
+                className={clsx(
+                  'space-y-4 border-t border-sky-200 pt-6',
+                  'motion-safe:transition-all duration-1000 ease-out',
+                  isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                )}
+                style={{ transitionDelay: '600ms' }}
+              >
                 <h2 className='text-lg font-extrabold uppercase tracking-wide text-sky-600 sm:text-xl'>
                   {t('hotelAccommodation.title')}
                 </h2>
@@ -232,7 +261,14 @@ export default function RegistrationHero() {
           </div>
 
           {/* Right Column: Player Image - Desktop Only */}
-          <div className='relative hidden lg:col-span-5 lg:flex lg:items-center lg:justify-center'>
+          <div
+            className={clsx(
+              'relative hidden lg:col-span-5 lg:flex lg:items-center lg:justify-center',
+              'motion-safe:transition-all duration-1000 ease-out',
+              isVisible ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'
+            )}
+            style={{ transitionDelay: '400ms' }}
+          >
             <div className='relative h-[500px] w-full max-w-[400px] xl:h-[600px] xl:max-w-[480px]'>
               <div
                 className='absolute inset-0'

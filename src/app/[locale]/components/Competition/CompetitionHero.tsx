@@ -3,7 +3,9 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { MouseEvent } from 'react'
+import clsx from 'clsx'
 import { BLUR_DATA_URL, GLOBAL_ASSETS } from '@/src/lib/constants'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 
 // Constants for better maintainability
 const ASSETS = {
@@ -53,6 +55,7 @@ function parseBoldText(text: string) {
 export default function CompetitionHero() {
   const t = useTranslations('CompetitionPage.Hero')
   const tLogo = useTranslations('CompetitionPage.LogoTaglineHero')
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   const handleScrollToRegulations = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -75,6 +78,7 @@ export default function CompetitionHero() {
 
   return (
     <section
+      ref={sectionRef}
       className='relative w-full overflow-hidden'
       aria-labelledby='competition-hero-title'
     >
@@ -111,7 +115,13 @@ export default function CompetitionHero() {
       <div className='relative z-10 mx-auto max-w-screen-xl px-4 py-10 sm:py-12 lg:py-16'>
         <div className='grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10'>
           {/* Phone Image Section - Desktop Only */}
-          <div className='hidden md:col-span-5 md:block'>
+          <div
+            className={clsx(
+              'hidden md:col-span-5 md:block',
+              'motion-safe:transition-all duration-1000 ease-out',
+              isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'
+            )}
+          >
             <div className='phone-container relative -ml-4 sm:-ml-6 md:-ml-14 lg:-ml-[8vw] xl:-ml-[9vw] 2xl:-ml-[10vw]'>
               <Image
                 src={ASSETS.PHONE}
@@ -132,7 +142,12 @@ export default function CompetitionHero() {
 
           {/* Text Content Section */}
           <div className='md:col-span-7'>
-            <header>
+            <header
+              className={clsx(
+                'motion-safe:transition-all duration-1000 ease-out',
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              )}
+            >
               <h1
                 id='competition-hero-title'
                 className='text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl lg:text-4xl'
@@ -141,7 +156,14 @@ export default function CompetitionHero() {
               </h1>
             </header>
 
-            <div className='prose prose-slate mt-6 max-w-none'>
+            <div
+              className={clsx(
+                'prose prose-slate mt-6 max-w-none',
+                'motion-safe:transition-all duration-1000 ease-out',
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              )}
+              style={{ transitionDelay: '200ms' }}
+            >
               <div className='space-y-4 text-sm leading-relaxed text-slate-700 sm:text-base lg:text-lg'>
                 {t('p1') && <p>{parseBoldText(t('p1'))}</p>}
                 {t('p2') && <p>{parseBoldText(t('p2'))}</p>}
@@ -150,7 +172,14 @@ export default function CompetitionHero() {
             </div>
 
             {/* Buttons Section */}
-            <div className='mt-8 flex flex-wrap gap-3'>
+            <div
+              className={clsx(
+                'mt-8 flex flex-wrap gap-3',
+                'motion-safe:transition-all duration-1000 ease-out',
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              )}
+              style={{ transitionDelay: '400ms' }}
+            >
               {/* Regulations Button */}
               <button
                 onClick={handleScrollToRegulations}
@@ -209,6 +238,13 @@ export default function CompetitionHero() {
       </div>
 
       {/* Mosaic Section with Responsive Images */}
+      <div
+        className={clsx(
+          'motion-safe:transition-all duration-1000 ease-out',
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+        )}
+        style={{ transitionDelay: '600ms' }}
+      >
       <MosaicStrip
         desktopSrc={ASSETS.MOSAIC}
         mobileSrc={ASSETS.MOSAIC_MOBILE}
@@ -217,6 +253,8 @@ export default function CompetitionHero() {
           'Photo mosaic showcasing competition highlights and participants'
         }
       />
+
+      </div>
 
       {/* Logo and Tagline Section - Below Mosaic - Desktop Only */}
       <LogoTaglineSection

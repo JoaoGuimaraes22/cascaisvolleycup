@@ -12,11 +12,13 @@ import {
   type RegistrationFormData,
   type FormErrors
 } from '@/src/lib/validation'
+import { useIntersectionObserver } from '@/src/hooks/useIntersectionObserver'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
 export default function RegistrationForm() {
   const t = useTranslations('RegistrationPage.Form')
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Assets
   const BG = '/img/registration/hero-bg.webp'
@@ -114,6 +116,7 @@ export default function RegistrationForm() {
 
   return (
     <section
+      ref={sectionRef}
       id='registration-form'
       className='relative overflow-hidden py-12 sm:py-16 lg:py-20'
       aria-labelledby='registration-heading'
@@ -162,7 +165,13 @@ export default function RegistrationForm() {
       </div>
 
       {/* Form container */}
-      <div className='mx-auto max-w-screen-md px-4'>
+      <div
+        className={clsx(
+          'mx-auto max-w-screen-md px-4',
+          'motion-safe:transition-all duration-1000 ease-out',
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+        )}
+      >
         <div className='rounded-2xl bg-white/95 p-6 shadow-lg ring-1 ring-black/10 backdrop-blur-sm sm:p-8'>
           <form onSubmit={handleSubmit} className='space-y-6' noValidate>
             <div className='text-center'>

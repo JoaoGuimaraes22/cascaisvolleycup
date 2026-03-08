@@ -1,11 +1,27 @@
 // src/app/[locale]/page.tsx
 import dynamic from 'next/dynamic'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import type { AbstractIntlMessages } from 'next-intl'
+import type { Metadata } from 'next'
 import { pickMessages } from '@/src/lib/pickMessages'
 import LandingWelcome from './components/Landing/LandingWelcome'
 
 export const revalidate = 3600 // Revalidate every hour
+
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'LandingPage.Welcome' })
+
+  return {
+    title: { absolute: 'Cascais VolleyCup 2026' },
+    description: `${t('heading')} — Cascais, ${t('PORTUGAL')}. ${t('dates')}`,
+    alternates: { canonical: `/${locale}` }
+  }
+}
 
 const LandingUpdates = dynamic(
   () => import('./components/Landing/LandingUpdates'),

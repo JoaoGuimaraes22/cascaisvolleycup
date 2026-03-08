@@ -1,8 +1,21 @@
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import type { AbstractIntlMessages } from 'next-intl'
+import type { Metadata } from 'next'
 import { pickMessages } from '@/src/lib/pickMessages'
 
 export const revalidate = 3600
+
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  return {
+    title: 'News',
+    description: 'Latest news and updates from the Cascais Volley Cup tournament.',
+    alternates: { canonical: `/${locale}/news` }
+  }
+}
 
 // This page uses root-level translation key — adjust once proper namespace is added
 const PAGE_NAMESPACES = ['NewsPage']

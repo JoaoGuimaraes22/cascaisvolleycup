@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/img/og-image.jpg', // create a 1200x630px image
+        url: '/img/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Cascais VolleyCup 2026'
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
     title: 'Cascais VolleyCup 2026',
     description:
       'International beach volleyball tournament in Cascais, Portugal. July 2026.',
-    images: ['/img/og-image.jpg']
+    images: ['/img/og-image.png']
   },
   robots: {
     index: true,
@@ -96,13 +96,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/img/icon/icon.svg', type: 'image/svg+xml' },
-      { url: '/img/icon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/img/icon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/img/icon/favicon.ico' }
+      { url: '/img/favicon/favicon.svg', type: 'image/svg+xml' },
+      { url: '/img/favicon/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/img/favicon/favicon.ico' }
     ],
-    apple: '/img/icon/favicon-180x180.png'
-  }
+    apple: '/img/favicon/apple-touch-icon.png'
+  },
+  manifest: '/img/favicon/site.webmanifest'
 }
 
 // ✅ Only the namespaces used by layout-level client components
@@ -130,6 +130,53 @@ export default function RootLayout({
       <head>
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <link rel='dns-prefetch' href='https://res.cloudinary.com' />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  name: 'Volley4All',
+                  url: 'https://cascaisvolley.com',
+                  email: 'info@volley4all.com',
+                  logo: 'https://cascaisvolley.com/img/global/logo-cvc.webp',
+                  sameAs: []
+                },
+                {
+                  '@type': 'SportsEvent',
+                  name: 'Cascais Volley Cup 2026',
+                  description:
+                    'International girls volleyball tournament in Cascais, Portugal.',
+                  startDate: '2026-07-01',
+                  endDate: '2026-07-05',
+                  eventStatus: 'https://schema.org/EventScheduled',
+                  eventAttendanceMode:
+                    'https://schema.org/OfflineEventAttendanceMode',
+                  sport: 'Volleyball',
+                  url: 'https://cascaisvolley.com',
+                  image: 'https://cascaisvolley.com/img/og-image.png',
+                  location: {
+                    '@type': 'Place',
+                    name: 'Cascais',
+                    address: {
+                      '@type': 'PostalAddress',
+                      addressLocality: 'Cascais',
+                      addressRegion: 'Lisboa',
+                      addressCountry: 'PT'
+                    }
+                  },
+                  organizer: {
+                    '@type': 'Organization',
+                    name: 'Volley4All',
+                    url: 'https://cascaisvolley.com'
+                  }
+                }
+              ]
+            })
+          }}
+        />
       </head>
 
       <body className='flex min-h-screen flex-col overflow-x-hidden pt-[var(--header-h)]'>

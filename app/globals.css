@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--primary);
+  --color-background: var(--background);
+
+  --font-sans: var(--font-space-grotesk), var(--rubik), system-ui, sans-serif;
+}
+
+:root {
+  --primary: #333366;
+  --background: #ededed;
+  --header-h: 4rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+  font-size: 83%;
+}
+
+.lang-sky [role="menu"],
+.lang-sky .radix-dropdown-content,
+.lang-sky .headless-menu-items {
+  @apply rounded-md border border-white/10 bg-sky-500 text-white shadow-lg;
+}
+
+.lang-sky [role="menuitem"],
+.lang-sky .radix-dropdown-item,
+.lang-sky .headless-menu-item {
+  @apply hover:bg-white/10 focus:bg-white/10;
+}
+
+@layer base {
+  *:lang(ar),
+  *:lang(fa) {
+    font-family: var(--rubik) !important;
+  }
+
+  div::selection,
+  h1::selection,
+  button::selection,
+  p::selection,
+  span::selection,
+  a::selection,
+  h2::selection {
+    background-color: rgb(121, 255, 225);
+    text-shadow: rgb(0, 102, 255) 0px 0px 7px;
+    color: rgb(248, 28, 229);
+  }
+
+  body {
+    @apply bg-background text-primary;
+  }
+}

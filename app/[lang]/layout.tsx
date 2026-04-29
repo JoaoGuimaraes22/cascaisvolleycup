@@ -190,7 +190,11 @@ export default async function RootLayout({
           color="var(--primary)"
           showSpinner={false}
         />
-        <Header lang={lang} dict={dict.Header} />
+        <Header
+          lang={lang}
+          dict={dict.Header}
+          localeNames={dict.localeNames}
+        />
         <main id="main" className="w-full flex-1">
           {children}
         </main>

@@ -92,8 +92,8 @@ export function useOptimizedGallery(maxPerYear: number = 8) {
     fromCache: false
   })
 
-  const abortControllerRef = useRef<AbortController>()
-  const retryTimeoutRef = useRef<NodeJS.Timeout>()
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Cleanup function
   const cleanup = useCallback(() => {

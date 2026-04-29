@@ -429,32 +429,23 @@
       "try_again": "Intentar nuevamente"
     },
     "Main": {
-      "loading": "Cargando galería...",
-      "failed_title": "Error al cargar galería",
-      "failed_description": "No se pudieron cargar las imágenes de la galería. Inténtalo nuevamente.",
-      "try_again": "Intentar nuevamente",
-      "images": "imágenes",
-      "no_images_title": "No se encontraron imágenes",
-      "no_images_description": "Esta galería está vacía",
-      "no_images_year": "No hay imágenes disponibles para",
-      "view_modes": {
-        "grid": "Vista de cuadrícula",
-        "masonry": "Vista de mosaico"
-      },
+      "loading": "Cargando…",
+      "failed_title": "Error al cargar la galería",
+      "try_again": "Reintentar",
+      "image": "Imagen",
+      "images": "Imágenes",
+      "more_available": "Más disponibles",
+      "all_loaded": "Todo cargado",
+      "load_more": "Cargar más",
+      "loading_more": "Cargando más…",
+      "grid_size": "Tamaño de cuadrícula",
       "grid_sizes": {
-        "small": "Pequeña",
-        "medium": "Mediana",
+        "small": "Pequeño",
+        "medium": "Mediano",
         "large": "Grande"
       },
-      "refresh": "Actualizar galería",
-      "previous": "Anterior",
-      "next": "Siguiente",
-      "close_lightbox": "Cerrar lightbox",
-      "previous_image": "Imagen anterior",
-      "next_image": "Siguiente imagen",
-      "image_of": "de",
-      "cached": "Cache",
-      "live_data": "Datos en vivo"
+      "gallery_image": "Imagen de galería",
+      "close_lightbox": "Cerrar visor"
     }
   },
   "HallOfFamePage": {
@@ -623,6 +614,46 @@
         "mobileInvalid": "Por favor ingresa un número de teléfono válido",
         "fixErrors": "Por favor corrige los errores de arriba"
       }
+    }
+  },
+  "ContactModal": {
+    "title": "Contact O-Sports",
+    "closeButton": "Close modal",
+    "submit": "Send",
+    "submitting": "Sending...",
+    "successMessage": "Your accommodation request has been sent successfully!",
+    "errorMessage": "Something went wrong. Please try again.",
+    "fields": {
+      "teamName": "Team Name",
+      "country": "Country",
+      "teamManagerName": "Team Manager Name",
+      "phone": "Phone",
+      "email": "Email",
+      "ageGroup": "Age Group",
+      "numberOfPeople": "Number of People",
+      "message": "Message"
+    },
+    "placeholders": {
+      "teamName": "Enter your team name",
+      "country": "Enter your country",
+      "teamManagerName": "Enter team manager name",
+      "phone": "Enter phone number",
+      "email": "Enter email address",
+      "ageGroup": "Select age group",
+      "numberOfPeople": "Enter total number of people",
+      "message": "Enter your message"
+    },
+    "validation": {
+      "teamNameRequired": "Team name is required",
+      "countryRequired": "Country is required",
+      "managerNameRequired": "Team manager name is required",
+      "managerNameMinLength": "Name must be at least 2 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "phoneInvalid": "Please enter a valid phone number",
+      "ageGroupRequired": "Age group is required",
+      "numberOfPeopleRequired": "Number of people is required",
+      "numberOfPeopleInvalid": "Please enter a valid number"
     }
   },
   "Footer": {

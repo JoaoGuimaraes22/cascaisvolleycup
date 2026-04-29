@@ -2,288 +2,301 @@
 
 Project reference for Claude Code. Read this before making changes.
 
+This project follows the same conventions as `services/web-dev/base/` — read the base CLAUDE.md too if you're unsure about a pattern.
+
 ---
 
 ## Project Overview
 
 A multilingual tournament website for the **Cascais Volley Cup 2026** — a girls volleyball tournament in Cascais, Portugal. The site serves as both an information hub and registration system targeting international volleyball teams.
 
-**Live site:** https://cascaisvolley.com  
-**Deployment:** Vercel  
-**Stack:** Next.js 14 · TypeScript · Tailwind CSS · next-intl
+**Live site:** https://cascaisvolley.com
+**Deployment:** Vercel
+**Stack:** Next.js 16 · React 19 · Tailwind 4 · TypeScript
 
 ---
 
 ## Key Stakeholders
 
-| Entity | Role | Email |
-|---|---|---|
-| Volley4All | Tournament organizer, receives registrations | info@volley4all.com |
-| O-Sports | Accommodation partner, receives hotel inquiries | info@o-sports.pt |
+| Entity     | Role                                              | Email                  |
+| ---------- | ------------------------------------------------- | ---------------------- |
+| Volley4All | Tournament organizer, receives registrations      | info@volley4all.com    |
+| O-Sports   | Accommodation partner, receives hotel inquiries   | info@o-sports.pt       |
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| i18n | next-intl v3 |
-| Images | Cloudinary (`next-cloudinary`) |
-| Email | Resend API |
-| Carousel | keen-slider |
-| Icons | react-icons |
-| Deployment | Vercel |
+| Layer       | Technology                                                          |
+| ----------- | ------------------------------------------------------------------- |
+| Framework   | Next.js 16 (App Router, Turbopack)                                  |
+| Language    | TypeScript 5                                                        |
+| UI          | React 19                                                            |
+| Styling     | Tailwind CSS 4 (CSS-first via `@theme` in `app/globals.css`)        |
+| i18n        | Custom dict pattern — no library; matches ignite-base               |
+| Locale match| `@formatjs/intl-localematcher` + `negotiator` in `proxy.ts`         |
+| Images      | Cloudinary via `next-cloudinary` (gallery only) + `next/image`      |
+| Email       | Resend API (form submissions)                                       |
+| Form valid. | `zod` server-side + custom `_lib/validation.ts` client-side         |
+| Carousel    | `keen-slider`                                                       |
+| Icons       | `react-icons`                                                       |
+| Lint        | ESLint 9 (flat config) + `eslint-config-next` 16                    |
+| Deployment  | Vercel (auto-deploys on push to main)                               |
 
 ---
 
-## Internationalization
+## Internationalization (dict pattern)
 
-**Supported locales:** `en`, `pt`, `fr`, `es`  
-**Default locale:** `en`  
-**Locale prefix:** always (e.g. `/en/`, `/pt/`)
+**Locales:** `en` (default), `pt`, `es`, `fr`. Every route is prefix-always (`/en/...`, `/pt/...`).
 
-Translation files live in `messages/{locale}.json`.  
-The i18n config is in `src/i18n.ts` and routing in `src/navigation.ts`.
+- `i18n-config.ts` (root) — defines `locales` + `defaultLocale` + `Locale` type.
+- `proxy.ts` (root) — Next 16 middleware (renamed from `middleware.ts`). Detects locale from `Accept-Language` and redirects un-prefixed URLs to `/{lang}{pathname}`.
+- `app/[lang]/dictionaries/<locale>.json` — translation source. Top-level keys: `metadata`, `ui`, `localeNames`, `Header`, `LandingPage`, `AboutPage`, `AccommodationPage`, `ProgramPage`, `CompetitionPage`, `GalleryPage`, `HallOfFamePage`, `RegistrationPage`, `ContactModal`, `Footer`.
+- `app/[lang]/dictionaries.ts` — exports `getDictionary(lang)`, `hasLocale(locale)`, `Dict` type. Server-only (`import "server-only"`).
 
-### Adding/editing translations
-- Edit all four `messages/*.json` files
-- Use `useTranslations('Namespace.Key')` in client components
-- Use `pickMessages()` from `src/lib/pickMessages` to scope messages per page (reduces bundle size)
+### How to use translations
+
+**Server Components** (default): receive `dict` as a prop from the page.
+
+```tsx
+// app/[lang]/about/page.tsx
+const { lang } = await params;
+if (!hasLocale(lang)) notFound();
+const dict = await getDictionary(lang);
+return <AboutHero lang={lang} dict={dict.AboutPage.Hero} />;
+```
+
+**Client Components**: same pattern — accept dict prop. Never import `useTranslations` (we don't use next-intl anymore).
+
+**Adding a translation key:**
+1. Add the key to all 4 dict JSONs (`en`, `pt`, `es`, `fr`). Translate it.
+2. Reference via `dict.<namespace>.<key>` in the component.
+3. TypeScript infers the shape from the JSON on the server side; declare a local `type ComponentDict = { ... }` matching the keys you consume.
+
+**Locale-aware links:** use `localeHref(lang, "/about")` from `app/[lang]/_lib/seo.ts`. Returns `/{lang}/about`. Pair with `next/link`:
+
+```tsx
+import Link from "next/link";
+import { localeHref } from "../../_lib/seo";
+
+<Link href={localeHref(lang, "/registration")}>Register</Link>
+```
 
 ### Brochure PDFs
-Locale-specific PDFs use the `LANGUAGE_CODES` map from `src/lib/constants.ts`:
-```
-en → CVCUP-2026-CONVITE-UK.pdf
-es → CVCUP-2026-CONVITE-ESP.pdf
-pt → CVCUP-2026-CONVITE-PT.pdf
-fr → CVCUP-2026-CONVITE-FRAN.pdf
-```
+
+Locale-specific PDFs use the `LANGUAGE_CODES` map in `app/[lang]/_lib/constants.ts`:
+- `en` → `CVCUP-2026-CONVITE-UK.pdf`
+- `pt` → `CVCUP-2026-CONVITE-PT.pdf`
+- `es` → `CVCUP-2026-CONVITE-ESP.pdf`
+- `fr` → `CVCUP-2026-CONVITE-FRAN.pdf`
+
+`getBrochureFileName(lang)` returns the right filename.
 
 ---
 
 ## Routes / Pages
 
-| Path | Description |
-|---|---|
-| `/` | Home / landing |
-| `/about` | About the tournament |
-| `/program` | Tournament schedule |
-| `/competition` | Competition info & divisions |
-| `/registration` | Registration form + pricing |
-| `/accommodation` | Hotel accommodation (O-Sports) |
-| `/location` | Cascais location info |
-| `/gallery` | Gallery overview (all years) |
-| `/gallery/2025` | 2025 photos |
-| `/gallery/2024` | 2024 photos |
-| `/gallery/2023` | 2023 photos |
-| `/news` | News articles |
-| `/hall-of-fame` | Hall of fame |
+| Path             | Description                                |
+| ---------------- | ------------------------------------------ |
+| `/`              | Home / landing                             |
+| `/about`         | About the tournament                       |
+| `/program`       | Tournament schedule                        |
+| `/competition`   | Competition info & divisions               |
+| `/registration`  | Registration form + pricing                |
+| `/accommodation` | Hotel accommodation (O-Sports)             |
+| `/gallery`       | Gallery overview (all years)               |
+| `/gallery/2025`  | 2025 photos                                |
+| `/gallery/2024`  | 2024 photos                                |
+| `/gallery/2023`  | 2023 photos                                |
+| `/news`          | News articles (currently a stub)           |
+| `/hall-of-fame`  | Hall of fame                               |
 
-All routes are prefixed by locale: `/{locale}/...`
+All routes prefixed with `/{lang}/`. All 13 routes × 4 locales = 52 pages, all SSG'd at build time.
 
 ---
 
 ## Project Structure
 
 ```
-src/
+cascaisvolleycup/
+├── i18n-config.ts                 # locale config (root)
+├── proxy.ts                       # Next 16 middleware (root)
+├── next.config.ts                 # Next config (TS)
+├── eslint.config.mjs              # ESLint 9 flat config
+├── postcss.config.mjs             # @tailwindcss/postcss only
+├── tsconfig.json                  # paths: @/*: ./*
+├── package.json                   # standalone pnpm app
+├── pnpm-lock.yaml
+│
 ├── app/
-│   ├── [locale]/
-│   │   ├── components/         # Page-specific components (organized by page)
-│   │   │   ├── Global/         # Header, Footer, shared UI
-│   │   │   ├── Gallery/        # GalleryHero, OptimizedCloudinaryImage, etc.
-│   │   │   ├── Registration/   # RegistrationForm, RegistrationHero
-│   │   │   ├── Program/        # ProgramHero, DayCard
-│   │   │   └── ...             # One folder per page
-│   │   └── {page}/page.tsx     # Page-level files
-│   └── api/
-│       ├── register/           # Tournament registration email → Volley4All
-│       ├── osports-contact/    # Accommodation inquiry email → O-Sports
-│       └── cloudinary/         # Gallery image fetching
-├── hooks/
-│   ├── useIntersectionObserver.ts  # Shared scroll/animation observers
-│   └── useOptimizedGallery.ts      # Cloudinary image fetching hook
-├── lib/
-│   ├── constants.ts            # WAVE_HEIGHT, GLOBAL_ASSETS, SITE_URL, etc.
-│   ├── validation.ts           # Unified form validation
-│   └── pickMessages.ts         # Scoped i18n message loader
-├── i18n.ts                     # next-intl config
-├── navigation.ts               # Localized routes & Link/useRouter exports
-└── middleware.ts               # next-intl locale middleware
-
-messages/
-├── en.json
-├── pt.json
-├── fr.json
-└── es.json
+│   ├── globals.css                # Tailwind 4 @theme
+│   ├── robots.ts                  # AI_CRAWLERS allowlist
+│   ├── sitemap.ts                 # 52 entries with hreflang
+│   ├── api/
+│   │   ├── _lib/escape-html.ts
+│   │   ├── register/route.ts      # zod-validated, escapes HTML
+│   │   ├── osports-contact/route.ts
+│   │   └── cloudinary/route.ts
+│   └── [lang]/
+│       ├── layout.tsx             # JSON-LD @graph (WebSite + Org + SportsEvent)
+│       ├── page.tsx               # home
+│       ├── error.tsx
+│       ├── loading.tsx
+│       ├── not-found.tsx
+│       ├── dictionaries.ts        # getDictionary(lang) loader
+│       ├── dictionaries/{en,pt,es,fr}.json
+│       ├── about/page.tsx
+│       ├── accommodation/page.tsx
+│       ├── competition/page.tsx
+│       ├── gallery/page.tsx + {2023,2024,2025}/page.tsx
+│       ├── hall-of-fame/page.tsx
+│       ├── news/page.tsx
+│       ├── program/page.tsx
+│       ├── registration/page.tsx
+│       ├── _components/           # private; not routable
+│       │   ├── json-ld.tsx
+│       │   ├── global/{header,footer,scroll-to-top-button,locale-switcher,contact-toast}.tsx
+│       │   ├── about/{hero,villa,portugal}.tsx
+│       │   ├── accommodation/hero.tsx
+│       │   ├── competition/{hero,info,facts}.tsx
+│       │   ├── gallery/{hero,gallery,optimized-cloudinary-image}.tsx
+│       │   ├── hall-of-fame/{hero,participants,winners}.tsx
+│       │   ├── landing/{welcome,updates,testimonials,location,news,news-card,registration-toast}.tsx
+│       │   ├── program/hero.tsx
+│       │   └── registration/{hero,form}.tsx
+│       ├── _hooks/{use-intersection-observer,use-optimized-gallery}.ts
+│       └── _lib/
+│           ├── seo.ts             # SITE_URL, localeHref, schemaIds, buildBreadcrumb, bcp47Locale, ogLocale
+│           ├── constants.ts       # WAVE_HEIGHT, GLOBAL_ASSETS, getBrochureFileName
+│           ├── validation.ts      # validateRegistrationForm + validateAccommodationForm
+│           └── data/winners.ts    # Hall-of-fame data
 ```
 
----
+### Naming conventions
 
-## Shared Utilities — Always Use These
-
-### `src/lib/constants.ts`
-Central source of truth for repeated values:
-- `WAVE_HEIGHT` / `WAVE_HEIGHT_TALL` — wave overlay heights
-- `GLOBAL_ASSETS` — logo, tagline, wave image paths
-- `SITE_URL` — `https://cascaisvolley.com`
-- `BLUR_DATA_URL` — shared blur placeholder for `<Image>`
-- `getBrochureFileName(locale)` — locale-aware PDF filename
-
-### `src/lib/validation.ts`
-Unified form validators (do **not** write new ones inline):
-- `validateRegistrationForm(data, t)` — registration form
-- `validateAccommodationForm(data, t)` — O-Sports contact form
-- `isValidEmail`, `isValidPhone`, `isNonEmpty`, `hasMinLength`
-- `REGISTRATION_INITIAL_DATA`, `ACCOMMODATION_INITIAL_DATA`
-
-### `src/hooks/useIntersectionObserver.ts`
-Shared scroll animation hook. Use `useStaggeredAnimation` for entrance animations.
-
-### Navigation (never use Next.js `Link` directly)
-```tsx
-// Always import from src/navigation, not from next/link
-import { Link, useRouter, usePathname } from '@/src/navigation'
-```
-
----
-
-## API Routes
-
-### `POST /api/register`
-Sends registration email to Volley4All via Resend.
-
-**Required env vars:** `RESEND_API_KEY`, `EMAIL_FROM`, `VOLLEY4ALL_EMAIL_TO`
-
-**Body:**
-```json
-{ "name", "email", "mobile", "club", "city", "country", "questions" }
-```
-
-### `POST /api/osports-contact`
-Sends accommodation inquiry to O-Sports via Resend.
-
-**Required env vars:** `RESEND_API_KEY`, `EMAIL_FROM`, `OSPORT_EMAIL_TO`
-
-**Body:**
-```json
-{ "teamName", "country", "teamManagerName", "phone", "email", "ageGroup", "numberOfPeople", "message" }
-```
-
-### `GET /api/cloudinary`
-Fetches gallery images from Cloudinary. Supports year-based folder queries.  
-Folder structure: `cascaiscup/{year}` (e.g. `cascaiscup/2024`)
-
-**Required env vars:** `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
-
----
-
-## Environment Variables
-
-```bash
-# Email (Resend)
-RESEND_API_KEY=
-EMAIL_FROM=
-VOLLEY4ALL_EMAIL_TO=      # info@volley4all.com
-OSPORT_EMAIL_TO=           # info@o-sports.pt
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-```
+- **Files:** `kebab-case` (e.g. `locale-switcher.tsx`)
+- **Components:** `PascalCase` exports (`export default function LocaleSwitcher`)
+- **Default exports** for components
+- **Underscore-prefix folders** (`_components`, `_lib`, `_hooks`) for private/non-routable code
 
 ---
 
 ## Coding Conventions
 
 ### Components
-- All components are TypeScript (`.tsx`)
-- Client components use `'use client'` at the top
-- Use `clsx` for conditional class merging (already installed)
-- Import images via `next/image` with explicit `width`, `height`, `sizes`, `quality`
-- Use `loading='eager'` for above-the-fold images, `loading='lazy'` below
+
+- Server Components by default. Add `"use client"` only when you need state, effects, refs, or browser APIs.
+- Accept a `dict` prop for any visible text. Never hardcode user-facing strings (English fallback strings like `t('foo') || 'Foo'` were removed during the migration — dict guarantees keys exist).
+- Accept a `lang: Locale` prop for any component that builds links or loads locale-derived assets.
+- Use `clsx` for conditional class merging.
+- Use `next/image` with explicit `width`, `height`, `sizes`, `quality`, `loading`. Static asset imports work: `import Logo from "@/public/img/.../logo.webp"`.
+- Use `Link` from `next/link` paired with `localeHref(lang, path)`.
 
 ### Styling
-- Tailwind CSS only — no custom CSS files
-- `motion-safe:` prefix for all animation/transition classes (respects prefers-reduced-motion)
-- Hover animations use `hover:scale-105` + `transition-all duration-200`
-- Entrance animations use translate + opacity with `useStaggeredAnimation`
 
-### Page-level patterns
-Each page follows this structure:
+- **Tailwind 4 only** — no separate config file. All theme tokens are in `@theme` blocks inside `app/globals.css`.
+- Custom CSS vars: `--primary`, `--background`, `--header-h`. Theme maps these via `--color-primary` etc.
+- `motion-safe:` prefix for all animation/transition classes.
+- Hover animations: `hover:scale-105` + `transition-all duration-200`.
+- Entrance animations: `useStaggeredAnimation` from `_hooks/use-intersection-observer.ts`.
+
+### Page-level pattern
+
 ```tsx
-// page.tsx (server component)
-export const revalidate = 3600 // set appropriate revalidation
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { getDictionary, hasLocale } from "../dictionaries";
 
-export default function PageName() {
-  const messages = useMessages()
-  const pageMessages = pickMessages(messages, ['NamespaceA', 'NamespaceB'])
+export const revalidate = 3600;
 
+export async function generateMetadata({ params }: PageProps<"/[lang]/about">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.AboutPage.Hero.heading,
+    description: dict.AboutPage.Hero.subheading,
+    alternates: { canonical: `/${lang}/about` },
+  };
+}
+
+export default async function AboutPage({ params }: PageProps<"/[lang]/about">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const dict = await getDictionary(lang);
   return (
-    <NextIntlClientProvider messages={pageMessages}>
-      <HeroComponent />
-      <ContentComponent />
-    </NextIntlClientProvider>
-  )
+    <>
+      <AboutHero lang={lang} dict={dict.AboutPage.Hero} />
+      {/* ... */}
+    </>
+  );
 }
 ```
 
 ### Forms
-- Always use `validateRegistrationForm` or `validateAccommodationForm` from `src/lib/validation.ts`
-- Never write inline validation logic
-- Submit via `fetch('/api/register')` or `fetch('/api/osports-contact')`
+
+- Always use `validateRegistrationForm` / `validateAccommodationForm` from `app/[lang]/_lib/validation.ts`.
+- Pass a `t` adapter built from the dict: `const t = (k: string) => (dict.ValidationErrors as Record<string, string>)[k] ?? k;`
+- Submit via `fetch('/api/register')` or `fetch('/api/osports-contact')`.
+- API routes validate request bodies with zod and HTML-escape user input before sending email.
+
+### SEO / metadata
+
+- Layout `generateMetadata` builds per-locale canonical + hreflang × 4 + OG locale.
+- Layout JSON-LD: `@graph` with `WebSite` + `Organization` (Volley4All) + `SportsEvent` (Cascais Volley Cup 2026), all linked via `@id` from `schemaIds(lang)`.
+- `_lib/seo.ts` helpers: `SITE_URL`, `bcp47Locale(lang)`, `ogLocale(lang)`, `schemaIds(lang)`, `buildBreadcrumb(lang, items)`, `localeHref(lang, path)`.
+- Sitemap auto-generates 52 entries (13 routes × 4 locales) with hreflang alternates.
+- Robots allows AI crawlers (`GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, etc.).
+- For per-page enrichment (BreadcrumbList, FAQPage, ImageGallery), use `<JsonLd data={...} />` from `_components/json-ld.tsx`. Already done on gallery year pages (ImageGallery) — extend for breadcrumbs as needed.
 
 ---
 
-## Performance Rules
+## API Routes
 
-These are non-negotiable for maintaining Lighthouse scores (mobile ~85):
+### `POST /api/register`
+Sends registration email to Volley4All via Resend. Validates with `zod`. Body fields: `name`, `email`, `mobile`, `club`, `city`, `country`, `questions`.
 
-1. **Dynamic imports** for heavy components not needed on initial render
-2. **Scope `pickMessages`** per page — never pass all messages to a client component
-3. **`export const revalidate`** on all pages (set based on how often content changes)
-4. **Add `export const dynamic = 'force-dynamic'`** to API routes that shouldn't be cached
-5. **Always use `next/image`** — never `<img>` tags
-6. **`motion-safe:` prefix** on all CSS transitions
-7. **Prefer `loading='eager'`** only for above-the-fold hero images
+**Required env vars:** `RESEND_API_KEY`, `EMAIL_FROM`, `VOLLEY4ALL_EMAIL_TO`.
 
----
+### `POST /api/osports-contact`
+Sends accommodation inquiry to O-Sports via Resend. Validates with `zod`. Body fields: `teamName`, `country`, `teamManagerName`, `phone`, `email`, `ageGroup`, `numberOfPeople`, `message`.
 
-## Gallery System
+**Required env vars:** `RESEND_API_KEY`, `EMAIL_FROM`, `OSPORT_EMAIL_TO`.
 
-- Images stored in Cloudinary under `cascaiscup/{year}`
-- Fetched via `/api/cloudinary` with year-based queries
-- Gallery overview shows 6 images per year
-- Full gallery pages (`/gallery/2025`, etc.) are static routes
-- Use `OptimizedCloudinaryImage` component for gallery images (handles transformations)
-- Use `useOptimizedGallery` hook for data fetching
+### `GET /api/cloudinary`
+Fetches gallery images from Cloudinary. Supports year-based folder queries (`?folder=cascaiscup/2024&max=30&offset=0`) or batch all-years.
+
+**Required env vars:** `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
 
 ---
 
 ## Common Gotchas
 
-- **Never import `Link` from `next/link`** — always use `@/src/navigation`
-- **Never write duplicate validation logic** — use `src/lib/validation.ts`
-- **Always add `export const dynamic = 'force-dynamic'`** to API routes using external APIs
-- **Translation keys must exist in all 4 locale files** before using them in components
-- Middleware only matches `/(fr|en|es|pt)/:path*` and `/` — check `src/middleware.ts` before adding new patterns
-- `next-intl` v3 requires `useTranslations` to be called in client components; use `getTranslations` in server components
+- **Never import `Link` from `@/src/navigation`** — that file no longer exists. Use `next/link` + `localeHref`.
+- **Never use `useTranslations`** — we use the dict pattern; pass `dict` props.
+- **Translation keys must exist in all 4 locale files** before using them. Build will fail if a key is missing because of TypeScript inference across the union.
+- **`params` is a Promise** in Next 16 — always `await params`.
+- **Use `proxy.ts` not `middleware.ts`** — Next 16 renamed.
+- **API routes use `route.ts` with named HTTP method exports** (already so).
+- **Cloudinary `<CldImage>` requires `'use client'`** — `OptimizedCloudinaryImage` is a client wrapper to keep gallery pages partially server-rendered.
+
+### Known dict gaps (pre-existing, partially backfilled)
+
+- `es.json` was missing top-level `ContactModal` — backfilled from EN, **needs Spanish translation**.
+- `es.json` had stale `GalleryPage.Main` keys — replaced with translated EN equivalents during migration.
 
 ---
 
 ## Development
 
-This project is a standalone pnpm app inside the ignite monorepo. Always pass `--ignore-workspace` so pnpm doesn't resolve to the monorepo root.
+This project is a standalone pnpm app inside the ignite monorepo. Always pass `--ignore-workspace`.
 
 ```bash
-pnpm install --ignore-workspace   # Install deps (use for add/remove/update too)
-pnpm dev                          # Start dev server at localhost:3000
-pnpm build                        # Production build
-pnpm lint                         # ESLint
+pnpm install --ignore-workspace
+pnpm dev                     # localhost:3000
+pnpm build                   # production build
+pnpm lint                    # ESLint
+pnpm format                  # Prettier (app/**/*.{ts,tsx,json})
 ```
 
 Deployment is automatic via Vercel on push to main.

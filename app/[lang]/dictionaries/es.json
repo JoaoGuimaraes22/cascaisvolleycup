@@ -1,4 +1,35 @@
 {
+  "metadata": {
+    "name": "Cascais Volley Cup 2026",
+    "title": "Cascais Volley Cup 2026",
+    "titleTemplate": "%s | Cascais Volley Cup 2026",
+    "description": "Participa en la Cascais Volley Cup 2026 — torneo internacional de voleibol femenino en Cascais, Portugal. Julio de 2026. Inscríbete ahora.",
+    "type": "SportsEvent",
+    "keywords": [
+      "voleibol",
+      "voleibol indoor",
+      "Cascais",
+      "Portugal",
+      "torneo",
+      "VolleyCup",
+      "2026"
+    ]
+  },
+  "ui": {
+    "skipToContent": "Saltar al contenido",
+    "errorTitle": "Algo ha ido mal",
+    "errorRetry": "Intentar de nuevo",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundDescription": "La página que buscas no existe.",
+    "notFoundLink": "Volver al inicio",
+    "loading": "Cargando…"
+  },
+  "localeNames": {
+    "en": "Inglés",
+    "pt": "Portugués",
+    "es": "Español",
+    "fr": "Francés"
+  },
   "Header": {
     "About": "Acerca de",
     "Accommodation": "Alojamiento",
@@ -8,7 +39,6 @@
     "Registration": "Inscripción",
     "Hall_of_Fame": "Hall of Fame"
   },
-
   "LandingPage": {
     "Welcome": {
       "tagline_alt": "siente la ACCIÓN, disfruta del VERANO",
@@ -91,7 +121,6 @@
       "taglineAlt": "Siente la acción, disfruta del verano"
     }
   },
-
   "AboutPage": {
     "Hero": {
       "title": "Volley4All",
@@ -103,7 +132,9 @@
       "p4Rest": ".",
       "cta": "Visítanos",
       "heroImageAlt": "Jugadores de voleibol en acción en el torneo de Cascais",
-      "club": { "logoAlt": "Gorriones Volley4All" },
+      "club": {
+        "logoAlt": "Gorriones Volley4All"
+      },
       "sponsors": {
         "cascaisEstorilAlt": "Turismo de Cascais Estoril",
         "camaraAlt": "Ayuntamiento de Cascais",
@@ -164,7 +195,6 @@
       "cta": "VISÍTANOS"
     }
   },
-
   "AccommodationPage": {
     "Hero": {
       "title": "Alojamiento",
@@ -215,7 +245,6 @@
       "gotItButton": "¡Entendido!"
     }
   },
-
   "ProgramPage": {
     "Hero": {
       "title": "Programa",
@@ -255,8 +284,12 @@
         "d4": {
           "weekday": "SÁBADO",
           "date": "11-Jul",
-          "block1": { "title": "2ª FASE DE GRUPOS" },
-          "block2": { "title": "Cuartos de final" },
+          "block1": {
+            "title": "2ª FASE DE GRUPOS"
+          },
+          "block2": {
+            "title": "Cuartos de final"
+          },
           "block3": {
             "subtitle": "Partidos",
             "times": "9:00-22:00"
@@ -265,9 +298,15 @@
         "d5": {
           "weekday": "DOMINGO",
           "date": "12-Jul",
-          "block1": { "title": "2ª FASE DE GRUPOS" },
-          "block2": { "title": "Semifinales" },
-          "block3": { "title": "Finales" },
+          "block1": {
+            "title": "2ª FASE DE GRUPOS"
+          },
+          "block2": {
+            "title": "Semifinales"
+          },
+          "block3": {
+            "title": "Finales"
+          },
           "block4": {
             "subtitle": "Partidos",
             "times": "9:00-16:00"
@@ -292,7 +331,6 @@
       }
     }
   },
-
   "CompetitionPage": {
     "Hero": {
       "phoneAlt": "App de la Copa de Voleibol Cascais mostrada en un teléfono móvil",
@@ -369,7 +407,6 @@
       "sponsorAlt": "Logo del patrocinador"
     }
   },
-
   "GalleryPage": {
     "title": "Galería",
     "description": "Galería de fotos de los torneos de voleibol Cascais Cup",
@@ -420,7 +457,6 @@
       "live_data": "Datos en vivo"
     }
   },
-
   "HallOfFamePage": {
     "Hero": {
       "title": "Hall of Fame",
@@ -455,7 +491,6 @@
       }
     }
   },
-
   "RegistrationPage": {
     "RegistrationHero": {
       "title": "INSCRIPCIONES",
@@ -519,7 +554,6 @@
         "gotItButton": "¡Entendido!"
       }
     },
-
     "ContactModal": {
       "title": "Contactar O-Sports",
       "closeButton": "Cerrar modal",
@@ -527,7 +561,6 @@
       "submitting": "Enviando...",
       "successMessage": "¡Su solicitud de alojamiento ha sido enviada con éxito!",
       "errorMessage": "Algo salió mal. Por favor, inténtelo de nuevo.",
-
       "fields": {
         "teamName": "Nombre del Equipo",
         "country": "País",
@@ -538,7 +571,6 @@
         "numberOfPeople": "Número de Personas",
         "message": "Mensaje"
       },
-
       "placeholders": {
         "teamName": "Introduzca el nombre de su equipo",
         "country": "Introduzca su país",
@@ -549,7 +581,6 @@
         "numberOfPeople": "Introduzca el número total de personas",
         "message": "Escriba su mensaje"
       },
-
       "validation": {
         "teamNameRequired": "El nombre del equipo es obligatorio",
         "countryRequired": "El país es obligatorio",
@@ -563,7 +594,6 @@
         "numberOfPeopleInvalid": "Por favor, introduzca un número válido"
       }
     },
-
     "Form": {
       "FormTitle": "Contáctanos",
       "FormDescription": "Completa el formulario a continuación para ponerte en contacto con nosotros",

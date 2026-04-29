@@ -1,4 +1,35 @@
 {
+  "metadata": {
+    "name": "Cascais Volley Cup 2026",
+    "title": "Cascais Volley Cup 2026",
+    "titleTemplate": "%s | Cascais Volley Cup 2026",
+    "description": "Participez à la Cascais Volley Cup 2026 — tournoi international de volley-ball féminin à Cascais, Portugal. Juillet 2026. Inscrivez-vous maintenant.",
+    "type": "SportsEvent",
+    "keywords": [
+      "volley-ball",
+      "volley-ball en salle",
+      "Cascais",
+      "Portugal",
+      "tournoi",
+      "VolleyCup",
+      "2026"
+    ]
+  },
+  "ui": {
+    "skipToContent": "Passer au contenu",
+    "errorTitle": "Une erreur est survenue",
+    "errorRetry": "Réessayer",
+    "notFoundTitle": "Page introuvable",
+    "notFoundDescription": "La page que vous cherchez n’existe pas.",
+    "notFoundLink": "Retour à l’accueil",
+    "loading": "Chargement…"
+  },
+  "localeNames": {
+    "en": "Anglais",
+    "pt": "Portugais",
+    "es": "Espagnol",
+    "fr": "Français"
+  },
   "Header": {
     "About": "À propos",
     "Accommodation": "Hébergement",
@@ -8,7 +39,6 @@
     "Registration": "Inscription",
     "Hall_of_Fame": "Hall of Fame"
   },
-
   "LandingPage": {
     "Welcome": {
       "tagline_alt": "ressentez l'ACTION, profitez de l'ÉTÉ",
@@ -91,7 +121,6 @@
       "taglineAlt": "Ressentez l'action, profitez de l'été"
     }
   },
-
   "AboutPage": {
     "Hero": {
       "title": "Volley4All",
@@ -103,7 +132,9 @@
       "p4Rest": ".",
       "cta": "Visitez-nous",
       "heroImageAlt": "Joueurs de volleyball en action au tournoi de Cascais",
-      "club": { "logoAlt": "Volley4All Sparrows" },
+      "club": {
+        "logoAlt": "Volley4All Sparrows"
+      },
       "sponsors": {
         "cascaisEstorilAlt": "Tourisme Cascais Estoril",
         "camaraAlt": "Conseil municipal de Cascais",
@@ -164,7 +195,6 @@
       "cta": "VISITEZ-NOUS"
     }
   },
-
   "AccommodationPage": {
     "Hero": {
       "title": "Hébergement",
@@ -215,7 +245,6 @@
       "gotItButton": "Compris !"
     }
   },
-
   "ProgramPage": {
     "Hero": {
       "title": "Programme",
@@ -255,8 +284,12 @@
         "d4": {
           "weekday": "SAMEDI",
           "date": "11-Juil",
-          "block1": { "title": "2ème PHASE DE GROUPE" },
-          "block2": { "title": "Quarts de finale" },
+          "block1": {
+            "title": "2ème PHASE DE GROUPE"
+          },
+          "block2": {
+            "title": "Quarts de finale"
+          },
           "block3": {
             "subtitle": "Matchs",
             "times": "9:00-22:00"
@@ -265,9 +298,15 @@
         "d5": {
           "weekday": "DIMANCHE",
           "date": "12-Juil",
-          "block1": { "title": "2ème PHASE DE GROUPE" },
-          "block2": { "title": "Demi-finales" },
-          "block3": { "title": "finales" },
+          "block1": {
+            "title": "2ème PHASE DE GROUPE"
+          },
+          "block2": {
+            "title": "Demi-finales"
+          },
+          "block3": {
+            "title": "finales"
+          },
           "block4": {
             "subtitle": "Matchs",
             "times": "9:00-16:00"
@@ -292,7 +331,6 @@
       }
     }
   },
-
   "CompetitionPage": {
     "Hero": {
       "phoneAlt": "Application Cascais Volley Cup affichée sur un téléphone portable",
@@ -369,7 +407,6 @@
       "sponsorAlt": "Logo du sponsor"
     }
   },
-
   "GalleryPage": {
     "title": "Galerie",
     "description": "Galerie de photos des tournois de volley-ball Cascais Cup",
@@ -397,7 +434,6 @@
       "try_again": "Réessayer",
       "image": "image",
       "images": "images",
-
       "more_available": "plus disponibles",
       "all_loaded": "Toutes les images chargées",
       "load_more": "Charger Plus d'Images",
@@ -412,7 +448,6 @@
       "close_lightbox": "Fermer la lightbox"
     }
   },
-
   "HallOfFamePage": {
     "Hero": {
       "title": "Hall of Fame",
@@ -447,7 +482,6 @@
       }
     }
   },
-
   "RegistrationPage": {
     "RegistrationHero": {
       "title": "INSCRIPTIONS",
@@ -511,7 +545,6 @@
         "gotItButton": "Compris !"
       }
     },
-
     "Form": {
       "FormTitle": "Contactez-nous",
       "FormDescription": "Remplissez le formulaire ci-dessous pour nous contacter",
@@ -543,7 +576,6 @@
       }
     }
   },
-
   "ContactModal": {
     "title": "Contacter O-Sports",
     "closeButton": "Fermer la fenêtre",
@@ -551,7 +583,6 @@
     "submitting": "Envoi...",
     "successMessage": "Votre demande d’hébergement a été envoyée avec succès !",
     "errorMessage": "Une erreur est survenue. Veuillez réessayer.",
-
     "fields": {
       "teamName": "Nom de l’Équipe",
       "country": "Pays",
@@ -562,7 +593,6 @@
       "numberOfPeople": "Nombre de Personnes",
       "message": "Message"
     },
-
     "placeholders": {
       "teamName": "Entrez le nom de votre équipe",
       "country": "Entrez votre pays",
@@ -573,7 +603,6 @@
       "numberOfPeople": "Entrez le nombre total de personnes",
       "message": "Entrez votre message"
     },
-
     "validation": {
       "teamNameRequired": "Le nom de l’équipe est obligatoire",
       "countryRequired": "Le pays est obligatoire",
@@ -587,7 +616,6 @@
       "numberOfPeopleInvalid": "Veuillez entrer un nombre valide"
     }
   },
-
   "Footer": {
     "logoAria": "Cascais Volley Cup - Accueil",
     "description": "Le plus grand tournoi international de volley-ball du sud du Portugal. Rejoignez-nous pour une expérience sportive inoubliable sur la côte atlantique.",

@@ -277,10 +277,13 @@ These are non-negotiable for maintaining Lighthouse scores (mobile ~85):
 
 ## Development
 
+This project is a standalone pnpm app inside the ignite monorepo. Always pass `--ignore-workspace` so pnpm doesn't resolve to the monorepo root.
+
 ```bash
-npm run dev      # Start dev server at localhost:3000
-npm run build    # Production build
-npm run lint     # ESLint
+pnpm install --ignore-workspace   # Install deps (use for add/remove/update too)
+pnpm dev                          # Start dev server at localhost:3000
+pnpm build                        # Production build
+pnpm lint                         # ESLint
 ```
 
 Deployment is automatic via Vercel on push to main.

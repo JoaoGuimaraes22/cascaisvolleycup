@@ -20,7 +20,6 @@ const space_grotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   display: 'swap',
   preload: true,
-  adjustFontFallback: true,
   fallback: ['system-ui', 'arial'],
   weight: ['400', '700']
 })
@@ -29,8 +28,7 @@ const rubik = Rubik({
   subsets: ['arabic'],
   variable: '--rubik',
   display: 'swap',
-  preload: false,
-  adjustFontFallback: true
+  preload: false
 })
 
 export const viewport: Viewport = {

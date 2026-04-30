@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useCallback, useState, useMemo, useRef, useEffect } from "react";
+import React, { useCallback, useState, useMemo, useRef } from "react";
 import { useKeenSlider } from "keen-slider/react";
+import { useIsClient } from "../../_hooks/use-is-client";
 import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiStar } from "react-icons/fi";
@@ -103,9 +104,8 @@ export default function LandingTestimonials({
 }: LandingTestimonialsProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useIsClient();
 
-  // Build testimonials from dict
   const testimonials: Testimonial[] = useMemo(
     () =>
       TESTIMONIAL_KEYS.map((key) => ({
@@ -116,11 +116,6 @@ export default function LandingTestimonials({
       })),
     [dict]
   );
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   // Keen-slider configuration (only for tablet+)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -187,15 +182,6 @@ export default function LandingTestimonials({
       }, 5000);
     }
   }, [instanceRef]);
-
-  // Cleanup autoplay on unmount
-  useEffect(() => {
-    return () => {
-      if (autoplayRef.current) {
-        clearInterval(autoplayRef.current);
-      }
-    };
-  }, []);
 
   // First three testimonials for mobile static view
   const mobileTestimonials = useMemo(

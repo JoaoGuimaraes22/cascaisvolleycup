@@ -1,296 +1,200 @@
-// hooks/useOptimizedGallery.ts
-'use client'
+"use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface ProcessedImage {
-  public_id: string
-  url: string
-  created_at: string
-  width: number
-  height: number
-  format: string
-  aspect_ratio: number
+  public_id: string;
+  url: string;
+  created_at: string;
+  width: number;
+  height: number;
+  format: string;
+  aspect_ratio: number;
 }
 
 export interface GalleryData {
-  imagesByYear: Record<number, ProcessedImage[]>
-  totalImages: number
-  availableYears: number[]
-  errors: string[] | null
-  timestamp: string
+  imagesByYear: Record<number, ProcessedImage[]>;
+  totalImages: number;
+  availableYears: number[];
+  errors: string[] | null;
+  timestamp: string;
 }
 
-export interface GalleryState {
-  data: GalleryData | null
-  loading: boolean
-  error: string | null
-  lastFetch: number | null
-  fromCache: boolean
-}
+const CACHE_KEY = "cascais-gallery-cache";
+const CACHE_DURATION = 5 * 60 * 1000;
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY = 1000;
 
-// Cache configuration
-const CACHE_KEY = 'cascais-gallery-cache'
-const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
-const MAX_RETRY_ATTEMPTS = 3
-const RETRY_DELAY = 1000 // 1 second
+let memoryCache: { data: GalleryData; timestamp: number } | null = null;
 
-// Simple in-memory cache as fallback
-let memoryCache: { data: GalleryData; timestamp: number } | null = null
-
-// Cache management utilities
 const cacheUtils = {
-  // Get from localStorage with fallback to memory
   get(): { data: GalleryData; timestamp: number } | null {
     try {
-      const cached = localStorage.getItem(CACHE_KEY)
-      if (cached) {
-        return JSON.parse(cached)
-      }
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) return JSON.parse(cached);
     } catch (error) {
-      console.warn('Failed to read from localStorage cache:', error)
+      console.warn("Failed to read from localStorage cache:", error);
     }
-    return memoryCache
+    return memoryCache;
   },
-
-  // Set to both localStorage and memory
   set(data: GalleryData): void {
-    const cacheEntry = { data, timestamp: Date.now() }
-
+    const entry = { data, timestamp: Date.now() };
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(cacheEntry))
+      localStorage.setItem(CACHE_KEY, JSON.stringify(entry));
     } catch (error) {
-      console.warn('Failed to write to localStorage cache:', error)
+      console.warn("Failed to write to localStorage cache:", error);
     }
-
-    // Always set memory cache as fallback
-    memoryCache = cacheEntry
+    memoryCache = entry;
   },
-
-  // Check if cache is valid
-  isValid(cacheTimestamp: number): boolean {
-    return Date.now() - cacheTimestamp < CACHE_DURATION
+  isValid(ts: number): boolean {
+    return Date.now() - ts < CACHE_DURATION;
   },
+};
 
-  // Clear both caches
-  clear(): void {
-    try {
-      localStorage.removeItem(CACHE_KEY)
-    } catch (error) {
-      console.warn('Failed to clear localStorage cache:', error)
+function abortableSleep(ms: number, signal: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal.aborted) {
+      reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
+      return;
     }
-    memoryCache = null
+    const timeout = setTimeout(() => {
+      signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      clearTimeout(timeout);
+      reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
+    };
+    signal.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
+async function fetchGalleryWithRetry(
+  maxPerYear: number,
+  signal: AbortSignal,
+  attempt = 1
+): Promise<GalleryData> {
+  try {
+    const response = await fetch(`/api/cloudinary?maxPerYear=${maxPerYear}`, {
+      signal,
+      headers: { "Cache-Control": "no-cache" },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || "API returned unsuccessful response");
+    }
+    return {
+      imagesByYear: result.imagesByYear || {},
+      totalImages: result.totalImages || 0,
+      availableYears: result.availableYears || [],
+      errors: result.errors,
+      timestamp: result.timestamp || new Date().toISOString(),
+    };
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") throw error;
+    if (attempt < MAX_RETRY_ATTEMPTS) {
+      console.warn(`Fetch attempt ${attempt} failed, retrying...`, error);
+      await abortableSleep(RETRY_DELAY * attempt, signal);
+      return fetchGalleryWithRetry(maxPerYear, signal, attempt + 1);
+    }
+    throw error;
   }
 }
 
+type State = {
+  data: GalleryData | null;
+  loading: boolean;
+  error: string | null;
+};
+
+const INITIAL_STATE: State = { data: null, loading: true, error: null };
+
 export function useOptimizedGallery(maxPerYear: number = 8) {
-  const [state, setState] = useState<GalleryState>({
-    data: null,
-    loading: false,
-    error: null,
-    lastFetch: null,
-    fromCache: false
-  })
+  const [state, setState] = useState<State>(INITIAL_STATE);
+  const lastFetchRef = useRef<number | null>(null);
 
-  const abortControllerRef = useRef<AbortController | null>(null)
-  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
 
-  // Cleanup function
-  const cleanup = useCallback(() => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
-    if (retryTimeoutRef.current) {
-      clearTimeout(retryTimeoutRef.current)
-    }
-  }, [])
-
-  // Fetch data with retry logic
-  const fetchWithRetry = useCallback(
-    async (attempt: number = 1): Promise<GalleryData> => {
-      const controller = new AbortController()
-      abortControllerRef.current = controller
-
-      try {
-        const response = await fetch(
-          `/api/cloudinary?maxPerYear=${maxPerYear}`,
-          {
-            signal: controller.signal,
-            headers: {
-              'Cache-Control': 'no-cache' // Force fresh data on explicit fetch
-            }
-          }
-        )
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-        }
-
-        const result = await response.json()
-
-        if (!result.success) {
-          throw new Error(result.error || 'API returned unsuccessful response')
-        }
-
-        return {
-          imagesByYear: result.imagesByYear || {},
-          totalImages: result.totalImages || 0,
-          availableYears: result.availableYears || [],
-          errors: result.errors,
-          timestamp: result.timestamp || new Date().toISOString()
-        }
-      } catch (error) {
-        // Handle abort
-        if (error instanceof Error && error.name === 'AbortError') {
-          throw error
-        }
-
-        // Retry logic for network errors
-        if (attempt < MAX_RETRY_ATTEMPTS) {
-          console.warn(`Fetch attempt ${attempt} failed, retrying...`, error)
-
-          await new Promise(resolve => {
-            retryTimeoutRef.current = setTimeout(resolve, RETRY_DELAY * attempt)
-          })
-
-          return fetchWithRetry(attempt + 1)
-        }
-
-        throw error
+    void (async () => {
+      const cached = cacheUtils.get();
+      if (cached && cacheUtils.isValid(cached.timestamp)) {
+        if (cancelled) return;
+        lastFetchRef.current = cached.timestamp;
+        setState({ data: cached.data, loading: false, error: null });
+        return;
       }
-    },
-    [maxPerYear]
-  )
-
-  // Main fetch function
-  const fetchGalleryData = useCallback(
-    async (forceRefresh: boolean = false) => {
-      // Don't start new request if already loading
-      if (state.loading) return
-
-      setState(prev => ({ ...prev, loading: true, error: null }))
 
       try {
-        // Check cache first (unless force refresh)
-        if (!forceRefresh) {
-          const cached = cacheUtils.get()
-          if (cached && cacheUtils.isValid(cached.timestamp)) {
-            setState(prev => ({
-              ...prev,
-              data: cached.data,
-              loading: false,
-              lastFetch: cached.timestamp,
-              fromCache: true
-            }))
-            return
-          }
-        }
-
-        // Fetch fresh data
-        const data = await fetchWithRetry()
-
-        // Cache the results
-        cacheUtils.set(data)
-
-        setState(prev => ({
-          ...prev,
-          data,
-          loading: false,
-          error: null,
-          lastFetch: Date.now(),
-          fromCache: false
-        }))
+        const data = await fetchGalleryWithRetry(maxPerYear, controller.signal);
+        if (cancelled) return;
+        cacheUtils.set(data);
+        lastFetchRef.current = Date.now();
+        setState({ data, loading: false, error: null });
       } catch (error) {
-        // Don't update state if request was aborted
-        if (error instanceof Error && error.name === 'AbortError') {
-          return
-        }
-
+        if (error instanceof Error && error.name === "AbortError") return;
+        if (cancelled) return;
         const errorMessage =
-          error instanceof Error ? error.message : 'Failed to load gallery'
-
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: errorMessage
-        }))
-
-        console.error('Gallery fetch error:', error)
+          error instanceof Error ? error.message : "Failed to load gallery";
+        console.error("Gallery fetch error:", error);
+        setState((prev) => ({ ...prev, loading: false, error: errorMessage }));
       }
-    },
-    [state.loading, fetchWithRetry]
-  )
+    })();
 
-  // Force refresh function
-  const refresh = useCallback(() => {
-    cleanup()
-    fetchGalleryData(true)
-  }, [cleanup, fetchGalleryData])
-
-  // Get images for specific year
-  const getImagesForYear = useCallback(
-    (year: number): ProcessedImage[] => {
-      return state.data?.imagesByYear[year] || []
-    },
-    [state.data]
-  )
-
-  // Get total images count
-  const getTotalImagesCount = useCallback((): number => {
-    return state.data?.totalImages || 0
-  }, [state.data])
-
-  // Check if data is stale
-  const isStale = useCallback((): boolean => {
-    if (!state.lastFetch) return true
-    return Date.now() - state.lastFetch > CACHE_DURATION
-  }, [state.lastFetch])
-
-  // Initial fetch on mount
-  useEffect(() => {
-    fetchGalleryData()
-
-    // Cleanup on unmount
-    return cleanup
-  }, []) // Empty dependency array - only run on mount
-
-  // Auto-refresh stale data when tab becomes visible
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && isStale()) {
-        fetchGalleryData()
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [fetchGalleryData, isStale])
+      cancelled = true;
+      controller.abort();
+    };
+  }, [maxPerYear]);
+
+  useEffect(() => {
+    let activeController: AbortController | null = null;
+    const handler = () => {
+      if (document.hidden) return;
+      const last = lastFetchRef.current;
+      if (last && Date.now() - last < CACHE_DURATION) return;
+
+      activeController?.abort();
+      const controller = new AbortController();
+      activeController = controller;
+      void (async () => {
+        try {
+          const data = await fetchGalleryWithRetry(
+            maxPerYear,
+            controller.signal
+          );
+          cacheUtils.set(data);
+          lastFetchRef.current = Date.now();
+          setState({ data, loading: false, error: null });
+        } catch (error) {
+          if (error instanceof Error && error.name === "AbortError") return;
+          console.warn("Background gallery refresh failed:", error);
+        }
+      })();
+    };
+    document.addEventListener("visibilitychange", handler);
+    return () => {
+      document.removeEventListener("visibilitychange", handler);
+      activeController?.abort();
+    };
+  }, [maxPerYear]);
+
+  const getImagesForYear = useCallback(
+    (year: number): ProcessedImage[] => state.data?.imagesByYear[year] || [],
+    [state.data]
+  );
+
+  const totalImages = state.data?.totalImages ?? 0;
 
   return {
-    // Data
-    data: state.data,
-    imagesByYear: state.data?.imagesByYear || {},
     availableYears: state.data?.availableYears || [],
-    errors: state.data?.errors,
-
-    // Status
     loading: state.loading,
     error: state.error,
-    fromCache: state.fromCache,
-    isStale: isStale(),
-    lastFetch: state.lastFetch,
-
-    // Actions
-    refresh,
-    clearCache: cacheUtils.clear,
-
-    // Utilities
     getImagesForYear,
-    getTotalImagesCount,
-
-    // Meta
-    isEmpty: !state.data || getTotalImagesCount() === 0
-  }
+    isEmpty: !state.data || totalImages === 0,
+  };
 }

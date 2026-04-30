@@ -64,100 +64,149 @@ interface OptimizedGalleryProps {
   dict: GalleryMainDict;
 }
 
-// Custom hook for progressive image loading
+type GalleryState = {
+  key: string;
+  fetchNonce: number;
+  images: ProcessedImage[];
+  offset: number;
+  hasMore: boolean;
+  error: string | null;
+  loaded: boolean;
+  loadingMore: boolean;
+};
+
+const initialGalleryState = (key: string, fetchNonce = 0): GalleryState => ({
+  key,
+  fetchNonce,
+  images: [],
+  offset: 0,
+  hasMore: true,
+  error: null,
+  loaded: false,
+  loadingMore: false,
+});
+
+function buildGalleryUrl(offset: number, year?: number, folder?: string) {
+  let url = `/api/cloudinary?max=${IMAGES_PER_LOAD}&offset=${offset}`;
+  if (folder) url += `&folder=${folder}`;
+  else if (year) url += `&folder=cascaiscup/${year}`;
+  return url;
+}
+
+async function fetchGalleryPage(
+  offset: number,
+  year?: number,
+  folder?: string
+): Promise<ProcessedImage[]> {
+  const response = await fetch(buildGalleryUrl(offset, year, folder));
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+  const result = await response.json();
+  if (!result.success) {
+    throw new Error(result.error || "Failed to fetch images");
+  }
+  return result.images || [];
+}
+
 function useProgressiveGallery(year?: number, folder?: string) {
-  const [images, setImages] = useState<ProcessedImage[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [offset, setOffset] = useState(0);
-
-  const loadImages = useCallback(
-    async (isLoadMore = false) => {
-      if (isLoadMore) {
-        setLoadingMore(true);
-      } else {
-        setLoading(true);
-        setImages([]);
-        setOffset(0);
-        setHasMore(true);
-      }
-
-      try {
-        let url = `/api/cloudinary?max=${IMAGES_PER_LOAD}&offset=${
-          isLoadMore ? offset : 0
-        }`;
-
-        if (folder) {
-          url += `&folder=${folder}`;
-        } else if (year) {
-          // For year-based requests, we'll need to map to folder
-          url += `&folder=cascaiscup/${year}`;
-        }
-
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-
-        if (!result.success) {
-          throw new Error(result.error || "Failed to fetch images");
-        }
-
-        const newImages = result.images || [];
-
-        if (isLoadMore) {
-          setImages((prev) => [...prev, ...newImages]);
-          setOffset((prev) => prev + IMAGES_PER_LOAD);
-        } else {
-          setImages(newImages);
-          setOffset(IMAGES_PER_LOAD);
-        }
-
-        // Check if there are more images to load
-        setHasMore(newImages.length === IMAGES_PER_LOAD);
-        setError(null);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Unknown error";
-        setError(errorMessage);
-        console.error("Gallery fetch error:", err);
-      } finally {
-        setLoading(false);
-        setLoadingMore(false);
-      }
-    },
-    [year, folder, offset]
+  const requestKey = JSON.stringify({ year: year ?? null, folder: folder ?? null });
+  const [state, setState] = useState<GalleryState>(() =>
+    initialGalleryState(requestKey)
   );
 
-  const loadMore = useCallback(() => {
-    if (!loadingMore && hasMore) {
-      loadImages(true);
-    }
-  }, [loadImages, loadingMore, hasMore]);
+  if (state.key !== requestKey) {
+    setState(initialGalleryState(requestKey));
+  }
 
-  const refresh = useCallback(() => {
-    loadImages(false);
-  }, [loadImages]);
+  const loading = state.key !== requestKey || (!state.loaded && !state.error);
 
   useEffect(() => {
-    loadImages(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [year, folder]); // Re-load when year or folder changes
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const newImages = await fetchGalleryPage(0, year, folder);
+        if (cancelled) return;
+        setState((prev) =>
+          prev.key === requestKey && prev.fetchNonce === state.fetchNonce
+            ? {
+                ...prev,
+                images: newImages,
+                offset: IMAGES_PER_LOAD,
+                hasMore: newImages.length === IMAGES_PER_LOAD,
+                loaded: true,
+                error: null,
+              }
+            : prev
+        );
+      } catch (err) {
+        if (cancelled) return;
+        const errorMessage =
+          err instanceof Error ? err.message : "Unknown error";
+        console.error("Gallery fetch error:", err);
+        setState((prev) =>
+          prev.key === requestKey && prev.fetchNonce === state.fetchNonce
+            ? { ...prev, loaded: true, error: errorMessage }
+            : prev
+        );
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [requestKey, state.fetchNonce, year, folder]);
+
+  const loadMore = useCallback(async () => {
+    if (loading || state.loadingMore || !state.hasMore) return;
+    setState((prev) => ({ ...prev, loadingMore: true, error: null }));
+    try {
+      const newImages = await fetchGalleryPage(state.offset, year, folder);
+      setState((prev) =>
+        prev.key === requestKey
+          ? {
+              ...prev,
+              images: [...prev.images, ...newImages],
+              offset: prev.offset + IMAGES_PER_LOAD,
+              hasMore: newImages.length === IMAGES_PER_LOAD,
+              loadingMore: false,
+            }
+          : prev
+      );
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Unknown error";
+      console.error("Gallery fetch error:", err);
+      setState((prev) =>
+        prev.key === requestKey
+          ? { ...prev, loadingMore: false, error: errorMessage }
+          : prev
+      );
+    }
+  }, [
+    loading,
+    state.loadingMore,
+    state.hasMore,
+    state.offset,
+    requestKey,
+    year,
+    folder,
+  ]);
+
+  const refresh = useCallback(() => {
+    setState((prev) => initialGalleryState(prev.key, prev.fetchNonce + 1));
+  }, []);
 
   return {
-    images,
+    images: state.images,
     loading,
-    loadingMore,
-    error,
-    hasMore,
+    loadingMore: state.loadingMore,
+    error: state.error,
+    hasMore: state.hasMore,
     loadMore,
     refresh,
-    totalLoaded: images.length,
+    totalLoaded: state.images.length,
   };
 }
 

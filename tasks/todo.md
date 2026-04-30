@@ -42,30 +42,34 @@ also fixed — they were missing hreflang because the home page-level
 - [N/A] FAQPage JSON-LD on `/registration` — no FAQ section exists in the
       registration dict.
 
-## Lint polish (React 19 perf hints)
+## Lint polish (React 19 perf hints) — done 2026-04-30
 
-Currently `react-hooks/set-state-in-effect` and `react-hooks/immutability` are
-demoted to warn in `eslint.config.mjs`. The 6 warnings flag legitimate
-patterns that React 19's docs prefer to express differently:
+All `react-hooks/set-state-in-effect` and `react-hooks/immutability` warnings
+resolved; eslint config restored to defaults (no rule overrides). Fixes:
 
-- [ ] `app/[lang]/_components/global/header.tsx:69` — `setMenuOpen(false)`
-      on pathname change. Cleaner: derive open state from pathname or use
-      `useSyncExternalStore`.
-- [ ] `app/[lang]/_components/landing/registration-toast.tsx:145` —
-      `setMounted(true)` hydration guard. Replace with
-      `useSyncExternalStore` or a `useId`-driven CSS class trick.
-- [ ] `app/[lang]/_components/landing/testimonials.tsx:124` — same
-      `setIsMounted(true)` hydration pattern.
-- [ ] `app/[lang]/_components/gallery/gallery.tsx:148` — `loadImages(false)`
-      called in effect. Refactor to use a query-key pattern that triggers
-      load on render rather than effect.
-- [ ] `app/[lang]/_hooks/use-optimized-gallery.ts:251` —
-      `fetchGalleryData()` in effect on mount. Same fix.
-- [ ] `app/[lang]/_hooks/use-optimized-gallery.ts:166` — `fetchGalleryData`
-      `useCallback` redefining identity each render
-      (`react-hooks/immutability`). Probably needs the dep array tightened.
-
-After cleanup, restore the rules to `error` in `eslint.config.mjs`.
+- [x] `header.tsx` — replaced pathname-reset useEffect with the "store info
+      from previous renders" pattern (set during render when pathname differs).
+- [x] `registration-toast.tsx` + `testimonials.tsx` + `welcome.tsx` —
+      replaced `setMounted(true)` mount-effect pattern with new shared
+      `_hooks/use-is-client.ts` (`useSyncExternalStore` returning false on
+      server, true on client).
+- [x] `welcome.tsx` — replaced `setIsDesktop(mediaQuery.matches)` mount
+      effect + change listener with new shared `_hooks/use-media-query.ts`
+      (`useSyncExternalStore` over `matchMedia`).
+- [x] `gallery.tsx` `useProgressiveGallery` — restructured around a
+      `requestKey` derived from `year`/`folder`. Sync state reset happens
+      during render (key-mismatch detection), the effect only kicks off
+      the async fetch (no sync setState before await). Stale responses
+      ignored via key comparison + cancellation flag. `loadMore` now an
+      event-handler async function.
+- [x] `use-optimized-gallery.ts` — full rewrite. Dropped unused returns
+      (`refresh`, `clearCache`, `fromCache`, `isStale`, `lastFetch`,
+      `getTotalImagesCount`, `imagesByYear`, `errors`, `data`) since
+      `hero.tsx` only consumes `availableYears`/`loading`/`error`/
+      `getImagesForYear`/`isEmpty`. Replaced recursive `useCallback`
+      with a module-level `fetchGalleryWithRetry(maxPerYear, signal,
+      attempt)` async function. Mount + visibility effects use async
+      IIFE with cancellation flag — all setState calls happen post-await.
 
 ## Misc
 

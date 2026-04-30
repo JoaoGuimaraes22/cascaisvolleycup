@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 import type { Locale } from "@/i18n-config";
 import { localeHref } from "../../_lib/seo";
 import { getBrochureFileName, GLOBAL_ASSETS } from "../../_lib/constants";
+import { useIsClient } from "../../_hooks/use-is-client";
+import { useMediaQuery } from "../../_hooks/use-media-query";
 
 type WelcomeDict = {
   tagline_alt: string;
@@ -31,10 +33,9 @@ type Props = {
 };
 
 export default function LandingWelcome({ lang, dict }: Props) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const isLoaded = useIsClient();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  // Refs for parallax (desktop only)
   const bgRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | undefined>(undefined);
   const lastScrollY = useRef(0);
@@ -51,23 +52,6 @@ export default function LandingWelcome({ lang, dict }: Props) {
   );
 
   const brochureFile = useMemo(() => getBrochureFileName(lang), [lang]);
-
-  // Instant load
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  // Desktop detection - only enable parallax on screens 1024px+
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
-
-    setIsDesktop(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mediaQuery.addEventListener("change", handler);
-
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
 
   // Parallax effect - DESKTOP ONLY
   useEffect(() => {

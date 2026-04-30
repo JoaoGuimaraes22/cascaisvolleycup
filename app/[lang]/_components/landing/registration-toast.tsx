@@ -1,7 +1,7 @@
 // RegistrationToast component with registration form functionality
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from "react-icons/fi";
 import clsx from "clsx";
@@ -11,6 +11,7 @@ import {
   type RegistrationFormData,
   type FormErrors,
 } from "../../_lib/validation";
+import { useIsClient } from "../../_hooks/use-is-client";
 
 type MessageType = "success" | "error" | "info" | null;
 
@@ -140,12 +141,9 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
     onClose();
   };
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useIsClient();
 
-  if (!isOpen || !mounted) return null;
+  if (!isOpen || !isClient) return null;
 
   return createPortal(
     <>

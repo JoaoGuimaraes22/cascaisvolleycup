@@ -14,6 +14,16 @@ but not yet merged to main — Vercel will only redeploy after merge.
       `all_loaded` → "Todas las imágenes cargadas", `loading` → "Cargando
       galería...").
 
+## SEO verification (build inspection) — 2026-04-30
+
+All 48 SSG pages (12 routes × 4 locales, including home) ship: full
+hreflang × 4 + `x-default`, canonical, OG (with `og:locale` per locale),
+Twitter card, and JSON-LD `@graph`. Verified via build artifact grep —
+all five SEO features render on 48/48 pages. Sitemap has 48 valid entries
+(removed the dead `/location` route that never had a page). Home pages
+also fixed — they were missing hreflang because the home page-level
+`alternates` was overriding the layout's languages map.
+
 ## SEO enrichment — done 2026-04-30
 
 - [x] Emit `BreadcrumbList` JSON-LD on every non-home page. All 12 inner pages
@@ -65,6 +75,17 @@ After cleanup, restore the rules to `error` in `eslint.config.mjs`.
       `GalleryPage`, and replace the `NEWS_TITLE`/`NEWS_DESCRIPTION`
       constants with dict references. PT/ES/FR users currently get an
       English `<title>` for `/news`.
+- [ ] Gallery year pages (`gallery/{2023,2024,2025}/page.tsx`) mix PT/ES/FR
+      dict text with hardcoded English suffixes in three places:
+      Twitter/OG description (`...View photos and highlights from the Cascais
+      Cup 2025 volleyball tournament.`), `<JsonLd>` `ImageGallery`
+      description/name (`Official photo gallery of Cascais Cup 2025
+      volleyball tournament`, `Cascais Cup 2025 Photo Gallery`), and the
+      Gallery component `description` prop. Add per-locale year-meta keys
+      to `GalleryPage` (e.g. `yearMetaDescription`, `yearGalleryName`)
+      and reuse them across metadata + JSON-LD + component. Pre-existing
+      from before the SEO migration — verified by build inspection
+      2026-04-30.
 - [ ] Re-evaluate `prettier-plugin-tailwindcss` 0.6 → 0.8 (latest). Trivial
       bump but may reorder some Tailwind classes; run formatter and review
       diff.

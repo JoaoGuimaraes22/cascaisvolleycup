@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getDictionary, hasLocale } from "./dictionaries";
 import LandingWelcome from "./_components/landing/welcome";
+import { buildPageMetadata } from "./_lib/seo";
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,
@@ -15,11 +16,15 @@ export async function generateMetadata({
 
   const dict = await getDictionary(lang);
   const w = dict.LandingPage.Welcome;
+  const title = "Cascais VolleyCup 2026";
 
   return {
-    title: { absolute: "Cascais VolleyCup 2026" },
-    description: `${w.heading} — Cascais, ${w.PORTUGAL}. ${w.dates}`,
-    alternates: { canonical: `/${lang}` },
+    ...buildPageMetadata(lang, {
+      title,
+      description: `${w.heading} — Cascais, ${w.PORTUGAL}. ${w.dates}`,
+      path: "",
+    }),
+    title: { absolute: title },
   };
 }
 

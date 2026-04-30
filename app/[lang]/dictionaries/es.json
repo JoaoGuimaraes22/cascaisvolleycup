@@ -410,9 +410,11 @@
   "GalleryPage": {
     "title": "Galería",
     "description": "Galería de fotos de los torneos de voleibol Cascais Cup",
-    "yearDescription": "Fotos y destacados del Cascais Cup",
-    "yearSubtitle": "Galería oficial de fotos del",
     "metaDescription": "Explora galerías de fotos de los torneos de voleibol Cascais Cup a través de los años. Revive los mejores momentos y destacados.",
+    "yearMetaDescription": "Galería de fotos del Cascais Cup {year}. Mira las fotos y destacados del torneo de voleibol de {year} en Cascais, Portugal.",
+    "yearGalleryName": "Galería de fotos del Cascais Cup {year}",
+    "yearGalleryDescription": "Galería oficial de fotos del torneo de voleibol Cascais Cup {year}.",
+    "yearFullDescription": "Fotos y destacados del Cascais Cup {year} — galería oficial de fotos del torneo de voleibol en Cascais, Portugal.",
     "Hero": {
       "title": "Galería",
       "subtitle": "Revive los mejores momentos del Cascais Cup a través de los años",

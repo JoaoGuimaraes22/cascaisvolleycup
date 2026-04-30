@@ -10,6 +10,7 @@ import {
 } from "../../_lib/seo";
 
 const YEAR = 2023;
+const withYear = (s: string) => s.replace(/\{year\}/g, String(YEAR));
 
 export const revalidate = 86400;
 
@@ -23,7 +24,7 @@ export async function generateMetadata({
 
   return buildPageMetadata(lang, {
     title: `${gallery.title} ${YEAR} | Cascais Cup`,
-    description: `${gallery.description} ${YEAR}. View photos and highlights from the Cascais Cup ${YEAR} volleyball tournament.`,
+    description: withYear(gallery.yearMetaDescription),
     path: `/gallery/${YEAR}`,
   });
 }
@@ -39,8 +40,8 @@ export default async function Gallery2023PageRoute({
   const jsonLd = buildPageGraph(lang, {
     type: "ImageGallery",
     path: `/gallery/${YEAR}`,
-    name: `Cascais Cup ${YEAR} Photo Gallery`,
-    description: `Official photo gallery of Cascais Cup ${YEAR} volleyball tournament`,
+    name: withYear(gallery.yearGalleryName),
+    description: withYear(gallery.yearGalleryDescription),
     eventRef: "about",
     dateCreated: `${YEAR}-07-01`,
     withPublisher: true,
@@ -56,7 +57,7 @@ export default async function Gallery2023PageRoute({
       <Gallery
         year={YEAR}
         title={`${gallery.title} ${YEAR}`}
-        description={`${gallery.yearDescription} ${YEAR} - ${gallery.yearSubtitle} volleyball tournament in Cascais, Portugal.`}
+        description={withYear(gallery.yearFullDescription)}
         dict={gallery.Main}
       />
     </>

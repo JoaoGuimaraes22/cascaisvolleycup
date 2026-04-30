@@ -75,17 +75,14 @@ After cleanup, restore the rules to `error` in `eslint.config.mjs`.
       `GalleryPage`, and replace the `NEWS_TITLE`/`NEWS_DESCRIPTION`
       constants with dict references. PT/ES/FR users currently get an
       English `<title>` for `/news`.
-- [ ] Gallery year pages (`gallery/{2023,2024,2025}/page.tsx`) mix PT/ES/FR
-      dict text with hardcoded English suffixes in three places:
-      Twitter/OG description (`...View photos and highlights from the Cascais
-      Cup 2025 volleyball tournament.`), `<JsonLd>` `ImageGallery`
-      description/name (`Official photo gallery of Cascais Cup 2025
-      volleyball tournament`, `Cascais Cup 2025 Photo Gallery`), and the
-      Gallery component `description` prop. Add per-locale year-meta keys
-      to `GalleryPage` (e.g. `yearMetaDescription`, `yearGalleryName`)
-      and reuse them across metadata + JSON-LD + component. Pre-existing
-      from before the SEO migration — verified by build inspection
-      2026-04-30.
+- [x] Gallery year pages (`gallery/{2023,2024,2025}/page.tsx`) mix PT/ES/FR
+      dict text with hardcoded English suffixes — fixed 2026-04-30. Replaced
+      `yearDescription`/`yearSubtitle` with templated `yearMetaDescription`,
+      `yearGalleryName`, `yearGalleryDescription`, `yearFullDescription` keys
+      in all 4 locale dicts (with `{year}` placeholder, swapped via a small
+      `withYear()` helper per page). Verified rendered HTML on PT/ES/FR is
+      now fully translated across Twitter/OG description + JSON-LD
+      ImageGallery name/description + Gallery component description prop.
 - [ ] Re-evaluate `prettier-plugin-tailwindcss` 0.6 → 0.8 (latest). Trivial
       bump but may reorder some Tailwind classes; run formatter and review
       diff.

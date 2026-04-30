@@ -142,9 +142,8 @@ export default function ProgramHero({ lang, dict }: Props) {
     }
   ] as const
 
-  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
-    slideCount: DAYS.length
-  })
+  const { scrollRef, activePage, pageCount, goToPage, next, prev } =
+    useSnapCarousel()
 
   return (
     <section
@@ -287,14 +286,14 @@ export default function ProgramHero({ lang, dict }: Props) {
                 </button>
 
                 <div className='flex gap-2'>
-                  {DAYS.map((_, index) => (
+                  {Array.from({ length: pageCount }).map((_, index) => (
                     <button
                       key={index}
-                      onClick={() => goToSlide(index)}
-                      aria-label={`Go to day ${index + 1}`}
+                      onClick={() => goToPage(index)}
+                      aria-label={`Go to page ${index + 1}`}
                       className={clsx(
                         'h-2 w-2 rounded-full motion-safe:transition-all',
-                        activeIndex === index
+                        activePage === index
                           ? 'scale-125 bg-sky-500'
                           : 'bg-sky-500/50 hover:bg-sky-500/80'
                       )}

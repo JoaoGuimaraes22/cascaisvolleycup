@@ -71,10 +71,8 @@ interface LandingNewsProps {
 }
 
 export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
-  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
-    slideCount: newsItems.length,
-    loop: true
-  })
+  const { scrollRef, activePage, pageCount, goToPage, next, prev } =
+    useSnapCarousel({ loop: true })
 
   return (
     <div className='mx-auto max-w-screen-xl px-4'>
@@ -117,14 +115,14 @@ export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
             </button>
 
             <div className='flex gap-2'>
-              {newsItems.map((_, index) => (
+              {Array.from({ length: pageCount }).map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => goToSlide(index)}
-                  aria-label={`Go to news item ${index + 1}`}
+                  onClick={() => goToPage(index)}
+                  aria-label={`Go to news page ${index + 1}`}
                   className={clsx(
                     'h-2 w-2 rounded-full motion-safe:transition-all',
-                    activeIndex === index
+                    activePage === index
                       ? 'scale-125 bg-sky-500'
                       : 'bg-sky-500/50 hover:bg-sky-500/80'
                   )}

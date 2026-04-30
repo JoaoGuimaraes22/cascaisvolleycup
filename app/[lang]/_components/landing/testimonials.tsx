@@ -100,10 +100,8 @@ export default function LandingTestimonials({
     [dict]
   )
 
-  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
-    slideCount: testimonials.length,
-    loop: true
-  })
+  const { scrollRef, activePage, pageCount, goToPage, next, prev } =
+    useSnapCarousel({ loop: true })
 
   const mobileTestimonials = useMemo(
     () => testimonials.slice(0, 3),
@@ -182,16 +180,16 @@ export default function LandingTestimonials({
                       role='tablist'
                       aria-label='Testimonial slides'
                     >
-                      {testimonials.map((_, index) => (
+                      {Array.from({ length: pageCount }).map((_, index) => (
                         <button
                           key={index}
-                          onClick={() => goToSlide(index)}
-                          aria-label={`Go to slide ${index + 1}`}
+                          onClick={() => goToPage(index)}
+                          aria-label={`Go to page ${index + 1}`}
                           role='tab'
-                          aria-selected={activeIndex === index}
+                          aria-selected={activePage === index}
                           className={clsx(
                             'h-3 w-3 rounded-full motion-safe:transition-colors sm:h-2 sm:w-2',
-                            activeIndex === index
+                            activePage === index
                               ? 'bg-white'
                               : 'bg-white/60 hover:bg-white/80'
                           )}

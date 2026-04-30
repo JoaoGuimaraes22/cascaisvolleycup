@@ -3,82 +3,87 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface Options {
-  slideCount: number
   loop?: boolean
 }
 
 interface SnapCarousel {
   scrollRef: React.RefObject<HTMLDivElement | null>
-  activeIndex: number
-  goToSlide: (index: number) => void
+  activePage: number
+  pageCount: number
+  goToPage: (index: number) => void
   next: () => void
   prev: () => void
 }
 
-function getCardWidth(el: HTMLDivElement, count: number): number {
-  if (count <= 0) return 0
-  return el.scrollWidth / count
+function measure(el: HTMLDivElement) {
+  const { scrollLeft, clientWidth, scrollWidth } = el
+  if (clientWidth <= 0) return { activePage: 0, pageCount: 0 }
+  const pageCount = Math.max(1, Math.ceil(scrollWidth / clientWidth))
+  const activePage = Math.min(
+    pageCount - 1,
+    Math.max(0, Math.round(scrollLeft / clientWidth))
+  )
+  return { activePage, pageCount }
 }
 
-export function useSnapCarousel({
-  slideCount,
-  loop = false
-}: Options): SnapCarousel {
+export function useSnapCarousel({ loop = false }: Options = {}): SnapCarousel {
   const scrollRef = useRef<HTMLDivElement | null>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activePage, setActivePage] = useState(0)
+  const [pageCount, setPageCount] = useState(0)
 
-  const goToSlide = useCallback(
+  const goToPage = useCallback(
     (index: number) => {
       const el = scrollRef.current
-      if (!el || slideCount <= 0) return
-      const clamped = ((index % slideCount) + slideCount) % slideCount
-      const cardWidth = getCardWidth(el, slideCount)
-      el.scrollTo({ left: cardWidth * clamped, behavior: 'smooth' })
+      if (!el || pageCount <= 0) return
+      const clamped = ((index % pageCount) + pageCount) % pageCount
+      el.scrollTo({ left: el.clientWidth * clamped, behavior: 'smooth' })
     },
-    [slideCount]
+    [pageCount]
   )
 
   const next = useCallback(() => {
-    if (slideCount <= 0) return
-    const nextIdx = activeIndex + 1
-    if (nextIdx >= slideCount) {
-      if (loop) goToSlide(0)
+    if (pageCount <= 0) return
+    if (activePage + 1 >= pageCount) {
+      if (loop) goToPage(0)
       return
     }
-    goToSlide(nextIdx)
-  }, [activeIndex, slideCount, loop, goToSlide])
+    goToPage(activePage + 1)
+  }, [activePage, pageCount, loop, goToPage])
 
   const prev = useCallback(() => {
-    if (slideCount <= 0) return
-    const prevIdx = activeIndex - 1
-    if (prevIdx < 0) {
-      if (loop) goToSlide(slideCount - 1)
+    if (pageCount <= 0) return
+    if (activePage - 1 < 0) {
+      if (loop) goToPage(pageCount - 1)
       return
     }
-    goToSlide(prevIdx)
-  }, [activeIndex, slideCount, loop, goToSlide])
+    goToPage(activePage - 1)
+  }, [activePage, pageCount, loop, goToPage])
 
   useEffect(() => {
     const el = scrollRef.current
-    if (!el || slideCount <= 0) return
+    if (!el) return
 
     let frame = 0
-    const onScroll = () => {
+    const sync = () => {
       cancelAnimationFrame(frame)
       frame = requestAnimationFrame(() => {
-        const cardWidth = getCardWidth(el, slideCount)
-        if (cardWidth <= 0) return
-        const idx = Math.round(el.scrollLeft / cardWidth)
-        setActiveIndex(Math.max(0, Math.min(slideCount - 1, idx)))
+        const m = measure(el)
+        setActivePage(m.activePage)
+        setPageCount(m.pageCount)
       })
     }
 
-    el.addEventListener('scroll', onScroll, { passive: true })
+    sync()
+
+    const ro = new ResizeObserver(sync)
+    ro.observe(el)
+    el.addEventListener('scroll', sync, { passive: true })
     return () => {
-      el.removeEventListener('scroll', onScroll)
+      ro.disconnect()
+      el.removeEventListener('scroll', sync)
       cancelAnimationFrame(frame)
     }
-  }, [slideCount])
+  }, [])
 
-  return { scrollRef, activeIndex, goToSlide, next, prev }
+  return { scrollRef, activePage, pageCount, goToPage, next, prev }
 }

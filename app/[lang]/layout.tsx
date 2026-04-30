@@ -1,8 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk } from 'next/font/google'
-import NextTopLoader from 'nextjs-toploader'
-import { Analytics } from '@vercel/analytics/next'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { notFound } from 'next/navigation'
 import { i18n } from '@/i18n-config'
 import { getDictionary, hasLocale } from './dictionaries'
@@ -11,6 +8,7 @@ import JsonLd from './_components/json-ld'
 import Header from './_components/global/header'
 import Footer from './_components/global/footer'
 import ScrollToTopButton from './_components/global/scroll-to-top-button'
+import DeferredThirdParty from './_components/global/deferred-third-party'
 import '../globals.css'
 
 const space_grotesk = Space_Grotesk({
@@ -154,25 +152,13 @@ export default async function RootLayout({
         >
           {dict.ui.skipToContent}
         </a>
-        <NextTopLoader
-          initialPosition={0.08}
-          crawlSpeed={200}
-          height={3}
-          crawl={true}
-          easing='ease'
-          speed={200}
-          shadow='0 0 10px #2299DD,0 0 5px #2299DD'
-          color='var(--primary)'
-          showSpinner={false}
-        />
         <Header lang={lang} dict={dict.Header} localeNames={dict.localeNames} />
         <main id='main' className='w-full flex-1'>
           {children}
         </main>
         <Footer lang={lang} dict={dict.Footer} />
         <ScrollToTopButton />
-        <Analytics />
-        <SpeedInsights />
+        <DeferredThirdParty />
       </body>
     </html>
   )

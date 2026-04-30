@@ -102,8 +102,7 @@ export default function LandingTestimonials({
 
   const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
     slideCount: testimonials.length,
-    loop: true,
-    autoplay: 5000
+    loop: true
   })
 
   const mobileTestimonials = useMemo(

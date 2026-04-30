@@ -162,15 +162,14 @@ Replaced `keen-slider` (^6.8.6) across all 4 carousels with native CSS
 scroll-snap matching the canonical ignite pattern (reference:
 `services/web-dev/templates/barbershop/app/[lang]/_components/reviews.tsx`).
 
-- [x] **Shared hook** — new `_hooks/use-snap-carousel.ts` (~120 LOC).
-      API: `{ scrollRef, activeIndex, goToSlide, next, prev }`. Options:
-      `loop`, `autoplay` (ms), `pauseOnInteraction` (resumes 6s after
-      last pointer/touch input). Active index derived from `scrollLeft /
-      cardWidth` via passive scroll listener + rAF debounce.
-- [x] **`landing/news.tsx`** — loop carousel, no autoplay.
+- [x] **Shared hook** — new `_hooks/use-snap-carousel.ts` (~85 LOC).
+      API: `{ scrollRef, activeIndex, goToSlide, next, prev }`. Single
+      option: `loop`. Active index derived from `scrollLeft / cardWidth`
+      via passive scroll listener + rAF debounce.
+- [x] **`landing/news.tsx`** — loop carousel.
       `basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(25%-0.75rem)]`.
-- [x] **`landing/testimonials.tsx`** — autoplay 5000ms with
-      pause-on-interaction + smooth rewind to slide 0 on cycle end.
+- [x] **`landing/testimonials.tsx`** — loop carousel (manual nav only,
+      no auto-rotate per UX call).
       `basis-[calc(50%-0.375rem)] lg:basis-[calc(33.3333%-0.6667rem)]`.
       Mobile-first stacked view unchanged (3 testimonials).
 - [x] **`about/portugal.tsx`** — peek slides at mobile/tablet
@@ -196,6 +195,3 @@ all pass; all 48 SSG routes generate.
 - No free mouse-drag (click-and-drag with pointer); touch drag works
   natively, desktop users use prev/next or wheel-scroll. Matches ignite
   barbershop pattern.
-- Loop "rewind" on testimonials autoplay is a smooth-scrollTo(0) — visible
-  rewind animation, not a seamless infinite loop. Acceptable trade-off
-  per UX call (auto-rotation pauses on interaction anyway).

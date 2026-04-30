@@ -1,17 +1,17 @@
-import "server-only";
+import 'server-only'
 
 const dictionaries = {
-  en: () => import("./dictionaries/en.json").then((m) => m.default),
-  pt: () => import("./dictionaries/pt.json").then((m) => m.default),
-  es: () => import("./dictionaries/es.json").then((m) => m.default),
-  fr: () => import("./dictionaries/fr.json").then((m) => m.default),
-};
+  en: () => import('./dictionaries/en.json').then(m => m.default),
+  pt: () => import('./dictionaries/pt.json').then(m => m.default),
+  es: () => import('./dictionaries/es.json').then(m => m.default),
+  fr: () => import('./dictionaries/fr.json').then(m => m.default)
+}
 
-export type Locale = keyof typeof dictionaries;
+export type Locale = keyof typeof dictionaries
 
 export const hasLocale = (locale: string): locale is Locale =>
-  locale in dictionaries;
+  locale in dictionaries
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]();
+export const getDictionary = async (locale: Locale) => dictionaries[locale]()
 
-export type Dict = Awaited<ReturnType<typeof getDictionary>>;
+export type Dict = Awaited<ReturnType<typeof getDictionary>>

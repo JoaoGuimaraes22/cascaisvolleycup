@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore } from 'react'
 
-const subscribe = () => () => {};
+const subscribe = () => () => {}
 
 export function useIsClient(): boolean {
   return useSyncExternalStore(
     subscribe,
     () => true,
     () => false
-  );
+  )
 }

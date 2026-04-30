@@ -1,37 +1,37 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { useState, useCallback, useMemo } from "react";
-import clsx from "clsx";
+import Image from 'next/image'
+import { useState, useCallback, useMemo } from 'react'
+import clsx from 'clsx'
 
 export interface OptimizedCloudinaryImageProps {
-  publicId: string;
-  alt: string;
-  width?: number;
-  height?: number;
-  aspectRatio?: number;
-  quality?: number | "auto";
-  format?: string | "auto";
-  crop?: string;
-  gravity?: string;
-  className?: string;
-  priority?: boolean;
-  loading?: "lazy" | "eager";
-  sizes?: string;
-  onLoad?: () => void;
-  onError?: () => void;
-  onClick?: () => void;
-  showLoadingState?: boolean;
-  cloudName?: string;
+  publicId: string
+  alt: string
+  width?: number
+  height?: number
+  aspectRatio?: number
+  quality?: number | 'auto'
+  format?: string | 'auto'
+  crop?: string
+  gravity?: string
+  className?: string
+  priority?: boolean
+  loading?: 'lazy' | 'eager'
+  sizes?: string
+  onLoad?: () => void
+  onError?: () => void
+  onClick?: () => void
+  showLoadingState?: boolean
+  cloudName?: string
 }
 
 // Default Cloudinary configuration
 const DEFAULT_CLOUD_NAME =
-  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "your-cloud-name";
-const DEFAULT_QUALITY = "auto";
-const DEFAULT_FORMAT = "auto";
-const DEFAULT_CROP = "fill";
-const DEFAULT_GRAVITY = "auto";
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'your-cloud-name'
+const DEFAULT_QUALITY = 'auto'
+const DEFAULT_FORMAT = 'auto'
+const DEFAULT_CROP = 'fill'
+const DEFAULT_GRAVITY = 'auto'
 
 /**
  * Build Cloudinary URL with transformations
@@ -41,11 +41,11 @@ function buildCloudinaryUrl(
   width: number,
   height: number,
   options: {
-    quality?: number | "auto";
-    format?: string | "auto";
-    crop?: string;
-    gravity?: string;
-    cloudName?: string;
+    quality?: number | 'auto'
+    format?: string | 'auto'
+    crop?: string
+    gravity?: string
+    cloudName?: string
   } = {}
 ): string {
   const {
@@ -53,8 +53,8 @@ function buildCloudinaryUrl(
     format = DEFAULT_FORMAT,
     crop = DEFAULT_CROP,
     gravity = DEFAULT_GRAVITY,
-    cloudName = DEFAULT_CLOUD_NAME,
-  } = options;
+    cloudName = DEFAULT_CLOUD_NAME
+  } = options
 
   // Build transformation string
   const transformations = [
@@ -63,17 +63,17 @@ function buildCloudinaryUrl(
     `c_${crop}`,
     `g_${gravity}`,
     `q_${quality}`,
-    `f_${format}`,
-  ].join(",");
+    `f_${format}`
+  ].join(',')
 
-  return `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/${publicId}`;
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${transformations}/${publicId}`
 }
 
 /**
  * Generate blur placeholder (small base64 JPEG)
  */
 function generateBlurDataUrl(): string {
-  return `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==`;
+  return `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==`
 }
 
 export default function OptimizedCloudinaryImage({
@@ -88,33 +88,33 @@ export default function OptimizedCloudinaryImage({
   gravity = DEFAULT_GRAVITY,
   className,
   priority = false,
-  loading = "lazy",
-  sizes = "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw",
+  loading = 'lazy',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw',
   onLoad,
   onError,
   onClick,
   showLoadingState = true,
-  cloudName = DEFAULT_CLOUD_NAME,
+  cloudName = DEFAULT_CLOUD_NAME
 }: OptimizedCloudinaryImageProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   // Calculate dimensions based on aspect ratio if provided
   const { finalWidth, finalHeight } = useMemo(() => {
     if (aspectRatio && !height) {
       return {
         finalWidth: width,
-        finalHeight: Math.round(width / aspectRatio),
-      };
+        finalHeight: Math.round(width / aspectRatio)
+      }
     }
     if (aspectRatio && !width) {
       return {
         finalWidth: Math.round(height! * aspectRatio),
-        finalHeight: height!,
-      };
+        finalHeight: height!
+      }
     }
-    return { finalWidth: width, finalHeight: height };
-  }, [width, height, aspectRatio]);
+    return { finalWidth: width, finalHeight: height }
+  }, [width, height, aspectRatio])
 
   // Build URLs with Next.js optimization
   const mainUrl = useMemo(
@@ -124,38 +124,47 @@ export default function OptimizedCloudinaryImage({
         format,
         crop,
         gravity,
-        cloudName,
+        cloudName
       }),
-    [publicId, finalWidth, finalHeight, quality, format, crop, gravity, cloudName]
-  );
+    [
+      publicId,
+      finalWidth,
+      finalHeight,
+      quality,
+      format,
+      crop,
+      gravity,
+      cloudName
+    ]
+  )
 
-  const blurDataUrl = useMemo(() => generateBlurDataUrl(), []);
+  const blurDataUrl = useMemo(() => generateBlurDataUrl(), [])
 
   // Handle image load
   const handleLoad = useCallback(() => {
-    setImageLoaded(true);
-    onLoad?.();
-  }, [onLoad]);
+    setImageLoaded(true)
+    onLoad?.()
+  }, [onLoad])
 
   // Handle image error
   const handleError = useCallback(() => {
-    setImageError(true);
-    setImageLoaded(true);
-    onError?.();
-  }, [onError]);
+    setImageError(true)
+    setImageLoaded(true)
+    onError?.()
+  }, [onError])
 
   // Handle click
   const handleClick = useCallback(() => {
     if (onClick) {
-      onClick();
+      onClick()
     }
-  }, [onClick]);
+  }, [onClick])
 
   return (
     <div
       className={clsx(
-        "relative overflow-hidden bg-slate-100",
-        onClick && "cursor-pointer",
+        'relative overflow-hidden bg-slate-100',
+        onClick && 'cursor-pointer',
         className
       )}
       onClick={handleClick}
@@ -163,7 +172,7 @@ export default function OptimizedCloudinaryImage({
       {/* Loading state */}
       {showLoadingState && !imageLoaded && (
         <div
-          className="absolute inset-0 motion-safe:animate-pulse bg-gradient-to-br from-slate-100 to-slate-200"
+          className='absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 motion-safe:animate-pulse'
           style={{ aspectRatio: finalWidth / finalHeight }}
         />
       )}
@@ -176,17 +185,17 @@ export default function OptimizedCloudinaryImage({
           width={finalWidth}
           height={finalHeight}
           className={clsx(
-            "motion-safe:transition-opacity duration-500",
-            imageLoaded ? "opacity-100" : "opacity-0",
-            showLoadingState && !imageLoaded && "absolute inset-0"
+            'duration-500 motion-safe:transition-opacity',
+            imageLoaded ? 'opacity-100' : 'opacity-0',
+            showLoadingState && !imageLoaded && 'absolute inset-0'
           )}
           loading={loading}
           priority={priority}
-          quality={typeof quality === "number" ? quality : 75}
+          quality={typeof quality === 'number' ? quality : 75}
           sizes={sizes}
           onLoad={handleLoad}
           onError={handleError}
-          placeholder="blur"
+          placeholder='blur'
           blurDataURL={blurDataUrl}
         />
       )}
@@ -194,14 +203,14 @@ export default function OptimizedCloudinaryImage({
       {/* Error fallback */}
       {imageError && (
         <div
-          className="flex items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300 text-sm text-slate-500"
+          className='flex items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300 text-sm text-slate-500'
           style={{
             aspectRatio: finalWidth / finalHeight,
-            minHeight: "120px",
+            minHeight: '120px'
           }}
         >
-          <div className="text-center">
-            <div className="mb-2">Image</div>
+          <div className='text-center'>
+            <div className='mb-2'>Image</div>
             <div>Image unavailable</div>
           </div>
         </div>
@@ -209,10 +218,10 @@ export default function OptimizedCloudinaryImage({
 
       {/* Loading indicator */}
       {showLoadingState && !imageLoaded && !imageError && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="h-6 w-6 motion-safe:animate-spin rounded-full border-2 border-slate-300 border-t-slate-500" />
+        <div className='absolute inset-0 flex items-center justify-center'>
+          <div className='h-6 w-6 rounded-full border-2 border-slate-300 border-t-slate-500 motion-safe:animate-spin' />
         </div>
       )}
     </div>
-  );
+  )
 }

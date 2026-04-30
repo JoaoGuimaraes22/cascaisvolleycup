@@ -1,70 +1,70 @@
 // Optimized LandingUpdates - Intersection Observer for performance
 
-"use client";
+'use client'
 
-import { useIntersectionObserver } from "../../_hooks/use-intersection-observer";
-import Image from "next/image";
-import LandingTestimonials from "./testimonials";
+import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
+import Image from 'next/image'
+import LandingTestimonials from './testimonials'
 
 // Memoized shared assets
 const SHARED_ASSETS = {
-  background: "/img/landing/home-page-2.webp",
-  waveTop: "/img/global/ondas-4.webp",
-} as const;
+  background: '/img/landing/home-page-2.webp',
+  waveTop: '/img/global/ondas-4.webp'
+} as const
 
 type TestimonialItem = {
-  team: string;
-  country: string;
-  year: string;
-  quote: string;
-};
+  team: string
+  country: string
+  year: string
+  quote: string
+}
 
 type TestimonialsDict = {
-  heading: string;
-  items: Record<"t1" | "t2" | "t3" | "t4" | "t5", TestimonialItem>;
-};
+  heading: string
+  items: Record<'t1' | 't2' | 't3' | 't4' | 't5', TestimonialItem>
+}
 
 type Props = {
-  testimonialsDict: TestimonialsDict;
-};
+  testimonialsDict: TestimonialsDict
+}
 
 export default function LandingUpdates({ testimonialsDict }: Props) {
   const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>({
-    rootMargin: "200px",
-  });
+    rootMargin: '200px'
+  })
 
   return (
     <section
       ref={sectionRef}
-      className="relative isolate overflow-hidden bg-white pb-6 sm:pb-8"
+      className='relative isolate overflow-hidden bg-white pb-6 sm:pb-8'
     >
       {/* ✅ OPTIMIZED: Only render images when section is visible */}
       {isVisible && (
         <>
           {/* Background - Lazy load (below fold) */}
-          <div className="absolute inset-0 -z-10 bg-white">
+          <div className='absolute inset-0 -z-10 bg-white'>
             <Image
               src={SHARED_ASSETS.background}
-              alt=""
+              alt=''
               fill
               priority={false}
-              className="bg-white object-cover"
+              className='bg-white object-cover'
               quality={70}
-              sizes="100vw"
+              sizes='100vw'
               // ✅ REMOVED: loading='lazy' - Next.js handles this automatically
             />
           </div>
 
           {/* Top Wave - Lazy load */}
-          <div className="absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]">
+          <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
             <Image
               src={SHARED_ASSETS.waveTop}
-              alt=""
+              alt=''
               fill
               priority={false}
-              className="object-cover object-center"
+              className='object-cover object-center'
               quality={65}
-              sizes="100vw"
+              sizes='100vw'
               // ✅ REMOVED: loading='lazy'
             />
           </div>
@@ -72,10 +72,10 @@ export default function LandingUpdates({ testimonialsDict }: Props) {
       )}
 
       {/* Content */}
-      <div className="relative z-10 pt-[60px] sm:pt-[80px] lg:pt-[120px]">
+      <div className='relative z-10 pt-[60px] sm:pt-[80px] lg:pt-[120px]'>
         {/* Testimonials Section */}
         <LandingTestimonials dict={testimonialsDict} />
       </div>
     </section>
-  );
+  )
 }

@@ -1,161 +1,161 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import clsx from "clsx";
-import { useMemo, type ReactNode } from "react";
-import { useIntersectionObserver } from "../../_hooks/use-intersection-observer";
-import { WAVE_HEIGHT, GLOBAL_ASSETS } from "../../_lib/constants";
+import Image from 'next/image'
+import clsx from 'clsx'
+import { useMemo, type ReactNode } from 'react'
+import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
+import { WAVE_HEIGHT, GLOBAL_ASSETS } from '../../_lib/constants'
 
 // Constants for better maintainability
 const ASSETS = {
-  background: "/img/competition/rulles-bg.webp",
-  wave: GLOBAL_ASSETS.wave,
-} as const;
+  background: '/img/competition/rulles-bg.webp',
+  wave: GLOBAL_ASSETS.wave
+} as const
 
 // Types for better type safety
 interface FactItem {
-  id: string;
-  heading: string;
-  lines: ReactNode[];
+  id: string
+  heading: string
+  lines: ReactNode[]
 }
 
 interface StatsListProps {
-  items: string[];
-  compact?: boolean;
+  items: string[]
+  compact?: boolean
 }
 
 type CompetitionFactsDict = {
-  sectionTitle: string;
+  sectionTitle: string
   ages: {
-    heading: string;
-    under15: string;
-    under15Years: string;
-    under17: string;
-    under17Years: string;
-    open: string;
-    openYears: string;
-  };
+    heading: string
+    under15: string
+    under15Years: string
+    under17: string
+    under17Years: string
+    open: string
+    openYears: string
+  }
   who: {
-    heading: string;
-    l1: string;
-    l2: string;
-    l3: string;
-    l4: string;
-    l5: string;
-  };
+    heading: string
+    l1: string
+    l2: string
+    l3: string
+    l4: string
+    l5: string
+  }
   wherewhen: {
-    heading: string;
-    l1: string;
-    l2: string;
-    l3: string;
-  };
+    heading: string
+    l1: string
+    l2: string
+    l3: string
+  }
   games: {
-    heading: string;
-    maximum: string;
-    maxMatches: string;
-    minimum: string;
-    minMatches: string;
-  };
+    heading: string
+    maximum: string
+    maxMatches: string
+    minimum: string
+    minMatches: string
+  }
   stats: {
-    teams: string;
-    athletes: string;
-    countries: string;
-    games: string;
-  };
-};
+    teams: string
+    athletes: string
+    countries: string
+    games: string
+  }
+}
 
 type Props = {
-  dict: CompetitionFactsDict;
-};
+  dict: CompetitionFactsDict
+}
 
 export default function CompetitionFacts({ dict }: Props) {
-  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>();
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Memoize fact items to prevent unnecessary re-renders
   const factItems = useMemo<FactItem[]>(
     () => [
       {
-        id: "ages",
+        id: 'ages',
         heading: dict.ages.heading,
         lines: [
-          <span key="u15-1">
-            <strong className="font-extrabold text-white">
+          <span key='u15-1'>
+            <strong className='font-extrabold text-white'>
               {dict.ages.under15}
             </strong>
           </span>,
           dict.ages.under15Years,
-          <span key="u17">
-            <strong className="font-extrabold text-white">
+          <span key='u17'>
+            <strong className='font-extrabold text-white'>
               {dict.ages.under17}
             </strong>
           </span>,
           dict.ages.under17Years,
-          <span key="open">
-            <strong className="font-extrabold text-white">
+          <span key='open'>
+            <strong className='font-extrabold text-white'>
               {dict.ages.open}
             </strong>
           </span>,
-          dict.ages.openYears,
-        ],
+          dict.ages.openYears
+        ]
       },
       {
-        id: "who",
+        id: 'who',
         heading: dict.who.heading,
         lines: [
-          <strong key="who-1" className="font-extrabold text-white">
+          <strong key='who-1' className='font-extrabold text-white'>
             {dict.who.l1}
           </strong>,
-          <strong key="who-2" className="font-extrabold text-white">
+          <strong key='who-2' className='font-extrabold text-white'>
             {dict.who.l2}
           </strong>,
-          <strong key="who-3" className="font-extrabold text-white">
+          <strong key='who-3' className='font-extrabold text-white'>
             {dict.who.l3}
           </strong>,
-          <strong key="who-4" className="font-extrabold text-white">
+          <strong key='who-4' className='font-extrabold text-white'>
             {dict.who.l4}
           </strong>,
-          <strong key="who-5" className="font-extrabold text-white">
+          <strong key='who-5' className='font-extrabold text-white'>
             {dict.who.l5}
-          </strong>,
-        ].filter(Boolean),
+          </strong>
+        ].filter(Boolean)
       },
       {
-        id: "wherewhen",
+        id: 'wherewhen',
         heading: dict.wherewhen.heading,
         lines: [
           dict.wherewhen.l1,
           dict.wherewhen.l2 && (
             <strong
-              key="wherewhen-emphasis"
-              className="font-extrabold text-white"
+              key='wherewhen-emphasis'
+              className='font-extrabold text-white'
             >
               {dict.wherewhen.l2}
             </strong>
           ),
-          dict.wherewhen.l3,
-        ].filter(Boolean),
+          dict.wherewhen.l3
+        ].filter(Boolean)
       },
       {
-        id: "games",
+        id: 'games',
         heading: dict.games.heading,
         lines: [
-          <span key="games-max">
-            <strong className="font-extrabold text-white">
+          <span key='games-max'>
+            <strong className='font-extrabold text-white'>
               {dict.games.maximum}
             </strong>
           </span>,
           dict.games.maxMatches,
-          <span key="games-min">
-            <strong className="font-extrabold text-white">
+          <span key='games-min'>
+            <strong className='font-extrabold text-white'>
               {dict.games.minimum}
             </strong>
           </span>,
-          dict.games.minMatches,
-        ],
-      },
+          dict.games.minMatches
+        ]
+      }
     ],
     [dict]
-  );
+  )
 
   const statsItems = useMemo(
     () =>
@@ -163,60 +163,60 @@ export default function CompetitionFacts({ dict }: Props) {
         dict.stats.teams,
         dict.stats.athletes,
         dict.stats.countries,
-        dict.stats.games,
+        dict.stats.games
       ].filter(Boolean),
     [dict]
-  );
+  )
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden"
+      className='relative w-full overflow-hidden'
       style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
-      aria-labelledby="competition-facts-title"
-      id="regulations"
+      aria-labelledby='competition-facts-title'
+      id='regulations'
     >
       {/* Hidden title for screen readers */}
-      <h2 id="competition-facts-title" className="sr-only">
+      <h2 id='competition-facts-title' className='sr-only'>
         {dict.sectionTitle}
       </h2>
 
       {/* Background Image */}
-      <div className="absolute inset-0 -z-10">
+      <div className='absolute inset-0 -z-10'>
         <Image
           src={ASSETS.background}
-          alt=""
+          alt=''
           fill
-          sizes="100vw"
-          className="object-cover"
+          sizes='100vw'
+          className='object-cover'
           quality={80}
-          loading="eager"
+          loading='eager'
           draggable={false}
-          aria-hidden="true"
+          aria-hidden='true'
         />
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 mx-auto max-w-screen-xl px-4 py-16 sm:py-20 lg:py-24">
+      <div className='relative z-10 mx-auto max-w-screen-xl px-4 py-16 sm:py-20 lg:py-24'>
         <FactsGrid items={factItems} isVisible={isVisible} />
       </div>
 
       {/* Wave Section with Stats */}
       <WaveSection statsItems={statsItems} isVisible={isVisible} />
     </section>
-  );
+  )
 }
 
 // Facts grid component with animations
 function FactsGrid({
   items,
-  isVisible,
+  isVisible
 }: {
-  items: FactItem[];
-  isVisible: boolean;
+  items: FactItem[]
+  isVisible: boolean
 }) {
   return (
-    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+    <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6'>
       {items.map((item, index) => (
         <FactCard
           key={item.id}
@@ -226,45 +226,45 @@ function FactsGrid({
         />
       ))}
     </div>
-  );
+  )
 }
 
 // Individual fact card with staggered animations
 function FactCard({
   item,
   index,
-  isVisible,
+  isVisible
 }: {
-  item: FactItem;
-  index: number;
-  isVisible: boolean;
+  item: FactItem
+  index: number
+  isVisible: boolean
 }) {
-  if (!item.heading || item.lines.length === 0) return null;
+  if (!item.heading || item.lines.length === 0) return null
 
-  const delay = index * 150; // Staggered animation delay
+  const delay = index * 150 // Staggered animation delay
 
   return (
     <article
       className={clsx(
-        "flex flex-col items-center gap-4 text-center motion-safe:transition-all duration-700 ease-out",
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+        'flex flex-col items-center gap-4 text-center duration-700 ease-out motion-safe:transition-all',
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
       )}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {/* Title - Outside and above the pin */}
-      <h3 className="text-lg font-extrabold uppercase tracking-wide text-sky-600 sm:text-xl lg:text-2xl">
+      <h3 className='text-lg font-extrabold tracking-wide text-sky-600 uppercase sm:text-xl lg:text-2xl'>
         {item.heading}
       </h3>
 
       {/* Pin-shaped container with content */}
       <PinContainer index={index} isVisible={isVisible} delay={delay}>
-        <div className="space-y-3">
+        <div className='space-y-3'>
           {/* Content lines only */}
-          <div className="space-y-2">
+          <div className='space-y-2'>
             {item.lines.map((line, lineIndex) => (
               <p
                 key={lineIndex}
-                className="text-sm leading-relaxed text-white/90 sm:text-base"
+                className='text-sm leading-relaxed text-white/90 sm:text-base'
               >
                 {line}
               </p>
@@ -273,7 +273,7 @@ function FactCard({
         </div>
       </PinContainer>
     </article>
-  );
+  )
 }
 
 // Pin-shaped container component
@@ -281,197 +281,197 @@ function PinContainer({
   children,
   index,
   isVisible,
-  delay,
+  delay
 }: {
-  children: ReactNode;
-  index: number;
-  isVisible: boolean;
-  delay: number;
+  children: ReactNode
+  index: number
+  isVisible: boolean
+  delay: number
 }) {
   return (
     <div
       className={clsx(
-        "group relative motion-safe:transition-all duration-700 ease-out",
-        isVisible ? "scale-100 opacity-100" : "scale-95 opacity-0"
+        'group relative duration-700 ease-out motion-safe:transition-all',
+        isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
       )}
       style={{
         transitionDelay: `${delay}ms`,
-        width: "260px",
-        height: "320px",
+        width: '260px',
+        height: '320px'
       }}
     >
       {/* Pin Shape SVG */}
       <svg
-        viewBox="0 0 120 160"
-        className="h-full w-full drop-shadow-2xl motion-safe:transition-transform duration-300 group-hover:scale-105"
-        aria-hidden="true"
+        viewBox='0 0 120 160'
+        className='h-full w-full drop-shadow-2xl duration-300 group-hover:scale-105 motion-safe:transition-transform'
+        aria-hidden='true'
       >
         <defs>
           {/* Blue gradient for the pin */}
           <linearGradient
             id={`pin-gradient-${index}`}
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
+            x1='0%'
+            y1='0%'
+            x2='100%'
+            y2='100%'
           >
-            <stop offset="0%" stopColor="#0ea5e9" />
-            <stop offset="50%" stopColor="#0284c7" />
-            <stop offset="100%" stopColor="#0369a1" />
+            <stop offset='0%' stopColor='#0ea5e9' />
+            <stop offset='50%' stopColor='#0284c7' />
+            <stop offset='100%' stopColor='#0369a1' />
           </linearGradient>
 
           {/* Inner lighter blue gradient */}
           <linearGradient
             id={`pin-inner-gradient-${index}`}
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
+            x1='0%'
+            y1='0%'
+            x2='100%'
+            y2='100%'
           >
-            <stop offset="0%" stopColor="#38bdf8" />
-            <stop offset="50%" stopColor="#0ea5e9" />
-            <stop offset="100%" stopColor="#0284c7" />
+            <stop offset='0%' stopColor='#38bdf8' />
+            <stop offset='50%' stopColor='#0ea5e9' />
+            <stop offset='100%' stopColor='#0284c7' />
           </linearGradient>
 
           {/* White border gradient */}
           <linearGradient
             id={`pin-border-gradient-${index}`}
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
+            x1='0%'
+            y1='0%'
+            x2='100%'
+            y2='100%'
           >
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="50%" stopColor="#f8fafc" />
-            <stop offset="100%" stopColor="#e2e8f0" />
+            <stop offset='0%' stopColor='#ffffff' />
+            <stop offset='50%' stopColor='#f8fafc' />
+            <stop offset='100%' stopColor='#e2e8f0' />
           </linearGradient>
         </defs>
 
         {/* Main blue pin shape - full pin */}
         <path
-          d="M60 0C26.863 0 0 26.863 0 60c0 45 60 100 60 100s60-55 60-100C120 26.863 93.137 0 60 0z"
+          d='M60 0C26.863 0 0 26.863 0 60c0 45 60 100 60 100s60-55 60-100C120 26.863 93.137 0 60 0z'
           fill={`url(#pin-gradient-${index})`}
-          stroke="none"
+          stroke='none'
         />
 
         {/* Inner highlight for depth */}
         <path
-          d="M60 8C32.386 8 10 30.386 10 58c0 35.5 50 80 50 80s50-44.5 50-80C110 30.386 87.614 8 60 8z"
+          d='M60 8C32.386 8 10 30.386 10 58c0 35.5 50 80 50 80s50-44.5 50-80C110 30.386 87.614 8 60 8z'
           fill={`url(#pin-inner-gradient-${index})`}
         />
 
         {/* Bottom accent for more depth */}
         <ellipse
-          cx="60"
-          cy="54"
-          rx="25"
-          ry="8"
-          fill="rgba(59, 130, 246, 0.3)"
-          transform="rotate(-10 60 54)"
+          cx='60'
+          cy='54'
+          rx='25'
+          ry='8'
+          fill='rgba(59, 130, 246, 0.3)'
+          transform='rotate(-10 60 54)'
         />
       </svg>
 
       {/* Content overlay */}
-      <div className="absolute inset-0 flex items-center justify-center px-6 pb-16">
-        <div className="transform text-center motion-safe:transition-transform duration-300 group-hover:scale-105">
+      <div className='absolute inset-0 flex items-center justify-center px-6 pb-16'>
+        <div className='transform text-center duration-300 group-hover:scale-105 motion-safe:transition-transform'>
           {children}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Wave section with statistics and animations
 function WaveSection({
   statsItems,
-  isVisible,
+  isVisible
 }: {
-  statsItems: string[];
-  isVisible: boolean;
+  statsItems: string[]
+  isVisible: boolean
 }) {
   return (
-    <div className="absolute bottom-0 left-1/2 w-screen -translate-x-1/2">
+    <div className='absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
       {/* Wave Image */}
-      <div className="relative" style={{ height: `${WAVE_HEIGHT}px` }}>
+      <div className='relative' style={{ height: `${WAVE_HEIGHT}px` }}>
         <Image
           src={ASSETS.wave}
-          alt=""
+          alt=''
           fill
-          className="-mb-px object-cover"
-          sizes="100vw"
+          className='-mb-px object-cover'
+          sizes='100vw'
           unoptimized
-          loading="lazy"
+          loading='lazy'
           draggable={false}
-          aria-hidden="true"
+          aria-hidden='true'
         />
       </div>
 
       {/* Statistics Overlay */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="mx-auto flex h-full max-w-screen-xl items-center justify-center px-4 lg:justify-end lg:px-8">
+      <div className='pointer-events-none absolute inset-0'>
+        <div className='mx-auto flex h-full max-w-screen-xl items-center justify-center px-4 lg:justify-end lg:px-8'>
           <div
             className={clsx(
-              "motion-safe:transition-all duration-1000 ease-out",
+              'duration-1000 ease-out motion-safe:transition-all',
               isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0"
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-4 opacity-0'
             )}
-            style={{ transitionDelay: "800ms" }}
+            style={{ transitionDelay: '800ms' }}
           >
             {/* Mobile: Compact Layout */}
-            <div className="block lg:hidden">
+            <div className='block lg:hidden'>
               <StatsList compact items={statsItems} />
             </div>
 
             {/* Desktop: Standard Layout */}
-            <div className="hidden lg:block">
+            <div className='hidden lg:block'>
               <StatsList items={statsItems} />
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Enhanced statistics list component
 function StatsList({ items, compact = false }: StatsListProps) {
-  if (items.length === 0) return null;
+  if (items.length === 0) return null
 
   return (
     <div
-      role="region"
+      role='region'
       aria-label={
-        compact ? "Tournament statistics (compact)" : "Tournament statistics"
+        compact ? 'Tournament statistics (compact)' : 'Tournament statistics'
       }
     >
       <ul
         className={clsx(
-          "flex items-center whitespace-nowrap font-extrabold uppercase text-white drop-shadow-lg",
+          'flex items-center font-extrabold whitespace-nowrap text-white uppercase drop-shadow-lg',
           compact
-            ? "gap-2 text-[10px] tracking-tight"
-            : "gap-3 text-[11px] tracking-normal sm:gap-4 sm:text-[13px] sm:tracking-wide lg:gap-6 lg:text-lg"
+            ? 'gap-2 text-[10px] tracking-tight'
+            : 'gap-3 text-[11px] tracking-normal sm:gap-4 sm:text-[13px] sm:tracking-wide lg:gap-6 lg:text-lg'
         )}
       >
         {items.map((item, index) => (
           <li
             key={index}
             className={clsx(
-              "flex items-center motion-safe:transition-all duration-300 hover:scale-105",
-              compact ? "gap-1" : "gap-2 lg:gap-4"
+              'flex items-center duration-300 hover:scale-105 motion-safe:transition-all',
+              compact ? 'gap-1' : 'gap-2 lg:gap-4'
             )}
           >
-            <span className="relative">
+            <span className='relative'>
               {item}
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 motion-safe:transition-opacity duration-500 hover:opacity-100" />
+              <span className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 duration-500 hover:opacity-100 motion-safe:transition-opacity' />
             </span>
             {index < items.length - 1 && (
               <span
                 className={clsx(
-                  "leading-none text-cyan-300",
-                  compact ? "text-xs" : "text-sm sm:text-base lg:text-xl"
+                  'leading-none text-cyan-300',
+                  compact ? 'text-xs' : 'text-sm sm:text-base lg:text-xl'
                 )}
-                aria-hidden="true"
+                aria-hidden='true'
               >
                 •
               </span>
@@ -480,5 +480,5 @@ function StatsList({ items, compact = false }: StatsListProps) {
         ))}
       </ul>
     </div>
-  );
+  )
 }

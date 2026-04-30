@@ -1,128 +1,128 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { useState } from "react";
-import { useIntersectionObserver } from "../../_hooks/use-intersection-observer";
-import { FiArrowRight } from "react-icons/fi";
-import clsx from "clsx";
+import Image from 'next/image'
+import { useState } from 'react'
+import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
+import { FiArrowRight } from 'react-icons/fi'
+import clsx from 'clsx'
 
 // Types
 interface SponsorLogo {
-  src: string;
-  alt: string;
-  w: number;
-  h: number;
-  id: string;
+  src: string
+  alt: string
+  w: number
+  h: number
+  id: string
 }
 
 interface ClubInfo {
-  src: string;
-  alt: string;
-  w: number;
-  h: number;
-  url: string;
+  src: string
+  alt: string
+  w: number
+  h: number
+  url: string
 }
 
 type AboutHeroDict = {
-  title: string;
-  p1: string;
-  p2: string;
-  p3: string;
-  p4: string;
-  p4Bold: string;
-  p4Rest: string;
-  cta: string;
-  heroImageAlt: string;
+  title: string
+  p1: string
+  p2: string
+  p3: string
+  p4: string
+  p4Bold: string
+  p4Rest: string
+  cta: string
+  heroImageAlt: string
   club: {
-    logoAlt: string;
-  };
+    logoAlt: string
+  }
   sponsors: {
-    cascaisEstorilAlt: string;
-    camaraAlt: string;
-    camFordAlt: string;
-    fpvAlt: string;
-  };
-};
+    cascaisEstorilAlt: string
+    camaraAlt: string
+    camFordAlt: string
+    fpvAlt: string
+  }
+}
 
 type Props = {
-  dict: AboutHeroDict;
-};
+  dict: AboutHeroDict
+}
 
 export default function AboutHero({ dict }: Props) {
-  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>();
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   // Constants for better maintainability
   const ASSETS = {
-    background: "/img/about/about-bg.webp",
-    hero: "/img/about/about-hero.webp",
-    club: "/img/sponsors/volley4all.webp",
-  } as const;
+    background: '/img/about/about-bg.webp',
+    hero: '/img/about/about-hero.webp',
+    club: '/img/sponsors/volley4all.webp'
+  } as const
 
   const SPONSOR_LOGOS: SponsorLogo[] = [
     {
-      id: "cascais-estoril",
-      src: "/img/sponsors/cascais-estoril.webp",
+      id: 'cascais-estoril',
+      src: '/img/sponsors/cascais-estoril.webp',
       alt: dict.sponsors.cascaisEstorilAlt,
       w: 140,
-      h: 56,
+      h: 56
     },
     {
-      id: "camara",
-      src: "/img/sponsors/cascais-camara.webp",
+      id: 'camara',
+      src: '/img/sponsors/cascais-camara.webp',
       alt: dict.sponsors.camaraAlt,
       w: 160,
-      h: 56,
+      h: 56
     },
     {
-      id: "cam-ford",
-      src: "/img/sponsors/cam-ford.webp",
+      id: 'cam-ford',
+      src: '/img/sponsors/cam-ford.webp',
       alt: dict.sponsors.camFordAlt,
       w: 150,
-      h: 56,
+      h: 56
     },
     {
-      id: "fpv",
-      src: "/img/sponsors/fpv.webp",
+      id: 'fpv',
+      src: '/img/sponsors/fpv.webp',
       alt: dict.sponsors.fpvAlt,
       w: 140,
-      h: 56,
-    },
-  ];
+      h: 56
+    }
+  ]
 
   const CLUB_INFO: ClubInfo = {
     src: ASSETS.club,
     alt: dict.club.logoAlt,
     w: 260,
     h: 70,
-    url: "https://volley4all.com",
-  };
+    url: 'https://volley4all.com'
+  }
 
-  const PARAGRAPHS: Array<"p1" | "p2" | "p3"> = ["p1", "p2", "p3"];
+  const PARAGRAPHS: Array<'p1' | 'p2' | 'p3'> = ['p1', 'p2', 'p3']
 
   const handleCtaClick = () => {
     // Handle CTA click if needed
-  };
+  }
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[100vh] w-full overflow-x-hidden md:h-[calc(100vh-80px)] md:overflow-hidden"
-      aria-labelledby="about-hero-title"
+      className='relative min-h-[100vh] w-full overflow-x-hidden md:h-[calc(100vh-80px)] md:overflow-hidden'
+      aria-labelledby='about-hero-title'
     >
       {/* Enhanced Background with Loading State */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-slate-100" />
+      <div className='absolute inset-0 z-0'>
+        <div className='absolute inset-0 bg-gradient-to-br from-slate-50 to-slate-100' />
         <Image
           src={ASSETS.background}
-          alt=""
-          role="presentation"
+          alt=''
+          role='presentation'
           fill
           className={clsx(
-            "object-cover motion-safe:transition-opacity duration-700",
-            imageLoaded ? "opacity-100" : "opacity-0"
+            'object-cover duration-700 motion-safe:transition-opacity',
+            imageLoaded ? 'opacity-100' : 'opacity-0'
           )}
-          sizes="100vw"
+          sizes='100vw'
           priority
           onLoad={() => setImageLoaded(true)}
           quality={75}
@@ -130,55 +130,55 @@ export default function AboutHero({ dict }: Props) {
       </div>
 
       {/* Right Hero Image Panel - Hidden on Mobile */}
-      <div className="absolute inset-y-0 right-0 z-0 hidden w-[34vw] md:block">
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/20" />
+      <div className='absolute inset-y-0 right-0 z-0 hidden w-[34vw] md:block'>
+        <div className='absolute inset-0 bg-gradient-to-l from-transparent to-white/20' />
         <Image
           src={ASSETS.hero}
           alt={dict.heroImageAlt}
           fill
           quality={80}
-          className="object-cover object-top"
-          sizes="(max-width: 768px) 0px, 34vw"
+          className='object-cover object-top'
+          sizes='(max-width: 768px) 0px, 34vw'
           priority
         />
       </div>
 
       {/* Main Content Container */}
-      <div className="relative z-10 mx-auto h-full max-w-screen-xl px-4 pb-8 pt-20 md:pb-20 md:pr-[34vw]">
-        <div className="space-y-6">
+      <div className='relative z-10 mx-auto h-full max-w-screen-xl px-4 pt-20 pb-8 md:pr-[34vw] md:pb-20'>
+        <div className='space-y-6'>
           {/* Animated Title */}
           <div
             className={clsx(
-              "motion-safe:transition-all duration-1000 ease-out",
+              'duration-1000 ease-out motion-safe:transition-all',
               isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-8 opacity-0"
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-8 opacity-0'
             )}
           >
             <h1
-              id="about-hero-title"
-              className="text-3xl font-extrabold uppercase text-sky-500 md:text-4xl lg:text-5xl"
+              id='about-hero-title'
+              className='text-3xl font-extrabold text-sky-500 uppercase md:text-4xl lg:text-5xl'
             >
               {dict.title}
             </h1>
           </div>
 
           {/* Animated Paragraphs with Staggered Delays */}
-          <div className="space-y-4">
+          <div className='space-y-4'>
             {PARAGRAPHS.map((key, index) => (
               <div
                 key={key}
                 className={clsx(
-                  "motion-safe:transition-all duration-700 ease-out",
+                  'duration-700 ease-out motion-safe:transition-all',
                   isVisible
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-8 opacity-0"
+                    ? 'translate-y-0 opacity-100'
+                    : 'translate-y-8 opacity-0'
                 )}
                 style={{
-                  transitionDelay: `${(index + 1) * 200}ms`,
+                  transitionDelay: `${(index + 1) * 200}ms`
                 }}
               >
-                <p className="max-w-prose text-sm leading-relaxed text-slate-700 sm:text-base lg:text-lg">
+                <p className='max-w-prose text-sm leading-relaxed text-slate-700 sm:text-base lg:text-lg'>
                   {dict[key]}
                 </p>
               </div>
@@ -189,48 +189,48 @@ export default function AboutHero({ dict }: Props) {
           </div>
 
           {/* Mobile Layout: New arrangement */}
-          <div className="md:hidden">
+          <div className='md:hidden'>
             <div
               className={clsx(
-                "mx-auto w-full max-w-[360px] motion-safe:transition-all duration-1000 ease-out",
+                'mx-auto w-full max-w-[360px] duration-1000 ease-out motion-safe:transition-all',
                 isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
+                  ? 'translate-y-0 opacity-100'
+                  : 'translate-y-8 opacity-0'
               )}
-              style={{ transitionDelay: "1000ms" }}
+              style={{ transitionDelay: '1000ms' }}
             >
               {/* First row: cam-ford, fpv, cascais-camara */}
-              <div className="mb-3 grid grid-cols-3 gap-1">
+              <div className='mb-3 grid grid-cols-3 gap-1'>
                 <LogoCard
-                  key="cam-ford-mobile"
-                  logo={SPONSOR_LOGOS.find((s) => s.id === "cam-ford")!}
+                  key='cam-ford-mobile'
+                  logo={SPONSOR_LOGOS.find(s => s.id === 'cam-ford')!}
                   index={0}
                   mobile
                 />
                 <LogoCard
-                  key="fpv-mobile"
-                  logo={SPONSOR_LOGOS.find((s) => s.id === "fpv")!}
+                  key='fpv-mobile'
+                  logo={SPONSOR_LOGOS.find(s => s.id === 'fpv')!}
                   index={1}
                   mobile
                 />
                 <LogoCard
-                  key="camara-mobile"
-                  logo={SPONSOR_LOGOS.find((s) => s.id === "camara")!}
+                  key='camara-mobile'
+                  logo={SPONSOR_LOGOS.find(s => s.id === 'camara')!}
                   index={2}
                   mobile
                 />
               </div>
 
               {/* Second row: cascais-estoril, volley4all */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className='grid grid-cols-2 gap-2'>
                 <LogoCard
-                  key="cascais-estoril-mobile"
-                  logo={SPONSOR_LOGOS.find((s) => s.id === "cascais-estoril")!}
+                  key='cascais-estoril-mobile'
+                  logo={SPONSOR_LOGOS.find(s => s.id === 'cascais-estoril')!}
                   index={3}
                   mobile
                 />
                 <LogoCard
-                  key="volley4all-mobile"
+                  key='volley4all-mobile'
                   logo={CLUB_INFO}
                   index={4}
                   mobile
@@ -238,7 +238,7 @@ export default function AboutHero({ dict }: Props) {
               </div>
 
               {/* Centered CTA Button */}
-              <div className="mt-6 flex justify-center">
+              <div className='mt-6 flex justify-center'>
                 <CtaButton href={CLUB_INFO.url} onClick={handleCtaClick} mobile>
                   {dict.cta}
                 </CtaButton>
@@ -247,18 +247,18 @@ export default function AboutHero({ dict }: Props) {
           </div>
 
           {/* Desktop Layout: Inline sponsors + right-aligned CTA */}
-          <div className="hidden md:block">
+          <div className='hidden md:block'>
             <div
               className={clsx(
-                "motion-safe:transition-all duration-1000 ease-out",
+                'duration-1000 ease-out motion-safe:transition-all',
                 isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
+                  ? 'translate-y-0 opacity-100'
+                  : 'translate-y-8 opacity-0'
               )}
-              style={{ transitionDelay: "1000ms" }}
+              style={{ transitionDelay: '1000ms' }}
             >
               {/* Sponsors in one line */}
-              <div className="flex flex-wrap items-center justify-center gap-6 lg:justify-start lg:gap-8">
+              <div className='flex flex-wrap items-center justify-center gap-6 lg:justify-start lg:gap-8'>
                 {SPONSOR_LOGOS.map((logo, index) => (
                   <LogoCard key={logo.id} logo={logo} index={index} />
                 ))}
@@ -266,7 +266,7 @@ export default function AboutHero({ dict }: Props) {
               </div>
 
               {/* Right-aligned CTA Button */}
-              <div className="mt-6 flex justify-end">
+              <div className='mt-6 flex justify-end'>
                 <CtaButton href={CLUB_INFO.url} onClick={handleCtaClick}>
                   {dict.cta}
                 </CtaButton>
@@ -276,33 +276,33 @@ export default function AboutHero({ dict }: Props) {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* -------- Enhanced Sub-Components -------- */
 
 interface LogoCardProps {
-  logo: SponsorLogo | ClubInfo;
-  index: number;
-  mobile?: boolean;
+  logo: SponsorLogo | ClubInfo
+  index: number
+  mobile?: boolean
 }
 
 function LogoCard({ logo, index, mobile = false }: LogoCardProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <div
       className={clsx(
-        "group flex items-center justify-center motion-safe:transition-all duration-300",
-        mobile ? "min-h-[60px]" : "min-h-[80px]"
+        'group flex items-center justify-center duration-300 motion-safe:transition-all',
+        mobile ? 'min-h-[60px]' : 'min-h-[80px]'
       )}
       style={{
-        animationDelay: `${index * 100}ms`,
+        animationDelay: `${index * 100}ms`
       }}
     >
       {/* Loading placeholder */}
       {!imageLoaded && (
-        <div className="absolute inset-0 motion-safe:animate-pulse rounded-lg bg-slate-200/30" />
+        <div className='absolute inset-0 rounded-lg bg-slate-200/30 motion-safe:animate-pulse' />
       )}
 
       <Image
@@ -311,58 +311,58 @@ function LogoCard({ logo, index, mobile = false }: LogoCardProps) {
         width={logo.w}
         height={logo.h}
         className={clsx(
-          "w-auto object-contain motion-safe:transition-all duration-300 group-hover:scale-105",
-          mobile ? "h-10 sm:h-12" : "h-12 lg:h-14",
-          imageLoaded ? "opacity-100" : "opacity-0"
+          'w-auto object-contain duration-300 group-hover:scale-105 motion-safe:transition-all',
+          mobile ? 'h-10 sm:h-12' : 'h-12 lg:h-14',
+          imageLoaded ? 'opacity-100' : 'opacity-0'
         )}
-        loading="eager"
-        decoding="async"
+        loading='eager'
+        decoding='async'
         quality={80}
         sizes={
           mobile
-            ? "(max-width: 640px) 25vw, 120px"
-            : "(max-width: 1024px) 140px, 160px"
+            ? '(max-width: 640px) 25vw, 120px'
+            : '(max-width: 1024px) 140px, 160px'
         }
         onLoad={() => setImageLoaded(true)}
       />
     </div>
-  );
+  )
 }
 
 interface CtaButtonProps {
-  href: string;
-  onClick: () => void;
-  children: React.ReactNode;
-  mobile?: boolean;
+  href: string
+  onClick: () => void
+  children: React.ReactNode
+  mobile?: boolean
 }
 
 function CtaButton({
   href,
   onClick,
   children,
-  mobile = false,
+  mobile = false
 }: CtaButtonProps) {
   return (
     <a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target='_blank'
+      rel='noopener noreferrer'
       onClick={onClick}
       className={clsx(
-        "group relative overflow-hidden rounded-lg font-bold text-white shadow-lg ring-1 ring-black/10 motion-safe:transition-all duration-300",
-        "bg-gradient-to-r from-sky-600 to-sky-700",
-        "hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300",
-        "inline-flex items-center gap-2",
-        mobile ? "px-5 py-2.5 text-sm" : "px-6 py-3 text-base"
+        'group relative overflow-hidden rounded-lg font-bold text-white shadow-lg ring-1 ring-black/10 duration-300 motion-safe:transition-all',
+        'bg-gradient-to-r from-sky-600 to-sky-700',
+        'hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300',
+        'inline-flex items-center gap-2',
+        mobile ? 'px-5 py-2.5 text-sm' : 'px-6 py-3 text-base'
       )}
     >
-      <span className="relative z-10 flex items-center gap-2">
+      <span className='relative z-10 flex items-center gap-2'>
         {children}
-        <FiArrowRight className="h-4 w-4 motion-safe:transition-transform duration-300 group-hover:translate-x-1" />
+        <FiArrowRight className='h-4 w-4 duration-300 group-hover:translate-x-1 motion-safe:transition-transform' />
       </span>
 
       {/* Hover shimmer effect */}
-      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent motion-safe:transition-transform duration-500 group-hover:translate-x-full" />
+      <div className='absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent duration-500 group-hover:translate-x-full motion-safe:transition-transform' />
     </a>
-  );
+  )
 }

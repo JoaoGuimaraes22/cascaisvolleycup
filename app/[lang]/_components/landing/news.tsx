@@ -1,92 +1,92 @@
-"use client";
+'use client'
 
-import { useCallback, useState } from "react";
-import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import NewsCard from "./news-card";
-import clsx from "clsx";
+import { useCallback, useState } from 'react'
+import { useKeenSlider } from 'keen-slider/react'
+import 'keen-slider/keen-slider.min.css'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import NewsCard from './news-card'
+import clsx from 'clsx'
 
 // News-specific assets and constants
 const NEWS_ASSETS = {
   images: {
-    news1: "/img/news/news1.webp",
-    news2: "/img/news/news2.webp",
-    news3: "/img/news/news3.webp",
-    news4: "/img/news/news4.webp",
+    news1: '/img/news/news1.webp',
+    news2: '/img/news/news2.webp',
+    news3: '/img/news/news3.webp',
+    news4: '/img/news/news4.webp'
   },
   links: {
-    cornacchia2025: "/news/cornacchia-2025",
-    nationsCup9: "/news/nations-cup-9",
-    streamingScamWarning: "/news/streaming-scam-warning",
-    mvpAwards: "/news/mvp-awards",
+    cornacchia2025: '/news/cornacchia-2025',
+    nationsCup9: '/news/nations-cup-9',
+    streamingScamWarning: '/news/streaming-scam-warning',
+    mvpAwards: '/news/mvp-awards'
   },
   animations: {
-    duration: 600,
+    duration: 600
   },
   breakpoints: {
-    mobile: "(min-width: 768px)",
-    desktop: "(min-width: 1024px)",
+    mobile: '(min-width: 768px)',
+    desktop: '(min-width: 1024px)'
   },
   spacing: {
     mobile: 16,
     tablet: 20,
-    desktop: 24,
-  },
-} as const;
+    desktop: 24
+  }
+} as const
 
 interface NewsItem {
-  title: string;
-  date: string;
-  excerpt: string;
-  image: string;
-  link: string;
+  title: string
+  date: string
+  excerpt: string
+  image: string
+  link: string
 }
 
 const newsItems: NewsItem[] = [
   {
-    title: "Ranking Cascais Volley Cup 2025",
-    date: "April 23, 2025",
+    title: 'Ranking Cascais Volley Cup 2025',
+    date: 'April 23, 2025',
     excerpt:
-      "Ranking and Pictures of Cascais Volley Cup 2025, the volleyball tournament of Cascais",
+      'Ranking and Pictures of Cascais Volley Cup 2025, the volleyball tournament of Cascais',
     image: NEWS_ASSETS.images.news1,
-    link: NEWS_ASSETS.links.cornacchia2025,
+    link: NEWS_ASSETS.links.cornacchia2025
   },
   {
-    title: "Under 21 – Rankings & Pictures",
-    date: "March 6, 2025",
+    title: 'Under 21 – Rankings & Pictures',
+    date: 'March 6, 2025',
     excerpt:
-      "Check out pictures, video and rankings of the Under 21 tournament.",
+      'Check out pictures, video and rankings of the Under 21 tournament.',
     image: NEWS_ASSETS.images.news2,
-    link: NEWS_ASSETS.links.nationsCup9,
+    link: NEWS_ASSETS.links.nationsCup9
   },
   {
-    title: "New Arrivals: Pelamora SC",
-    date: "February 20, 2025",
-    excerpt: "Official Statement: Pelamora is coming with Under-15, 17 and 21",
+    title: 'New Arrivals: Pelamora SC',
+    date: 'February 20, 2025',
+    excerpt: 'Official Statement: Pelamora is coming with Under-15, 17 and 21',
     image: NEWS_ASSETS.images.news3,
-    link: NEWS_ASSETS.links.streamingScamWarning,
+    link: NEWS_ASSETS.links.streamingScamWarning
   },
   {
-    title: "MVP Awards",
-    date: "February 10, 2025",
-    excerpt: "MVP awards given to the athletes who stood out during the event.",
+    title: 'MVP Awards',
+    date: 'February 10, 2025',
+    excerpt: 'MVP awards given to the athletes who stood out during the event.',
     image: NEWS_ASSETS.images.news4,
-    link: NEWS_ASSETS.links.mvpAwards,
-  },
-];
+    link: NEWS_ASSETS.links.mvpAwards
+  }
+]
 
 type LandingNewsDict = {
-  Latest_news: string;
-};
+  Latest_news: string
+}
 
 interface LandingNewsProps {
-  isVisible: boolean;
-  dict: LandingNewsDict;
+  isVisible: boolean
+  dict: LandingNewsDict
 }
 
 export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
-  const [currentNewsSlide, setCurrentNewsSlide] = useState(0);
+  const [currentNewsSlide, setCurrentNewsSlide] = useState(0)
 
   // News slider
   const [newsSliderRef, newsInstanceRef] = useKeenSlider<HTMLDivElement>({
@@ -94,89 +94,89 @@ export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
     defaultAnimation: { duration: NEWS_ASSETS.animations.duration },
     slides: {
       perView: 1,
-      spacing: NEWS_ASSETS.spacing.mobile,
+      spacing: NEWS_ASSETS.spacing.mobile
     },
     breakpoints: {
       [NEWS_ASSETS.breakpoints.mobile]: {
-        slides: { perView: 2, spacing: NEWS_ASSETS.spacing.tablet },
+        slides: { perView: 2, spacing: NEWS_ASSETS.spacing.tablet }
       },
       [NEWS_ASSETS.breakpoints.desktop]: {
-        slides: { perView: 4, spacing: NEWS_ASSETS.spacing.desktop },
-      },
+        slides: { perView: 4, spacing: NEWS_ASSETS.spacing.desktop }
+      }
     },
     slideChanged(s) {
-      setCurrentNewsSlide(s.track.details.rel);
-    },
-  });
+      setCurrentNewsSlide(s.track.details.rel)
+    }
+  })
 
   // Navigation functions
   const goToNewsSlide = useCallback(
     (index: number) => {
-      newsInstanceRef.current?.moveToIdx(index);
+      newsInstanceRef.current?.moveToIdx(index)
     },
     [newsInstanceRef]
-  );
+  )
 
   const goToNewsPrevious = useCallback(() => {
-    newsInstanceRef.current?.prev();
-  }, [newsInstanceRef]);
+    newsInstanceRef.current?.prev()
+  }, [newsInstanceRef])
 
   const goToNewsNext = useCallback(() => {
-    newsInstanceRef.current?.next();
-  }, [newsInstanceRef]);
+    newsInstanceRef.current?.next()
+  }, [newsInstanceRef])
 
   return (
-    <div className="mx-auto max-w-screen-xl px-4">
+    <div className='mx-auto max-w-screen-xl px-4'>
       <div
         className={clsx(
-          "motion-safe:transition-all duration-1000 ease-out",
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          'duration-1000 ease-out motion-safe:transition-all',
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         )}
       >
         <h2
-          id="news-heading"
-          className="mb-6 text-2xl font-extrabold uppercase tracking-wide text-sky-500 sm:text-3xl"
+          id='news-heading'
+          className='mb-6 text-2xl font-extrabold tracking-wide text-sky-500 uppercase sm:text-3xl'
         >
           {dict.Latest_news}
         </h2>
 
         {/* News Slider */}
-        <div className="relative">
+        <div className='relative'>
           <div
             ref={newsSliderRef}
-            className="keen-slider"
-            aria-labelledby="news-heading"
+            className='keen-slider'
+            aria-labelledby='news-heading'
           >
             {newsItems.map((item, index) => (
-              <div key={index} className="keen-slider__slide px-2">
+              <div key={index} className='keen-slider__slide px-2'>
                 <NewsCard {...item} priority={index === 0} />
               </div>
             ))}
           </div>
 
           {/* News slider controls */}
-          <div className="mt-4 flex items-center justify-center gap-4">
+          <div className='mt-4 flex items-center justify-center gap-4'>
             {/* Navigation arrows */}
             <button
               onClick={goToNewsPrevious}
-              aria-label="Previous news"
-              className="rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50"
+              aria-label='Previous news'
+              className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
             >
-              <FiChevronLeft className="h-4 w-4 text-sky-500" />
+              <FiChevronLeft className='h-4 w-4 text-sky-500' />
             </button>
 
             {/* Dots */}
-            <div className="flex gap-2">
+            <div className='flex gap-2'>
               {newsItems.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToNewsSlide(index)}
                   aria-label={`Go to news item ${index + 1}`}
                   className={clsx(
-                    "h-2 w-2 rounded-full motion-safe:transition-all",
+                    'h-2 w-2 rounded-full motion-safe:transition-all',
                     currentNewsSlide === index
-                      ? "scale-125 bg-sky-500"
-                      : "bg-sky-500/50 hover:bg-sky-500/80"
+                      ? 'scale-125 bg-sky-500'
+                      : 'bg-sky-500/50 hover:bg-sky-500/80'
                   )}
                 />
               ))}
@@ -184,14 +184,14 @@ export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
 
             <button
               onClick={goToNewsNext}
-              aria-label="Next news"
-              className="rounded-full bg-sky-500/20 p-2 backdrop-blur-sm motion-safe:transition-all hover:bg-sky-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50"
+              aria-label='Next news'
+              className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
             >
-              <FiChevronRight className="h-4 w-4 text-sky-500" />
+              <FiChevronRight className='h-4 w-4 text-sky-500' />
             </button>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

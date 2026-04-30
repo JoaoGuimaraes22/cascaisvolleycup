@@ -1,70 +1,70 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { useState, useCallback } from "react";
-import { FiCheck, FiAlertCircle, FiLoader } from "react-icons/fi";
-import clsx from "clsx";
+import Image from 'next/image'
+import { useState, useCallback } from 'react'
+import { FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
+import clsx from 'clsx'
 import {
   validateRegistrationForm,
   REGISTRATION_INITIAL_DATA,
   type RegistrationFormData,
-  type FormErrors,
-} from "../../_lib/validation";
-import { useIntersectionObserver } from "../../_hooks/use-intersection-observer";
+  type FormErrors
+} from '../../_lib/validation'
+import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
 
-type MessageType = "success" | "error" | "info" | null;
+type MessageType = 'success' | 'error' | 'info' | null
 
 type RegistrationFormDict = {
-  FormTitle: string;
-  FormDescription: string;
-  Name: string;
-  NamePlaceholder: string;
-  Mobile: string;
-  Club: string;
-  ClubPlaceholder: string;
-  City: string;
-  CityPlaceholder: string;
-  Country: string;
-  CountryPlaceholder: string;
-  Questions: string;
-  QuestionsPlaceholder: string;
-  Submit: string;
-  Submitting: string;
-  SuccessMessage: string;
-  ErrorMessage: string;
-  ValidationErrors: Record<string, string>;
-};
+  FormTitle: string
+  FormDescription: string
+  Name: string
+  NamePlaceholder: string
+  Mobile: string
+  Club: string
+  ClubPlaceholder: string
+  City: string
+  CityPlaceholder: string
+  Country: string
+  CountryPlaceholder: string
+  Questions: string
+  QuestionsPlaceholder: string
+  Submit: string
+  Submitting: string
+  SuccessMessage: string
+  ErrorMessage: string
+  ValidationErrors: Record<string, string>
+}
 
 type Props = {
-  dict: RegistrationFormDict;
-};
+  dict: RegistrationFormDict
+}
 
 export default function RegistrationForm({ dict }: Props) {
-  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>();
+  const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
 
   // Assets
-  const BG = "/img/registration/hero-bg.webp";
-  const PLAYER_LEFT = "/img/registration/player-left.webp";
-  const PLAYER_RIGHT = "/img/registration/player.webp";
+  const BG = '/img/registration/hero-bg.webp'
+  const PLAYER_LEFT = '/img/registration/player-left.webp'
+  const PLAYER_RIGHT = '/img/registration/player.webp'
 
   const [formData, setFormData] = useState<RegistrationFormData>(
     REGISTRATION_INITIAL_DATA
-  );
+  )
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<MessageType>(null);
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState<MessageType>(null)
 
   // Form validation (using shared validation)
   const validateForm = useCallback(
     (data: RegistrationFormData): FormErrors => {
       const t = (key: string) =>
-        (dict.ValidationErrors as Record<string, string>)[key] ?? key;
-      return validateRegistrationForm(data, t);
+        (dict.ValidationErrors as Record<string, string>)[key] ?? key
+      return validateRegistrationForm(data, t)
     },
     [dict]
-  );
+  )
 
   const handleChange = useCallback(
     (
@@ -72,118 +72,118 @@ export default function RegistrationForm({ dict }: Props) {
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
       >
     ) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      const { name, value } = e.target
+      setFormData(prev => ({ ...prev, [name]: value }))
 
       // Clear error when user starts typing
       if (errors[name]) {
-        setErrors((prev) => ({ ...prev, [name]: "" }));
+        setErrors(prev => ({ ...prev, [name]: '' }))
       }
     },
     [errors]
-  );
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage("");
-    setMessageType(null);
+    e.preventDefault()
+    setMessage('')
+    setMessageType(null)
 
     // Validate form
-    const formErrors = validateForm(formData);
+    const formErrors = validateForm(formData)
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
+      setErrors(formErrors)
       setMessage(
-        dict.ValidationErrors.fixErrors || "Please fix the errors above"
-      );
-      setMessageType("error");
-      return;
+        dict.ValidationErrors.fixErrors || 'Please fix the errors above'
+      )
+      setMessageType('error')
+      return
     }
 
-    setLoading(true);
-    setErrors({});
+    setLoading(true)
+    setErrors({})
 
     try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.message || "Network response failed.");
+        throw new Error(data.message || 'Network response failed.')
       }
 
       if (data.success) {
         setMessage(
           dict.SuccessMessage ||
-            "Registration successful! We will contact you soon."
-        );
-        setMessageType("success");
-        setFormData({ ...REGISTRATION_INITIAL_DATA });
+            'Registration successful! We will contact you soon.'
+        )
+        setMessageType('success')
+        setFormData({ ...REGISTRATION_INITIAL_DATA })
       } else {
         setMessage(
           data.message ||
             dict.ErrorMessage ||
-            "Registration failed. Please try again."
-        );
-        setMessageType("error");
+            'Registration failed. Please try again.'
+        )
+        setMessageType('error')
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      setMessage(dict.ErrorMessage || "Something went wrong. Please try again.");
-      setMessageType("error");
+      console.error('Registration error:', error)
+      setMessage(dict.ErrorMessage || 'Something went wrong. Please try again.')
+      setMessageType('error')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <section
       ref={sectionRef}
-      id="registration-form"
-      className="relative overflow-hidden py-12 sm:py-16 lg:py-20"
-      aria-labelledby="registration-heading"
+      id='registration-form'
+      className='relative overflow-hidden py-12 sm:py-16 lg:py-20'
+      aria-labelledby='registration-heading'
     >
       {/* Background */}
       <Image
         src={BG}
-        alt=""
-        role="presentation"
+        alt=''
+        role='presentation'
         fill
-        sizes="100vw"
-        className="absolute inset-0 -z-20 object-cover"
+        sizes='100vw'
+        className='absolute inset-0 -z-20 object-cover'
         quality={75}
-        loading="lazy"
+        loading='lazy'
       />
 
       {/* Decorative players (desktop only) */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        aria-hidden="true"
+        className='pointer-events-none absolute inset-0 -z-10'
+        aria-hidden='true'
       >
         {/* Left player */}
-        <div className="absolute left-0 top-1/2 hidden -translate-y-1/2 opacity-30 lg:block">
+        <div className='absolute top-1/2 left-0 hidden -translate-y-1/2 opacity-30 lg:block'>
           <Image
             src={PLAYER_LEFT}
-            alt=""
+            alt=''
             width={420}
             height={640}
-            className="h-auto w-auto"
-            loading="lazy"
+            className='h-auto w-auto'
+            loading='lazy'
             quality={75}
           />
         </div>
         {/* Right player */}
-        <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 opacity-30 lg:block">
+        <div className='absolute top-1/2 right-0 hidden -translate-y-1/2 opacity-30 lg:block'>
           <Image
             src={PLAYER_RIGHT}
-            alt=""
+            alt=''
             width={420}
             height={640}
-            className="h-auto w-auto"
-            loading="lazy"
+            className='h-auto w-auto'
+            loading='lazy'
             quality={75}
           />
         </div>
@@ -192,129 +192,129 @@ export default function RegistrationForm({ dict }: Props) {
       {/* Form container */}
       <div
         className={clsx(
-          "mx-auto max-w-screen-md px-4",
-          "motion-safe:transition-all duration-1000 ease-out",
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+          'mx-auto max-w-screen-md px-4',
+          'duration-1000 ease-out motion-safe:transition-all',
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
         )}
       >
-        <div className="rounded-2xl bg-white/95 p-6 shadow-lg ring-1 ring-black/10 backdrop-blur-sm sm:p-8">
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-            <div className="text-center">
+        <div className='rounded-2xl bg-white/95 p-6 shadow-lg ring-1 ring-black/10 backdrop-blur-sm sm:p-8'>
+          <form onSubmit={handleSubmit} className='space-y-6' noValidate>
+            <div className='text-center'>
               <h2
-                id="registration-heading"
-                className="text-2xl font-extrabold text-sky-500 sm:text-3xl"
+                id='registration-heading'
+                className='text-2xl font-extrabold text-sky-500 sm:text-3xl'
               >
-                {dict.FormTitle || "Tournament Registration"}
+                {dict.FormTitle || 'Tournament Registration'}
               </h2>
-              <p className="mt-2 text-sm text-slate-600">
+              <p className='mt-2 text-sm text-slate-600'>
                 {dict.FormDescription ||
-                  "Fill out the form below to register for the Cascais Volley Cup 2026"}
+                  'Fill out the form below to register for the Cascais Volley Cup 2026'}
               </p>
             </div>
 
             {/* Name */}
             <FormField
-              label={dict.Name || "Full Name"}
+              label={dict.Name || 'Full Name'}
               required
               error={errors.name}
             >
               <input
-                type="text"
-                name="name"
+                type='text'
+                name='name'
                 value={formData.name}
                 onChange={handleChange}
                 className={inputClassName(errors.name)}
-                placeholder={dict.NamePlaceholder || "Enter your full name"}
+                placeholder={dict.NamePlaceholder || 'Enter your full name'}
                 required
-                aria-describedby={errors.name ? "name-error" : undefined}
+                aria-describedby={errors.name ? 'name-error' : undefined}
               />
             </FormField>
 
             {/* Email + Mobile */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="Email" required error={errors.email}>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+              <FormField label='Email' required error={errors.email}>
                 <input
-                  type="email"
-                  name="email"
+                  type='email'
+                  name='email'
                   value={formData.email}
                   onChange={handleChange}
                   className={inputClassName(errors.email)}
-                  placeholder="your@email.com"
+                  placeholder='your@email.com'
                   required
-                  aria-describedby={errors.email ? "email-error" : undefined}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                 />
               </FormField>
 
               <FormField
-                label={dict.Mobile || "Phone Number"}
+                label={dict.Mobile || 'Phone Number'}
                 error={errors.mobile}
               >
                 <input
-                  type="tel"
-                  name="mobile"
+                  type='tel'
+                  name='mobile'
                   value={formData.mobile}
                   onChange={handleChange}
                   className={inputClassName(errors.mobile)}
-                  placeholder="+351 123 456 789"
-                  aria-describedby={errors.mobile ? "mobile-error" : undefined}
+                  placeholder='+351 123 456 789'
+                  aria-describedby={errors.mobile ? 'mobile-error' : undefined}
                 />
               </FormField>
             </div>
 
             {/* Club */}
             <FormField
-              label={dict.Club || "Club/Team Name"}
+              label={dict.Club || 'Club/Team Name'}
               required
               error={errors.club}
             >
               <input
-                type="text"
-                name="club"
+                type='text'
+                name='club'
                 value={formData.club}
                 onChange={handleChange}
                 className={inputClassName(errors.club)}
                 placeholder={
-                  dict.ClubPlaceholder || "Enter your club or team name"
+                  dict.ClubPlaceholder || 'Enter your club or team name'
                 }
                 required
-                aria-describedby={errors.club ? "club-error" : undefined}
+                aria-describedby={errors.club ? 'club-error' : undefined}
               />
             </FormField>
 
             {/* City + Country */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
               <FormField
-                label={dict.City || "City"}
+                label={dict.City || 'City'}
                 required
                 error={errors.city}
               >
                 <input
-                  type="text"
-                  name="city"
+                  type='text'
+                  name='city'
                   value={formData.city}
                   onChange={handleChange}
                   className={inputClassName(errors.city)}
-                  placeholder={dict.CityPlaceholder || "Your city"}
+                  placeholder={dict.CityPlaceholder || 'Your city'}
                   required
-                  aria-describedby={errors.city ? "city-error" : undefined}
+                  aria-describedby={errors.city ? 'city-error' : undefined}
                 />
               </FormField>
 
               <FormField
-                label={dict.Country || "Country"}
+                label={dict.Country || 'Country'}
                 required
                 error={errors.country}
               >
                 <input
-                  type="text"
-                  name="country"
+                  type='text'
+                  name='country'
                   value={formData.country}
                   onChange={handleChange}
                   className={inputClassName(errors.country)}
-                  placeholder={dict.CountryPlaceholder || "Your country"}
+                  placeholder={dict.CountryPlaceholder || 'Your country'}
                   required
                   aria-describedby={
-                    errors.country ? "country-error" : undefined
+                    errors.country ? 'country-error' : undefined
                   }
                 />
               </FormField>
@@ -322,51 +322,51 @@ export default function RegistrationForm({ dict }: Props) {
 
             {/* Questions */}
             <FormField
-              label={dict.Questions || "Additional Questions or Comments"}
+              label={dict.Questions || 'Additional Questions or Comments'}
               error={errors.questions}
             >
               <textarea
-                name="questions"
+                name='questions'
                 value={formData.questions}
                 onChange={handleChange}
                 rows={4}
                 className={inputClassName(errors.questions)}
                 placeholder={
                   dict.QuestionsPlaceholder ||
-                  "Any questions, dietary requirements, or special requests..."
+                  'Any questions, dietary requirements, or special requests...'
                 }
                 aria-describedby={
-                  errors.questions ? "questions-error" : undefined
+                  errors.questions ? 'questions-error' : undefined
                 }
               />
             </FormField>
 
             {/* Submit Button */}
-            <div className="pt-4">
+            <div className='pt-4'>
               <button
-                type="submit"
+                type='submit'
                 disabled={loading}
                 className={clsx(
-                  "flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-white shadow-lg motion-safe:transition-all",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2",
+                  'flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold text-white shadow-lg motion-safe:transition-all',
+                  'focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:outline-none',
                   loading
-                    ? "cursor-not-allowed bg-slate-400"
-                    : "bg-sky-700 hover:scale-105 hover:bg-sky-800 hover:shadow-xl active:scale-95"
+                    ? 'cursor-not-allowed bg-slate-400'
+                    : 'bg-sky-700 hover:scale-105 hover:bg-sky-800 hover:shadow-xl active:scale-95'
                 )}
-                aria-describedby={message ? "form-message" : undefined}
+                aria-describedby={message ? 'form-message' : undefined}
               >
                 {loading ? (
                   <>
                     <FiLoader
-                      className="h-5 w-5 motion-safe:animate-spin"
-                      aria-hidden="true"
+                      className='h-5 w-5 motion-safe:animate-spin'
+                      aria-hidden='true'
                     />
-                    {dict.Submitting || "Submitting..."}
+                    {dict.Submitting || 'Submitting...'}
                   </>
                 ) : (
                   <>
-                    <FiCheck className="h-5 w-5" aria-hidden="true" />
-                    {dict.Submit || "Submit Registration"}
+                    <FiCheck className='h-5 w-5' aria-hidden='true' />
+                    {dict.Submit || 'Submit Registration'}
                   </>
                 )}
               </button>
@@ -375,24 +375,24 @@ export default function RegistrationForm({ dict }: Props) {
             {/* Message */}
             {message && (
               <div
-                id="form-message"
+                id='form-message'
                 className={clsx(
-                  "flex items-center gap-2 rounded-lg p-4 text-sm",
-                  messageType === "success" &&
-                    "border border-green-200 bg-green-50 text-green-800",
-                  messageType === "error" &&
-                    "border border-red-200 bg-red-50 text-red-800",
-                  messageType === "info" &&
-                    "border border-blue-200 bg-blue-50 text-blue-800"
+                  'flex items-center gap-2 rounded-lg p-4 text-sm',
+                  messageType === 'success' &&
+                    'border border-green-200 bg-green-50 text-green-800',
+                  messageType === 'error' &&
+                    'border border-red-200 bg-red-50 text-red-800',
+                  messageType === 'info' &&
+                    'border border-blue-200 bg-blue-50 text-blue-800'
                 )}
-                role={messageType === "error" ? "alert" : "status"}
-                aria-live="polite"
+                role={messageType === 'error' ? 'alert' : 'status'}
+                aria-live='polite'
               >
-                {messageType === "success" && (
-                  <FiCheck className="h-4 w-4 flex-shrink-0" />
+                {messageType === 'success' && (
+                  <FiCheck className='h-4 w-4 flex-shrink-0' />
                 )}
-                {messageType === "error" && (
-                  <FiAlertCircle className="h-4 w-4 flex-shrink-0" />
+                {messageType === 'error' && (
+                  <FiAlertCircle className='h-4 w-4 flex-shrink-0' />
                 )}
                 <span>{message}</span>
               </div>
@@ -401,51 +401,51 @@ export default function RegistrationForm({ dict }: Props) {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* Helper Components */
 
 interface FormFieldProps {
-  label: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
+  label: string
+  required?: boolean
+  error?: string
+  children: React.ReactNode
 }
 
 const FormField: React.FC<FormFieldProps> = ({
   label,
   required,
   error,
-  children,
+  children
 }) => {
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-sky-700">
+      <label className='mb-1 block text-sm font-medium text-sky-700'>
         {label}
         {required && (
-          <span className="ml-1 text-red-500" aria-label="required">
+          <span className='ml-1 text-red-500' aria-label='required'>
             *
           </span>
         )}
       </label>
       {children}
       {error && (
-        <p className="mt-1 text-xs text-red-600" role="alert">
+        <p className='mt-1 text-xs text-red-600' role='alert'>
           {error}
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
 /* Helper Functions */
 
 const inputClassName = (error?: string) =>
   clsx(
-    "w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors",
-    "focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500",
+    'w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors',
+    'focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500',
     error
-      ? "border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300"
-      : "border-slate-300 bg-white hover:border-slate-400"
-  );
+      ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300'
+      : 'border-slate-300 bg-white hover:border-slate-400'
+  )

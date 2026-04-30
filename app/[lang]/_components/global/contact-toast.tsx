@@ -1,73 +1,77 @@
-"use client";
+'use client'
 
-import { useState, useCallback } from "react";
-import { FiX, FiCheck, FiAlertCircle, FiLoader } from "react-icons/fi";
-import Image from "next/image";
-import clsx from "clsx";
+import { useState, useCallback } from 'react'
+import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
+import Image from 'next/image'
+import clsx from 'clsx'
 import {
   validateAccommodationForm,
   ACCOMMODATION_INITIAL_DATA,
   type AccommodationFormData,
-  type FormErrors,
-} from "../../_lib/validation";
+  type FormErrors
+} from '../../_lib/validation'
 
-type MessageType = "success" | "error" | "info" | null;
+type MessageType = 'success' | 'error' | 'info' | null
 
 type ContactToastDict = {
-  title: string;
-  closeButton: string;
-  submit: string;
-  submitting: string;
-  successMessage: string;
-  errorMessage: string;
+  title: string
+  closeButton: string
+  submit: string
+  submitting: string
+  successMessage: string
+  errorMessage: string
   fields: {
-    teamName: string;
-    country: string;
-    teamManagerName: string;
-    phone: string;
-    email: string;
-    ageGroup: string;
-    numberOfPeople: string;
-    message: string;
-  };
+    teamName: string
+    country: string
+    teamManagerName: string
+    phone: string
+    email: string
+    ageGroup: string
+    numberOfPeople: string
+    message: string
+  }
   placeholders: {
-    teamName: string;
-    country: string;
-    teamManagerName: string;
-    phone: string;
-    email: string;
-    ageGroup: string;
-    numberOfPeople: string;
-    message: string;
-  };
-  validation: Record<string, string>;
-};
-
-interface ContactToastProps {
-  isOpen: boolean;
-  onClose: () => void;
-  dict: ContactToastDict;
+    teamName: string
+    country: string
+    teamManagerName: string
+    phone: string
+    email: string
+    ageGroup: string
+    numberOfPeople: string
+    message: string
+  }
+  validation: Record<string, string>
 }
 
-export default function ContactToast({ isOpen, onClose, dict }: ContactToastProps) {
+interface ContactToastProps {
+  isOpen: boolean
+  onClose: () => void
+  dict: ContactToastDict
+}
+
+export default function ContactToast({
+  isOpen,
+  onClose,
+  dict
+}: ContactToastProps) {
   const [formData, setFormData] = useState<AccommodationFormData>(
     ACCOMMODATION_INITIAL_DATA
-  );
+  )
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<MessageType>(null);
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState<MessageType>(null)
 
   // Form validation (using shared validation)
   const validateForm = useCallback(
     (data: AccommodationFormData): FormErrors => {
       const t = (key: string) =>
-        (dict.validation as Record<string, string>)[key] ?? key;
-      return validateAccommodationForm(data, t);
+        (dict.validation as Record<string, string>)[key] ?? key
+      return validateAccommodationForm(data, t)
     },
     [dict]
-  );
+  )
 
   const handleChange = useCallback(
     (
@@ -75,233 +79,233 @@ export default function ContactToast({ isOpen, onClose, dict }: ContactToastProp
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      const { name, value } = e.target
+      setFormData(prev => ({ ...prev, [name]: value }))
 
       // Clear error when user starts typing
       if (errors[name]) {
-        setErrors((prev) => ({ ...prev, [name]: "" }));
+        setErrors(prev => ({ ...prev, [name]: '' }))
       }
     },
     [errors]
-  );
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const newErrors = validateForm(formData);
-    setErrors(newErrors);
+    const newErrors = validateForm(formData)
+    setErrors(newErrors)
 
     if (Object.keys(newErrors).length > 0) {
-      return;
+      return
     }
 
-    setLoading(true);
-    setMessage("");
-    setMessageType(null);
+    setLoading(true)
+    setMessage('')
+    setMessageType(null)
 
     try {
-      const response = await fetch("/api/osports-contact", {
-        method: "POST",
+      const response = await fetch('/api/osports-contact', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(formData)
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
         setMessage(
           dict.successMessage ||
-            "Your accommodation request has been sent successfully!"
-        );
-        setMessageType("success");
-        setFormData({ ...ACCOMMODATION_INITIAL_DATA });
+            'Your accommodation request has been sent successfully!'
+        )
+        setMessageType('success')
+        setFormData({ ...ACCOMMODATION_INITIAL_DATA })
         // Close modal after 3 seconds on success
         setTimeout(() => {
-          onClose();
-        }, 3000);
+          onClose()
+        }, 3000)
       } else {
         setMessage(
           data.message ||
             dict.errorMessage ||
-            "Failed to send request. Please try again."
-        );
-        setMessageType("error");
+            'Failed to send request. Please try again.'
+        )
+        setMessageType('error')
       }
     } catch (error) {
-      console.error("Contact error:", error);
-      setMessage(dict.errorMessage || "Something went wrong. Please try again.");
-      setMessageType("error");
+      console.error('Contact error:', error)
+      setMessage(dict.errorMessage || 'Something went wrong. Please try again.')
+      setMessageType('error')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleClose = () => {
     // Reset form when closing
-    setFormData({ ...ACCOMMODATION_INITIAL_DATA });
-    setErrors({});
-    setMessage("");
-    setMessageType(null);
-    onClose();
-  };
+    setFormData({ ...ACCOMMODATION_INITIAL_DATA })
+    setErrors({})
+    setMessage('')
+    setMessageType(null)
+    onClose()
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <>
       {/* Backdrop - Exact same as Registration Hero */}
       <div
-        className="fixed inset-0 z-50 bg-black/10 motion-safe:transition-opacity"
+        className='fixed inset-0 z-50 bg-black/10 motion-safe:transition-opacity'
         onClick={handleClose}
       />
 
       {/* Toast/Modal - Responsive sizing with proper viewport constraints */}
-      <div className="fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-lg -translate-x-1/2 -translate-y-1/2 transform px-4 sm:mx-4 sm:w-full">
-        <div className="max-h-[80vh] overflow-y-auto rounded-lg border border-gray-200 bg-white p-4 shadow-2xl sm:max-h-[95vh] sm:p-6">
+      <div className='fixed top-1/2 left-1/2 z-50 w-[95vw] max-w-lg -translate-x-1/2 -translate-y-1/2 transform px-4 sm:mx-4 sm:w-full'>
+        <div className='max-h-[80vh] overflow-y-auto rounded-lg border border-gray-200 bg-white p-4 shadow-2xl sm:max-h-[95vh] sm:p-6'>
           {/* Header */}
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-3">
+          <div className='mb-4 flex items-center justify-between'>
+            <div className='flex items-center gap-2 sm:gap-3'>
               <Image
-                src="/img/sponsors/o-sports.webp"
-                alt="O-Sports"
+                src='/img/sponsors/o-sports.webp'
+                alt='O-Sports'
                 width={60}
                 height={30}
-                className="h-auto w-[40px] opacity-80 sm:w-[50px]"
-                loading="lazy"
+                className='h-auto w-[40px] opacity-80 sm:w-[50px]'
+                loading='lazy'
                 quality={80}
               />
-              <h3 className="text-base font-bold text-gray-900 sm:text-lg">
-                {dict.title || "Contact O-Sports"}
+              <h3 className='text-base font-bold text-gray-900 sm:text-lg'>
+                {dict.title || 'Contact O-Sports'}
               </h3>
             </div>
             <button
               onClick={handleClose}
-              className="rounded-full p-1 motion-safe:transition-colors hover:bg-gray-100"
-              aria-label={dict.closeButton || "Close modal"}
+              className='rounded-full p-1 hover:bg-gray-100 motion-safe:transition-colors'
+              aria-label={dict.closeButton || 'Close modal'}
             >
-              <FiX className="h-5 w-5 text-gray-500" />
+              <FiX className='h-5 w-5 text-gray-500' />
             </button>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <div className="space-y-4">
+          <form onSubmit={handleSubmit} className='space-y-4' noValidate>
+            <div className='space-y-4'>
               {/* Team Name */}
               <FormField
-                label={dict.fields.teamName || "Team Name"}
+                label={dict.fields.teamName || 'Team Name'}
                 required
                 error={errors.teamName}
               >
                 <input
-                  type="text"
-                  name="teamName"
+                  type='text'
+                  name='teamName'
                   value={formData.teamName}
                   onChange={handleChange}
                   className={inputClassName(errors.teamName)}
                   placeholder={
-                    dict.placeholders.teamName || "Enter your team name"
+                    dict.placeholders.teamName || 'Enter your team name'
                   }
                   required
                 />
               </FormField>
 
               {/* Country and Age Group Row */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                 <FormField
-                  label={dict.fields.country || "Country"}
+                  label={dict.fields.country || 'Country'}
                   required
                   error={errors.country}
                 >
                   <input
-                    type="text"
-                    name="country"
+                    type='text'
+                    name='country'
                     value={formData.country}
                     onChange={handleChange}
                     className={inputClassName(errors.country)}
                     placeholder={
-                      dict.placeholders.country || "Enter your country"
+                      dict.placeholders.country || 'Enter your country'
                     }
                     required
                   />
                 </FormField>
 
                 <FormField
-                  label={dict.fields.ageGroup || "Age Group"}
+                  label={dict.fields.ageGroup || 'Age Group'}
                   required
                   error={errors.ageGroup}
                 >
                   <select
-                    name="ageGroup"
+                    name='ageGroup'
                     value={formData.ageGroup}
                     onChange={handleChange}
                     className={inputClassName(errors.ageGroup)}
                     required
                   >
-                    <option value="">
-                      {dict.placeholders.ageGroup || "Select age group"}
+                    <option value=''>
+                      {dict.placeholders.ageGroup || 'Select age group'}
                     </option>
-                    <option value="U15">U15</option>
-                    <option value="U17">U17</option>
-                    <option value="Open">Open</option>
+                    <option value='U15'>U15</option>
+                    <option value='U17'>U17</option>
+                    <option value='Open'>Open</option>
                   </select>
                 </FormField>
               </div>
 
               {/* Team Manager Name */}
               <FormField
-                label={dict.fields.teamManagerName || "Team Manager Name"}
+                label={dict.fields.teamManagerName || 'Team Manager Name'}
                 required
                 error={errors.teamManagerName}
               >
                 <input
-                  type="text"
-                  name="teamManagerName"
+                  type='text'
+                  name='teamManagerName'
                   value={formData.teamManagerName}
                   onChange={handleChange}
                   className={inputClassName(errors.teamManagerName)}
                   placeholder={
                     dict.placeholders.teamManagerName ||
-                    "Enter team manager name"
+                    'Enter team manager name'
                   }
                   required
                 />
               </FormField>
 
               {/* Email and Phone Row */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                 <FormField
-                  label={dict.fields.email || "Email"}
+                  label={dict.fields.email || 'Email'}
                   required
                   error={errors.email}
                 >
                   <input
-                    type="email"
-                    name="email"
+                    type='email'
+                    name='email'
                     value={formData.email}
                     onChange={handleChange}
                     className={inputClassName(errors.email)}
                     placeholder={
-                      dict.placeholders.email || "Enter email address"
+                      dict.placeholders.email || 'Enter email address'
                     }
                     required
                   />
                 </FormField>
 
                 <FormField
-                  label={dict.fields.phone || "Phone"}
+                  label={dict.fields.phone || 'Phone'}
                   error={errors.phone}
                 >
                   <input
-                    type="tel"
-                    name="phone"
+                    type='tel'
+                    name='phone'
                     value={formData.phone}
                     onChange={handleChange}
                     className={inputClassName(errors.phone)}
                     placeholder={
-                      dict.placeholders.phone || "Enter phone number"
+                      dict.placeholders.phone || 'Enter phone number'
                     }
                   />
                 </FormField>
@@ -309,38 +313,38 @@ export default function ContactToast({ isOpen, onClose, dict }: ContactToastProp
 
               {/* Number of People */}
               <FormField
-                label={dict.fields.numberOfPeople || "Number of People"}
+                label={dict.fields.numberOfPeople || 'Number of People'}
                 required
                 error={errors.numberOfPeople}
               >
                 <input
-                  type="number"
-                  name="numberOfPeople"
+                  type='number'
+                  name='numberOfPeople'
                   value={formData.numberOfPeople}
                   onChange={handleChange}
                   className={inputClassName(errors.numberOfPeople)}
                   placeholder={
                     dict.placeholders.numberOfPeople ||
-                    "Enter total number of people"
+                    'Enter total number of people'
                   }
-                  min="1"
+                  min='1'
                   required
                 />
               </FormField>
 
               {/* Message */}
               <FormField
-                label={dict.fields.message || "Additional Message"}
+                label={dict.fields.message || 'Additional Message'}
                 error={errors.message}
               >
                 <textarea
-                  name="message"
+                  name='message'
                   value={formData.message}
                   onChange={handleChange}
                   className={textareaClassName(errors.message)}
                   placeholder={
                     dict.placeholders.message ||
-                    "Enter any additional information or special requests..."
+                    'Enter any additional information or special requests...'
                   }
                   rows={4}
                 />
@@ -348,29 +352,29 @@ export default function ContactToast({ isOpen, onClose, dict }: ContactToastProp
             </div>
 
             {/* Submit Button */}
-            <div className="mt-6">
+            <div className='mt-6'>
               <button
-                type="submit"
+                type='submit'
                 disabled={loading}
                 className={clsx(
-                  "flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white motion-safe:transition-all duration-300",
+                  'flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white duration-300 motion-safe:transition-all',
                   loading
-                    ? "cursor-not-allowed bg-slate-400"
-                    : "bg-sky-700 hover:scale-105 hover:bg-sky-800 hover:shadow-xl active:scale-95"
+                    ? 'cursor-not-allowed bg-slate-400'
+                    : 'bg-sky-700 hover:scale-105 hover:bg-sky-800 hover:shadow-xl active:scale-95'
                 )}
               >
                 {loading ? (
                   <>
                     <FiLoader
-                      className="h-5 w-5 motion-safe:animate-spin"
-                      aria-hidden="true"
+                      className='h-5 w-5 motion-safe:animate-spin'
+                      aria-hidden='true'
                     />
-                    {dict.submitting || "Sending..."}
+                    {dict.submitting || 'Sending...'}
                   </>
                 ) : (
                   <>
-                    <FiCheck className="h-5 w-5" aria-hidden="true" />
-                    {dict.submit || "Send Accommodation Request"}
+                    <FiCheck className='h-5 w-5' aria-hidden='true' />
+                    {dict.submit || 'Send Accommodation Request'}
                   </>
                 )}
               </button>
@@ -380,22 +384,22 @@ export default function ContactToast({ isOpen, onClose, dict }: ContactToastProp
             {message && (
               <div
                 className={clsx(
-                  "mt-4 flex items-center gap-2 rounded-lg p-4 text-sm",
-                  messageType === "success" &&
-                    "border border-green-200 bg-green-50 text-green-800",
-                  messageType === "error" &&
-                    "border border-red-200 bg-red-50 text-red-800",
-                  messageType === "info" &&
-                    "border border-blue-200 bg-blue-50 text-blue-800"
+                  'mt-4 flex items-center gap-2 rounded-lg p-4 text-sm',
+                  messageType === 'success' &&
+                    'border border-green-200 bg-green-50 text-green-800',
+                  messageType === 'error' &&
+                    'border border-red-200 bg-red-50 text-red-800',
+                  messageType === 'info' &&
+                    'border border-blue-200 bg-blue-50 text-blue-800'
                 )}
-                role={messageType === "error" ? "alert" : "status"}
-                aria-live="polite"
+                role={messageType === 'error' ? 'alert' : 'status'}
+                aria-live='polite'
               >
-                {messageType === "success" && (
-                  <FiCheck className="h-4 w-4 flex-shrink-0" />
+                {messageType === 'success' && (
+                  <FiCheck className='h-4 w-4 flex-shrink-0' />
                 )}
-                {messageType === "error" && (
-                  <FiAlertCircle className="h-4 w-4 flex-shrink-0" />
+                {messageType === 'error' && (
+                  <FiAlertCircle className='h-4 w-4 flex-shrink-0' />
                 )}
                 <span>{message}</span>
               </div>
@@ -404,58 +408,58 @@ export default function ContactToast({ isOpen, onClose, dict }: ContactToastProp
         </div>
       </div>
     </>
-  );
+  )
 }
 
 /* Helper Components */
 interface FormFieldProps {
-  label: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
+  label: string
+  required?: boolean
+  error?: string
+  children: React.ReactNode
 }
 
 const FormField: React.FC<FormFieldProps> = ({
   label,
   required,
   error,
-  children,
+  children
 }) => {
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-sky-700">
+      <label className='mb-1 block text-sm font-medium text-sky-700'>
         {label}
         {required && (
-          <span className="ml-1 text-red-500" aria-label="required">
+          <span className='ml-1 text-red-500' aria-label='required'>
             *
           </span>
         )}
       </label>
       {children}
       {error && (
-        <p className="mt-1 text-xs text-red-600" role="alert">
+        <p className='mt-1 text-xs text-red-600' role='alert'>
           {error}
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
 /* Helper Functions */
 const inputClassName = (error?: string) =>
   clsx(
-    "w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors",
-    "focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500",
+    'w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors',
+    'focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500',
     error
-      ? "border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300"
-      : "border-slate-300 bg-white hover:border-slate-400"
-  );
+      ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300'
+      : 'border-slate-300 bg-white hover:border-slate-400'
+  )
 
 const textareaClassName = (error?: string) =>
   clsx(
-    "w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors resize-none",
-    "focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500",
+    'w-full rounded-lg border px-3 py-2 text-sm motion-safe:transition-colors resize-none',
+    'focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500',
     error
-      ? "border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300"
-      : "border-slate-300 bg-white hover:border-slate-400"
-  );
+      ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-300'
+      : 'border-slate-300 bg-white hover:border-slate-400'
+  )

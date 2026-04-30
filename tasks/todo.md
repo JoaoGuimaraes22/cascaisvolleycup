@@ -14,26 +14,23 @@ but not yet merged to main — Vercel will only redeploy after merge.
       `all_loaded` → "Todas las imágenes cargadas", `loading` → "Cargando
       galería...").
 
-## SEO enrichment
+## SEO enrichment — done 2026-04-30
 
-- [ ] Emit `BreadcrumbList` JSON-LD on every non-home page using
-      `buildBreadcrumb(lang, items)` from `_lib/seo.ts` + `<JsonLd data={...}/>`
-      from `_components/json-ld.tsx`. Pattern:
-      ```tsx
-      const breadcrumb = buildBreadcrumb(lang, [
-        { name: dict.AboutPage.Hero.heading, path: "/about" },
-      ]);
-      return (
-        <>
-          <JsonLd data={breadcrumb} />
-          ...
-        </>
-      );
-      ```
-      Pages: about, program, competition, registration, accommodation,
-      gallery (and 2023/2024/2025), hall-of-fame, news.
-- [ ] Consider `FAQPage` JSON-LD on `/registration` if there's an FAQ
-      section. Same pattern with `@type: FAQPage`.
+- [x] Emit `BreadcrumbList` JSON-LD on every non-home page. All 12 inner pages
+      (about, program, competition, registration, accommodation, gallery
+      overview + 2023/2024/2025, hall-of-fame, news) now emit a unified
+      `@graph` containing a page-typed node (`AboutPage`/`WebPage`/
+      `CollectionPage`/`ImageGallery`) linked via `isPartOf` to website and
+      `mainEntity`/`about` to the SportsEvent, plus a `BreadcrumbList`.
+- [x] Centralized per-page metadata via `buildPageMetadata(lang, opts)` in
+      `_lib/seo.ts` — every page now ships full hreflang × 4 + `x-default`,
+      OG (with localized URL + locale), and Twitter card. Replaces ~15 lines
+      of boilerplate per page.
+- [x] Gallery year pages (2023/2024/2025): converted inline raw `<script>`
+      tags to the `<JsonLd>` component (consistent `<` escape) and merged
+      breadcrumb + ImageGallery into one `@graph` linked via shared `@id`.
+- [N/A] FAQPage JSON-LD on `/registration` — no FAQ section exists in the
+      registration dict.
 
 ## Lint polish (React 19 perf hints)
 
@@ -62,6 +59,12 @@ After cleanup, restore the rules to `error` in `eslint.config.mjs`.
 
 ## Misc
 
+- [ ] `app/[lang]/news/page.tsx` hardcodes English `"News"` title and
+      description (no `NewsPage` block in dicts). Once the news page ships
+      real content, add a `NewsPage` block to all 4 dict locales mirroring
+      `GalleryPage`, and replace the `NEWS_TITLE`/`NEWS_DESCRIPTION`
+      constants with dict references. PT/ES/FR users currently get an
+      English `<title>` for `/news`.
 - [ ] Re-evaluate `prettier-plugin-tailwindcss` 0.6 → 0.8 (latest). Trivial
       bump but may reorder some Tailwind classes; run formatter and review
       diff.

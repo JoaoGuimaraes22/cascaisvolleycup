@@ -244,10 +244,11 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
 
 - Layout `generateMetadata` builds per-locale canonical + hreflang × 4 + OG locale.
 - Layout JSON-LD: `@graph` with `WebSite` + `Organization` (Volley4All) + `SportsEvent` (Cascais Volley Cup 2026), all linked via `@id` from `schemaIds(lang)`.
-- `_lib/seo.ts` helpers: `SITE_URL`, `bcp47Locale(lang)`, `ogLocale(lang)`, `schemaIds(lang)`, `buildBreadcrumb(lang, items)`, `localeHref(lang, path)`.
+- `_lib/seo.ts` helpers: `SITE_URL`, `bcp47Locale(lang)`, `ogLocale(lang)`, `schemaIds(lang)` → `{ website, organization, event }`, `buildBreadcrumb(lang, items)`, `breadcrumbLabel(lang, key)`, `buildPageMetadata(lang, { title, description, path, image? })`, `buildPageGraph(lang, { type, path, name, description?, eventRef?, breadcrumb, dateCreated?, withPublisher? })`, `localeHref(lang, path)`.
+- **Use `buildPageMetadata` in every page-level `generateMetadata` (including layout)** — returns full Metadata with hreflang × 4 + `x-default`, canonical, OG (localized URL + locale), Twitter card. Don't hand-roll the alternates.
+- **Use `buildPageGraph` for per-page JSON-LD.** Returns the `@graph` (page-typed node + BreadcrumbList) with all `@id` plumbing handled. `type` ∈ `AboutPage` | `WebPage` | `CollectionPage` | `ImageGallery`; `eventRef` is `mainEntity` (page IS about the event, e.g. about/program/registration) or `about` (page is a collection that references the event, e.g. gallery/hall-of-fame); omit `eventRef` for pages with no event linkage (e.g. news stub). `withPublisher: true` and `dateCreated` apply to ImageGallery only. See `app/[lang]/about/page.tsx` for the canonical pattern.
 - Sitemap auto-generates 52 entries (13 routes × 4 locales) with hreflang alternates.
 - Robots allows AI crawlers (`GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, etc.).
-- For per-page enrichment (BreadcrumbList, FAQPage, ImageGallery), use `<JsonLd data={...} />` from `_components/json-ld.tsx`. Already done on gallery year pages (ImageGallery) — extend for breadcrumbs as needed.
 
 ---
 

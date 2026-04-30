@@ -4,6 +4,12 @@ import { getDictionary, hasLocale } from "../dictionaries";
 import HallOfFameHero from "../_components/hall-of-fame/hero";
 import HallOfFameParticipants from "../_components/hall-of-fame/participants";
 import HallOfFameWinners from "../_components/hall-of-fame/winners";
+import JsonLd from "../_components/json-ld";
+import {
+  buildPageMetadata,
+  buildPageGraph,
+  breadcrumbLabel,
+} from "../_lib/seo";
 
 export const revalidate = 86400;
 
@@ -13,13 +19,12 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!hasLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  const hero = dict.HallOfFamePage.Hero;
 
-  return {
-    title: hero.title,
-    description: hero.intro,
-    alternates: { canonical: `/${lang}/hall-of-fame` },
-  };
+  return buildPageMetadata(lang, {
+    title: dict.HallOfFamePage.Hero.title,
+    description: dict.HallOfFamePage.Hero.intro,
+    path: "/hall-of-fame",
+  });
 }
 
 export default async function HallOfFamePage({
@@ -29,11 +34,25 @@ export default async function HallOfFamePage({
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
 
+  const jsonLd = buildPageGraph(lang, {
+    type: "CollectionPage",
+    path: "/hall-of-fame",
+    name: dict.HallOfFamePage.Hero.title,
+    description: dict.HallOfFamePage.Hero.intro,
+    eventRef: "about",
+    breadcrumb: [
+      { name: breadcrumbLabel(lang, "hallOfFame"), path: "/hall-of-fame" },
+    ],
+  });
+
   return (
-    <div>
-      <HallOfFameHero dict={dict.HallOfFamePage.Hero} />
-      <HallOfFameParticipants dict={dict.HallOfFamePage.Participants} />
-      <HallOfFameWinners dict={dict.HallOfFamePage.Winners} />
-    </div>
+    <>
+      <JsonLd data={jsonLd} />
+      <div>
+        <HallOfFameHero dict={dict.HallOfFamePage.Hero} />
+        <HallOfFameParticipants dict={dict.HallOfFamePage.Participants} />
+        <HallOfFameWinners dict={dict.HallOfFamePage.Winners} />
+      </div>
+    </>
   );
 }

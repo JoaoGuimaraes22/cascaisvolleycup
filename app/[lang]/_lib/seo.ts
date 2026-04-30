@@ -1,3 +1,6 @@
+import type { Metadata } from "next";
+import { i18n } from "@/i18n-config";
+
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://cascaisvolley.com";
 
@@ -133,4 +136,96 @@ export function localeHref(lang: string, path: string): string {
   if (path === "/") return `/${lang}`;
   if (path.startsWith("/")) return `/${lang}${path}`;
   return `/${lang}/${path}`;
+}
+
+type PageMetadataOptions = {
+  title: string;
+  description: string;
+  /** Path under the locale segment, e.g. "/about" or "/gallery/2025". Use "" for the home page. */
+  path: string;
+  /** OG image URL relative to SITE_URL (defaults to /img/og-image.png). */
+  image?: string;
+};
+
+export function buildPageMetadata(
+  lang: string,
+  { title, description, path, image = "/img/og-image.png" }: PageMetadataOptions
+): Metadata {
+  const canonical = `/${lang}${path}`;
+  const url = `${SITE_URL}/${lang}${path}`;
+
+  const languages: Record<string, string> = Object.fromEntries(
+    i18n.locales.map((l) => [l, `/${l}${path}`])
+  );
+  languages["x-default"] = `/${i18n.defaultLocale}${path}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical, languages },
+    openGraph: {
+      title,
+      description,
+      url,
+      locale: ogLocale(lang),
+      type: "website",
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
+
+type PageGraphType = "AboutPage" | "WebPage" | "CollectionPage" | "ImageGallery";
+
+type PageGraphOptions = {
+  type: PageGraphType;
+  /** Path under the locale segment, e.g. "/about" or "/gallery/2025". */
+  path: string;
+  name: string;
+  description?: string;
+  /** Property linking the page to the SportsEvent. Omit for pages with no event linkage (e.g. stubs). */
+  eventRef?: "mainEntity" | "about";
+  /** Breadcrumb segments after Home. */
+  breadcrumb: BreadcrumbItem[];
+  /** ImageGallery only — ISO date the gallery was created. */
+  dateCreated?: string;
+  /** ImageGallery only — emit publisher: { @id: ids.organization }. */
+  withPublisher?: boolean;
+};
+
+export function buildPageGraph(lang: string, opts: PageGraphOptions) {
+  const ids = schemaIds(lang);
+  const url = `${SITE_URL}/${lang}${opts.path}`;
+  const pageId = `${url}#${opts.type.toLowerCase()}`;
+  const breadcrumbId = `${url}#breadcrumb`;
+
+  const breadcrumb = {
+    ...buildBreadcrumb(lang, opts.breadcrumb),
+    "@id": breadcrumbId,
+  };
+
+  const pageNode: Record<string, unknown> = {
+    "@type": opts.type,
+    "@id": pageId,
+    url,
+    name: opts.name,
+    inLanguage: bcp47Locale(lang),
+    isPartOf: { "@id": ids.website },
+    breadcrumb: { "@id": breadcrumbId },
+  };
+
+  if (opts.description) pageNode.description = opts.description;
+  if (opts.eventRef) pageNode[opts.eventRef] = { "@id": ids.event };
+  if (opts.dateCreated) pageNode.dateCreated = opts.dateCreated;
+  if (opts.withPublisher) pageNode.publisher = { "@id": ids.organization };
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [pageNode, breadcrumb],
+  };
 }

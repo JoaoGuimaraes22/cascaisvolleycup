@@ -6,7 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { notFound } from "next/navigation";
 import { i18n } from "@/i18n-config";
 import { getDictionary, hasLocale } from "./dictionaries";
-import { SITE_URL, ogLocale, bcp47Locale, schemaIds } from "./_lib/seo";
+import { SITE_URL, bcp47Locale, schemaIds, buildPageMetadata } from "./_lib/seo";
 import JsonLd from "./_components/json-ld";
 import Header from "./_components/global/header";
 import Footer from "./_components/global/footer";
@@ -40,38 +40,15 @@ export async function generateMetadata({
   const dict = await getDictionary(lang);
   const { title, description, name, titleTemplate, keywords } = dict.metadata;
 
+  const base = buildPageMetadata(lang, { title, description, path: "" });
+
   return {
+    ...base,
     metadataBase: new URL(SITE_URL),
     title: { default: title, template: titleTemplate },
-    description,
     keywords,
     authors: [{ name: "Volley4All", url: SITE_URL }],
-    alternates: {
-      canonical: `/${lang}`,
-      languages: Object.fromEntries(i18n.locales.map((l) => [l, `/${l}`])),
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${SITE_URL}/${lang}`,
-      siteName: name,
-      locale: ogLocale(lang),
-      type: "website",
-      images: [
-        {
-          url: "/img/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: name,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["/img/og-image.png"],
-    },
+    openGraph: { ...base.openGraph, siteName: name },
     icons: {
       icon: [
         { url: "/img/favicon/favicon.svg", type: "image/svg+xml" },

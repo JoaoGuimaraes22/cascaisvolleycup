@@ -2,6 +2,12 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getDictionary, hasLocale } from "../dictionaries";
 import AccommodationHero from "../_components/accommodation/hero";
+import JsonLd from "../_components/json-ld";
+import {
+  buildPageMetadata,
+  buildPageGraph,
+  breadcrumbLabel,
+} from "../_lib/seo";
 
 export const revalidate = 86400;
 
@@ -13,11 +19,11 @@ export async function generateMetadata({
   const dict = await getDictionary(lang);
   const hero = dict.AccommodationPage.Hero;
 
-  return {
+  return buildPageMetadata(lang, {
     title: hero.title,
     description: hero.schools.p1,
-    alternates: { canonical: `/${lang}/accommodation` },
-  };
+    path: "/accommodation",
+  });
 }
 
 export default async function AccommodationPageRoute({
@@ -26,11 +32,26 @@ export default async function AccommodationPageRoute({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
+  const hero = dict.AccommodationPage.Hero;
+
+  const jsonLd = buildPageGraph(lang, {
+    type: "WebPage",
+    path: "/accommodation",
+    name: hero.title,
+    description: hero.schools.p1,
+    eventRef: "mainEntity",
+    breadcrumb: [
+      { name: breadcrumbLabel(lang, "accommodation"), path: "/accommodation" },
+    ],
+  });
 
   return (
-    <AccommodationHero
-      dict={dict.AccommodationPage.Hero}
-      contactToastDict={dict.ContactModal}
-    />
+    <>
+      <JsonLd data={jsonLd} />
+      <AccommodationHero
+        dict={dict.AccommodationPage.Hero}
+        contactToastDict={dict.ContactModal}
+      />
+    </>
   );
 }

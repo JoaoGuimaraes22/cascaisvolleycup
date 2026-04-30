@@ -4,6 +4,12 @@ import { getDictionary, hasLocale } from "../dictionaries";
 import CompetitionHero from "../_components/competition/hero";
 import CompetitionFacts from "../_components/competition/facts";
 import CompetitionInfo from "../_components/competition/info";
+import JsonLd from "../_components/json-ld";
+import {
+  buildPageMetadata,
+  buildPageGraph,
+  breadcrumbLabel,
+} from "../_lib/seo";
 
 export const revalidate = 86400;
 
@@ -15,11 +21,11 @@ export async function generateMetadata({
   const dict = await getDictionary(lang);
   const hero = dict.CompetitionPage.Hero;
 
-  return {
+  return buildPageMetadata(lang, {
     title: hero.title,
     description: hero.p1,
-    alternates: { canonical: `/${lang}/competition` },
-  };
+    path: "/competition",
+  });
 }
 
 export default async function CompetitionPage({
@@ -28,9 +34,22 @@ export default async function CompetitionPage({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
+  const hero = dict.CompetitionPage.Hero;
+
+  const jsonLd = buildPageGraph(lang, {
+    type: "WebPage",
+    path: "/competition",
+    name: hero.title,
+    description: hero.p1,
+    eventRef: "mainEntity",
+    breadcrumb: [
+      { name: breadcrumbLabel(lang, "competition"), path: "/competition" },
+    ],
+  });
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <CompetitionHero
         dict={dict.CompetitionPage.Hero}
         logoDict={dict.CompetitionPage.LogoTaglineHero}

@@ -94,7 +94,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
       <div className="absolute inset-0 z-0">
         <div
           ref={bgRef}
-          className="h-full w-full"
+          className="relative h-full w-full"
           style={isDesktop ? { willChange: "transform" } : undefined}
         >
           <Image
@@ -151,7 +151,8 @@ export default function LandingWelcome({ lang, dict }: Props) {
               priority={true}
               quality={95}
               sizes="(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px"
-              className="h-auto w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]"
+              className="w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]"
+              style={{ height: "auto" }}
             />
           </div>
         </div>

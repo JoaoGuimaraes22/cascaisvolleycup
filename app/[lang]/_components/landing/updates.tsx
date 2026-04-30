@@ -4,28 +4,12 @@
 
 import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
 import Image from 'next/image'
-import LandingTestimonials from './testimonials'
+import LandingTestimonials, { type TestimonialsDict } from './testimonials'
 
-// Memoized shared assets
 const SHARED_ASSETS = {
   background: '/img/landing/home-page-2.webp',
   waveTop: '/img/global/ondas-4.webp'
 } as const
-
-type TestimonialItem = {
-  team: string
-  country: string
-  year: string
-  quote: string
-}
-
-type TestimonialsDict = {
-  heading: string
-  items: Record<
-    't1' | 't2' | 't3' | 't4' | 't5' | 't6' | 't7',
-    TestimonialItem
-  >
-}
 
 type Props = {
   testimonialsDict: TestimonialsDict

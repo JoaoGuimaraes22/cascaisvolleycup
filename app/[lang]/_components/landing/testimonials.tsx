@@ -26,7 +26,7 @@ type TestimonialItem = {
   quote: string
 }
 
-type TestimonialsDict = {
+export type TestimonialsDict = {
   heading: string
   items: Record<(typeof TESTIMONIAL_KEYS)[number], TestimonialItem>
 }

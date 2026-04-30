@@ -7,6 +7,13 @@
   --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --primary: #333366;
   --background: #ededed;

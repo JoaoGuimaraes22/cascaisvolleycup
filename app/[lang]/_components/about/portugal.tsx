@@ -1,10 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
-import { useKeenSlider } from 'keen-slider/react'
-import 'keen-slider/keen-slider.min.css'
+import { useSnapCarousel } from '../../_hooks/use-snap-carousel'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 import { GLOBAL_ASSETS, WAVE_HEIGHT } from '../../_lib/constants'
@@ -47,9 +46,7 @@ type SpotKey = 'portugal' | 'cabo' | 'boca' | 'sec1719'
 export default function AboutPortugal({ dict }: Props) {
   const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [imageLoaded, setImageLoaded] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
 
-  // ===== Constants =====
   const ASSETS = {
     background: '/img/about/portugal-bg.webp',
     logo: GLOBAL_ASSETS.logo,
@@ -79,42 +76,9 @@ export default function AboutPortugal({ dict }: Props) {
     }
   ] as const
 
-  // Slider setup - only for mobile/tablet
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: false,
-    defaultAnimation: { duration: 600 },
-    slides: {
-      perView: 1.2,
-      spacing: 16
-    },
-    breakpoints: {
-      '(min-width: 640px)': {
-        slides: { perView: 2.2, spacing: 20 }
-      },
-      '(min-width: 1024px)': {
-        disabled: true // Disable slider on desktop
-      }
-    },
-    slideChanged(s) {
-      setCurrentSlide(s.track.details.rel)
-    }
+  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
+    slideCount: SPOTS.length
   })
-
-  // Navigation functions
-  const goToSlide = useCallback(
-    (index: number) => {
-      instanceRef.current?.moveToIdx(index)
-    },
-    [instanceRef]
-  )
-
-  const goToPrevious = useCallback(() => {
-    instanceRef.current?.prev()
-  }, [instanceRef])
-
-  const goToNext = useCallback(() => {
-    instanceRef.current?.next()
-  }, [instanceRef])
 
   const PARAGRAPHS: Array<'p1' | 'p2' | 'p3' | 'p4'> = ['p1', 'p2', 'p3', 'p4']
 
@@ -236,15 +200,17 @@ export default function AboutPortugal({ dict }: Props) {
           )}
           style={{ transitionDelay: '800ms' }}
         >
-          {/* Slider */}
           <div className='relative'>
             <div
-              ref={sliderRef}
-              className='keen-slider'
+              ref={scrollRef}
+              className='scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 sm:gap-5'
               aria-labelledby='portugal-title'
             >
               {SPOTS.map((spot, index) => (
-                <div key={spot.key} className='keen-slider__slide px-2'>
+                <div
+                  key={spot.key}
+                  className='shrink-0 snap-start basis-[83%] px-1 sm:basis-[calc(45%-0.625rem)]'
+                >
                   <SpotCard
                     spot={spot}
                     index={index}
@@ -255,18 +221,15 @@ export default function AboutPortugal({ dict }: Props) {
               ))}
             </div>
 
-            {/* Navigation controls */}
             <div className='mt-4 flex items-center justify-center gap-4'>
-              {/* Navigation arrows */}
               <button
-                onClick={goToPrevious}
+                onClick={prev}
                 aria-label='Previous card'
                 className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
               >
                 <FiChevronLeft className='h-4 w-4 text-sky-500' />
               </button>
 
-              {/* Dots */}
               <div className='flex gap-2'>
                 {SPOTS.map((_, index) => (
                   <button
@@ -275,7 +238,7 @@ export default function AboutPortugal({ dict }: Props) {
                     aria-label={`Go to card ${index + 1}`}
                     className={clsx(
                       'h-2 w-2 rounded-full motion-safe:transition-all',
-                      currentSlide === index
+                      activeIndex === index
                         ? 'scale-125 bg-sky-500'
                         : 'bg-sky-500/50 hover:bg-sky-500/80'
                     )}
@@ -284,7 +247,7 @@ export default function AboutPortugal({ dict }: Props) {
               </div>
 
               <button
-                onClick={goToNext}
+                onClick={next}
                 aria-label='Next card'
                 className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
               >

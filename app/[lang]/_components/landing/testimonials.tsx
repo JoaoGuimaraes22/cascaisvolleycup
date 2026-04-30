@@ -1,27 +1,14 @@
 'use client'
 
-import React, { useCallback, useState, useMemo, useRef } from 'react'
-import { useKeenSlider } from 'keen-slider/react'
+import React, { useMemo } from 'react'
 import { useIsClient } from '../../_hooks/use-is-client'
-import 'keen-slider/keen-slider.min.css'
+import { useSnapCarousel } from '../../_hooks/use-snap-carousel'
 import Image from 'next/image'
 import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi'
 import clsx from 'clsx'
 
 const TESTIMONIALS_ASSETS = {
-  waveTestimonials: '/img/global/ondas-9.webp',
-  animations: {
-    duration: 250
-  },
-  breakpoints: {
-    tablet: '(min-width: 640px)',
-    desktop: '(min-width: 1024px)'
-  },
-  spacing: {
-    mobile: 8,
-    tablet: 12,
-    desktop: 16
-  }
+  waveTestimonials: '/img/global/ondas-9.webp'
 } as const
 
 interface Testimonial {
@@ -45,7 +32,6 @@ type TestimonialsDict = {
   items: Record<(typeof TESTIMONIAL_KEYS)[number], TestimonialItem>
 }
 
-// Star Rating Component
 const StarRating = React.memo(() => {
   return (
     <div
@@ -65,7 +51,6 @@ const StarRating = React.memo(() => {
 
 StarRating.displayName = 'StarRating'
 
-// Testimonial Card Component
 const TestimonialCard = React.memo(
   ({ testimonial }: { testimonial: Testimonial }) => {
     const { team, quote, country, year } = testimonial
@@ -102,8 +87,6 @@ interface LandingTestimonialsProps {
 export default function LandingTestimonials({
   dict
 }: LandingTestimonialsProps) {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const autoplayRef = useRef<NodeJS.Timeout | null>(null)
   const isMounted = useIsClient()
 
   const testimonials: Testimonial[] = useMemo(
@@ -117,95 +100,19 @@ export default function LandingTestimonials({
     [dict]
   )
 
-  // Keen-slider configuration (only for tablet+)
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
+    slideCount: testimonials.length,
     loop: true,
-    mode: 'snap',
-    defaultAnimation: { duration: TESTIMONIALS_ASSETS.animations.duration },
-    slides: {
-      perView: 2,
-      spacing: TESTIMONIALS_ASSETS.spacing.tablet,
-      origin: 'center'
-    },
-    breakpoints: {
-      [TESTIMONIALS_ASSETS.breakpoints.desktop]: {
-        slides: { perView: 3, spacing: TESTIMONIALS_ASSETS.spacing.desktop }
-      }
-    },
-    slideChanged(s) {
-      setCurrentSlide(s.track.details.rel)
-    },
-    created(s) {
-      if (isMounted) {
-        autoplayRef.current = setInterval(() => {
-          s.next()
-        }, 5000)
-      }
-    },
-    destroyed() {
-      if (autoplayRef.current) {
-        clearInterval(autoplayRef.current)
-        autoplayRef.current = null
-      }
-    }
+    autoplay: 5000
   })
 
-  const goToSlide = useCallback(
-    (index: number) => {
-      instanceRef.current?.moveToIdx(index)
-      if (autoplayRef.current) {
-        clearInterval(autoplayRef.current)
-        autoplayRef.current = setInterval(() => {
-          instanceRef.current?.next()
-        }, 5000)
-      }
-    },
-    [instanceRef]
-  )
-
-  const goToPrevious = useCallback(() => {
-    instanceRef.current?.prev()
-    if (autoplayRef.current) {
-      clearInterval(autoplayRef.current)
-      autoplayRef.current = setInterval(() => {
-        instanceRef.current?.next()
-      }, 5000)
-    }
-  }, [instanceRef])
-
-  const goToNext = useCallback(() => {
-    instanceRef.current?.next()
-    if (autoplayRef.current) {
-      clearInterval(autoplayRef.current)
-      autoplayRef.current = setInterval(() => {
-        instanceRef.current?.next()
-      }, 5000)
-    }
-  }, [instanceRef])
-
-  // First three testimonials for mobile static view
   const mobileTestimonials = useMemo(
     () => testimonials.slice(0, 3),
     [testimonials]
   )
 
-  // All testimonials for slider
-  const testimonialSlides = useMemo(
-    () =>
-      testimonials.map((item, index) => (
-        <div
-          key={`${item.team}-${index}`}
-          className='keen-slider__slide px-2 py-3 sm:py-4'
-        >
-          <TestimonialCard testimonial={item} />
-        </div>
-      )),
-    [testimonials]
-  )
-
   return (
     <>
-      {/* Section Title */}
       <div className='mx-auto max-w-screen-xl px-4'>
         <div>
           <h3
@@ -217,10 +124,8 @@ export default function LandingTestimonials({
         </div>
       </div>
 
-      {/* Wave section */}
       <div className='relative w-full overflow-hidden'>
         <div className='relative min-h-[600px] sm:min-h-[280px] lg:min-h-[320px]'>
-          {/* Wave background */}
           <Image
             src={TESTIMONIALS_ASSETS.waveTestimonials}
             alt=''
@@ -232,10 +137,9 @@ export default function LandingTestimonials({
             sizes='100vw'
           />
 
-          {/* Testimonials Content */}
           <div className='absolute inset-0 flex items-center text-white'>
             <div className='mx-auto w-full max-w-screen-xl px-2 sm:px-4'>
-              {/* Mobile: Stacked testimonials (visible only on mobile) */}
+              {/* Mobile: Stacked testimonials */}
               <div className='space-y-6 py-6 sm:hidden'>
                 {mobileTestimonials.map((testimonial, index) => (
                   <div
@@ -247,28 +151,33 @@ export default function LandingTestimonials({
                 ))}
               </div>
 
-              {/* Tablet+: Slider (hidden on mobile) */}
+              {/* Tablet+: Auto-rotating snap carousel */}
               {isMounted && (
                 <div className='relative hidden sm:block'>
                   <div
-                    ref={sliderRef}
-                    className='keen-slider'
+                    ref={scrollRef}
+                    className='scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto py-3 sm:py-4 lg:gap-4'
                     aria-labelledby='testimonials-heading'
                   >
-                    {testimonialSlides}
+                    {testimonials.map((item, index) => (
+                      <div
+                        key={`${item.team}-${index}`}
+                        className='shrink-0 snap-center basis-[calc(50%-0.375rem)] px-2 lg:basis-[calc(33.3333%-0.6667rem)]'
+                      >
+                        <TestimonialCard testimonial={item} />
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Navigation Controls */}
                   <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
                     <button
-                      onClick={goToPrevious}
+                      onClick={prev}
                       aria-label='Previous testimonial'
                       className='rounded-full bg-white/25 p-1.5 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors sm:p-2'
                     >
                       <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
                     </button>
 
-                    {/* Dots navigation */}
                     <div
                       className='flex gap-2'
                       role='tablist'
@@ -280,10 +189,10 @@ export default function LandingTestimonials({
                           onClick={() => goToSlide(index)}
                           aria-label={`Go to slide ${index + 1}`}
                           role='tab'
-                          aria-selected={currentSlide === index}
+                          aria-selected={activeIndex === index}
                           className={clsx(
                             'h-3 w-3 rounded-full motion-safe:transition-colors sm:h-2 sm:w-2',
-                            currentSlide === index
+                            activeIndex === index
                               ? 'bg-white'
                               : 'bg-white/60 hover:bg-white/80'
                           )}
@@ -292,7 +201,7 @@ export default function LandingTestimonials({
                     </div>
 
                     <button
-                      onClick={goToNext}
+                      onClick={next}
                       aria-label='Next testimonial'
                       className='rounded-full bg-white/25 p-1.5 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors sm:p-2'
                     >
@@ -300,17 +209,16 @@ export default function LandingTestimonials({
                     </button>
                   </div>
 
-                  {/* Desktop-only side arrows */}
                   <div className='hidden lg:block'>
                     <button
-                      onClick={goToPrevious}
+                      onClick={prev}
                       aria-label='Previous testimonial'
                       className='absolute top-1/2 left-0 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors'
                     >
                       <FiChevronLeft className='h-5 w-5' />
                     </button>
                     <button
-                      onClick={goToNext}
+                      onClick={next}
                       aria-label='Next testimonial'
                       className='absolute top-1/2 right-0 translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors'
                     >

@@ -1,13 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useCallback } from 'react'
-import { useKeenSlider } from 'keen-slider/react'
-import 'keen-slider/keen-slider.min.css'
+import { useState } from 'react'
 import { FiDownload, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import clsx from 'clsx'
 import type { Locale } from '@/i18n-config'
 import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
+import { useSnapCarousel } from '../../_hooks/use-snap-carousel'
 import {
   WAVE_HEIGHT,
   GLOBAL_ASSETS,
@@ -80,9 +79,8 @@ type Props = {
 export default function ProgramHero({ lang, dict }: Props) {
   const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
 
-  // ===== Constants =====
+
   const ASSETS = {
     background: '/img/program/program-bg.webp',
     tagline: GLOBAL_ASSETS.tagline,
@@ -144,33 +142,9 @@ export default function ProgramHero({ lang, dict }: Props) {
     }
   ] as const
 
-  // Slider setup
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
-    slides: { perView: 1.2, spacing: 16 },
-    breakpoints: {
-      '(min-width: 480px)': { slides: { perView: 2.2, spacing: 16 } },
-      '(min-width: 768px)': { slides: { perView: 3.2, spacing: 16 } }
-    },
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel)
-    }
+  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
+    slideCount: DAYS.length
   })
-
-  const goToPrevious = useCallback(() => {
-    instanceRef.current?.prev()
-  }, [instanceRef])
-
-  const goToNext = useCallback(() => {
-    instanceRef.current?.next()
-  }, [instanceRef])
-
-  const goToSlide = useCallback(
-    (index: number) => {
-      instanceRef.current?.moveToIdx(index)
-    },
-    [instanceRef]
-  )
 
   return (
     <section
@@ -283,15 +257,17 @@ export default function ProgramHero({ lang, dict }: Props) {
             )}
             style={{ transitionDelay: '600ms' }}
           >
-            {/* Slider */}
             <div className='relative'>
               <div
-                ref={sliderRef}
-                className='keen-slider'
+                ref={scrollRef}
+                className='scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2'
                 aria-labelledby='program-title'
               >
                 {DAYS.map((day, index) => (
-                  <div key={day.key} className='keen-slider__slide px-2'>
+                  <div
+                    key={day.key}
+                    className='shrink-0 snap-start basis-[83%] px-1 sm:basis-[calc(45%-0.5rem)] md:basis-[calc(31%-0.5rem)]'
+                  >
                     <DayCard
                       day={{ ...day, blocks: [...day.blocks] }}
                       index={index}
@@ -301,18 +277,15 @@ export default function ProgramHero({ lang, dict }: Props) {
                 ))}
               </div>
 
-              {/* Navigation controls */}
               <div className='mt-4 flex items-center justify-center gap-4'>
-                {/* Navigation arrows */}
                 <button
-                  onClick={goToPrevious}
+                  onClick={prev}
                   aria-label='Previous day'
                   className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
                 >
                   <FiChevronLeft className='h-4 w-4 text-sky-500' />
                 </button>
 
-                {/* Dots */}
                 <div className='flex gap-2'>
                   {DAYS.map((_, index) => (
                     <button
@@ -321,7 +294,7 @@ export default function ProgramHero({ lang, dict }: Props) {
                       aria-label={`Go to day ${index + 1}`}
                       className={clsx(
                         'h-2 w-2 rounded-full motion-safe:transition-all',
-                        currentSlide === index
+                        activeIndex === index
                           ? 'scale-125 bg-sky-500'
                           : 'bg-sky-500/50 hover:bg-sky-500/80'
                       )}
@@ -330,7 +303,7 @@ export default function ProgramHero({ lang, dict }: Props) {
                 </div>
 
                 <button
-                  onClick={goToNext}
+                  onClick={next}
                   aria-label='Next day'
                   className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
                 >

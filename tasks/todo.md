@@ -147,14 +147,55 @@ resolved; eslint config restored to defaults (no rule overrides). Fixes:
       `max-age=86400, stale-while-revalidate=604800`. Tournament photos
       are immutable once uploaded; weekly SWR window covers any late
       uploads. Reduces Cloudinary API hits ~96% during steady state.
-- [N/A] **Lazy-load `keen-slider` + CSS** — overstated by audit. CSS
-      imported in `'use client'` components is bundled **per-route** by
-      Next, not globally. The 4 carousel components are used on
-      home/about/program where the carousel is above-the-fold critical
-      content; `next/dynamic` would hurt LCP, not help.
+- [N/A] **Lazy-load `keen-slider` + CSS** — superseded by full removal
+      of `keen-slider` (see "Drop keen-slider entirely" below).
 - [N/A] **`villa-bg.webp` responsive variants** — overstated by audit.
       `villa.tsx:62` uses `<Image fill sizes='100vw' quality={75}>`;
       Next/Image already serves per-viewport optimized webp/avif at
       runtime. The 4.5MB is the source the optimizer reads, not what
       mobile users download (~150-300KB after avif optimization).
       Recent `b10fbc6` already bounded sizes correctly.
+
+## Drop keen-slider entirely — done 2026-04-30 (branch `refactor/drop-keen-slider`)
+
+Replaced `keen-slider` (^6.8.6) across all 4 carousels with native CSS
+scroll-snap matching the canonical ignite pattern (reference:
+`services/web-dev/templates/barbershop/app/[lang]/_components/reviews.tsx`).
+
+- [x] **Shared hook** — new `_hooks/use-snap-carousel.ts` (~120 LOC).
+      API: `{ scrollRef, activeIndex, goToSlide, next, prev }`. Options:
+      `loop`, `autoplay` (ms), `pauseOnInteraction` (resumes 6s after
+      last pointer/touch input). Active index derived from `scrollLeft /
+      cardWidth` via passive scroll listener + rAF debounce.
+- [x] **`landing/news.tsx`** — loop carousel, no autoplay.
+      `basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(25%-0.75rem)]`.
+- [x] **`landing/testimonials.tsx`** — autoplay 5000ms with
+      pause-on-interaction + smooth rewind to slide 0 on cycle end.
+      `basis-[calc(50%-0.375rem)] lg:basis-[calc(33.3333%-0.6667rem)]`.
+      Mobile-first stacked view unchanged (3 testimonials).
+- [x] **`about/portugal.tsx`** — peek slides at mobile/tablet
+      (`basis-[83%] sm:basis-[calc(45%-0.625rem)]`); desktop renders the
+      4-col grid as before.
+- [x] **`program/hero.tsx`** — peek slides at three breakpoints
+      (`basis-[83%] sm:basis-[calc(45%-0.5rem)] md:basis-[calc(31%-0.5rem)]`);
+      desktop renders the 5-col grid.
+- [x] **`@utility scrollbar-hide`** added to `globals.css` (Tailwind 4
+      doesn't ship this by default; matches ignite-base templates that
+      reference the class).
+- [x] **Dep removed** — `keen-slider` dropped from `package.json` and
+      lockfile; dropped from `experimental.optimizePackageImports` in
+      `next.config.ts`. `pnpm install --ignore-workspace` to refresh.
+
+**Net change:** −281 / +73 in components (~−208 LOC) + 120 LOC for the
+shared hook = ~−90 LOC overall, plus removed library + CSS import.
+
+**Build verification:** `pnpm lint && pnpm exec tsc --noEmit && pnpm build`
+all pass; all 48 SSG routes generate.
+
+**Limitations vs keen-slider:**
+- No free mouse-drag (click-and-drag with pointer); touch drag works
+  natively, desktop users use prev/next or wheel-scroll. Matches ignite
+  barbershop pattern.
+- Loop "rewind" on testimonials autoplay is a smooth-scrollTo(0) — visible
+  rewind animation, not a seamless infinite loop. Acceptable trade-off
+  per UX call (auto-rotation pauses on interaction anyway).

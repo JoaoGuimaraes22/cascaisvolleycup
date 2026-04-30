@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
-    optimizePackageImports: ["react-icons", "keen-slider"],
+    optimizePackageImports: ["react-icons"],
   },
 
   async headers() {

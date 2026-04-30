@@ -1,13 +1,10 @@
 'use client'
 
-import { useCallback, useState } from 'react'
-import { useKeenSlider } from 'keen-slider/react'
-import 'keen-slider/keen-slider.min.css'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import NewsCard from './news-card'
 import clsx from 'clsx'
+import { useSnapCarousel } from '../../_hooks/use-snap-carousel'
 
-// News-specific assets and constants
 const NEWS_ASSETS = {
   images: {
     news1: '/img/news/news1.webp',
@@ -20,18 +17,6 @@ const NEWS_ASSETS = {
     nationsCup9: '/news/nations-cup-9',
     streamingScamWarning: '/news/streaming-scam-warning',
     mvpAwards: '/news/mvp-awards'
-  },
-  animations: {
-    duration: 600
-  },
-  breakpoints: {
-    mobile: '(min-width: 768px)',
-    desktop: '(min-width: 1024px)'
-  },
-  spacing: {
-    mobile: 16,
-    tablet: 20,
-    desktop: 24
   }
 } as const
 
@@ -86,44 +71,10 @@ interface LandingNewsProps {
 }
 
 export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
-  const [currentNewsSlide, setCurrentNewsSlide] = useState(0)
-
-  // News slider
-  const [newsSliderRef, newsInstanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    defaultAnimation: { duration: NEWS_ASSETS.animations.duration },
-    slides: {
-      perView: 1,
-      spacing: NEWS_ASSETS.spacing.mobile
-    },
-    breakpoints: {
-      [NEWS_ASSETS.breakpoints.mobile]: {
-        slides: { perView: 2, spacing: NEWS_ASSETS.spacing.tablet }
-      },
-      [NEWS_ASSETS.breakpoints.desktop]: {
-        slides: { perView: 4, spacing: NEWS_ASSETS.spacing.desktop }
-      }
-    },
-    slideChanged(s) {
-      setCurrentNewsSlide(s.track.details.rel)
-    }
+  const { scrollRef, activeIndex, goToSlide, next, prev } = useSnapCarousel({
+    slideCount: newsItems.length,
+    loop: true
   })
-
-  // Navigation functions
-  const goToNewsSlide = useCallback(
-    (index: number) => {
-      newsInstanceRef.current?.moveToIdx(index)
-    },
-    [newsInstanceRef]
-  )
-
-  const goToNewsPrevious = useCallback(() => {
-    newsInstanceRef.current?.prev()
-  }, [newsInstanceRef])
-
-  const goToNewsNext = useCallback(() => {
-    newsInstanceRef.current?.next()
-  }, [newsInstanceRef])
 
   return (
     <div className='mx-auto max-w-screen-xl px-4'>
@@ -140,41 +91,40 @@ export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
           {dict.Latest_news}
         </h2>
 
-        {/* News Slider */}
         <div className='relative'>
           <div
-            ref={newsSliderRef}
-            className='keen-slider'
+            ref={scrollRef}
+            className='scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2'
             aria-labelledby='news-heading'
           >
             {newsItems.map((item, index) => (
-              <div key={index} className='keen-slider__slide px-2'>
+              <div
+                key={index}
+                className='shrink-0 snap-start basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(25%-0.75rem)]'
+              >
                 <NewsCard {...item} priority={index === 0} />
               </div>
             ))}
           </div>
 
-          {/* News slider controls */}
           <div className='mt-4 flex items-center justify-center gap-4'>
-            {/* Navigation arrows */}
             <button
-              onClick={goToNewsPrevious}
+              onClick={prev}
               aria-label='Previous news'
               className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
             >
               <FiChevronLeft className='h-4 w-4 text-sky-500' />
             </button>
 
-            {/* Dots */}
             <div className='flex gap-2'>
               {newsItems.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => goToNewsSlide(index)}
+                  onClick={() => goToSlide(index)}
                   aria-label={`Go to news item ${index + 1}`}
                   className={clsx(
                     'h-2 w-2 rounded-full motion-safe:transition-all',
-                    currentNewsSlide === index
+                    activeIndex === index
                       ? 'scale-125 bg-sky-500'
                       : 'bg-sky-500/50 hover:bg-sky-500/80'
                   )}
@@ -183,7 +133,7 @@ export default function LandingNews({ isVisible, dict }: LandingNewsProps) {
             </div>
 
             <button
-              onClick={goToNewsNext}
+              onClick={next}
               aria-label='Next news'
               className='rounded-full bg-sky-500/20 p-2 backdrop-blur-sm hover:bg-sky-500/30 focus-visible:ring-2 focus-visible:ring-sky-500/50 focus-visible:outline-none motion-safe:transition-all'
             >

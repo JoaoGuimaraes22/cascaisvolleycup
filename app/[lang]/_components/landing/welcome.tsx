@@ -1,14 +1,8 @@
-'use client'
-
-import { useEffect, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import clsx from 'clsx'
 import type { Locale } from '@/i18n-config'
 import { localeHref } from '../../_lib/seo'
 import { getBrochureFileName, GLOBAL_ASSETS } from '../../_lib/constants'
-import { useIsClient } from '../../_hooks/use-is-client'
-import { useMediaQuery } from '../../_hooks/use-media-query'
 
 type WelcomeDict = {
   tagline_alt: string
@@ -32,57 +26,15 @@ type Props = {
   dict: WelcomeDict
 }
 
+const ASSETS = {
+  BG: '/img/landing/hero-bg-new.webp',
+  TAGLINE: GLOBAL_ASSETS.taglineWhite,
+  LOGO: '/img/landing/hero-logo.webp',
+  OSPORTS: '/img/sponsors/o-sports-w.webp'
+} as const
+
 export default function LandingWelcome({ lang, dict }: Props) {
-  const isLoaded = useIsClient()
-  const isDesktop = useMediaQuery('(min-width: 1024px)')
-
-  const bgRef = useRef<HTMLDivElement>(null)
-  const rafRef = useRef<number | undefined>(undefined)
-  const lastScrollY = useRef(0)
-
-  const ASSETS = useMemo(
-    () => ({
-      BG: '/img/landing/hero-bg-new.webp',
-      TAGLINE: GLOBAL_ASSETS.taglineWhite,
-      LOGO: '/img/landing/hero-logo.webp',
-      SPONSOR: '/img/sponsors/cascais-camara-w.webp',
-      OSPORTS: '/img/sponsors/o-sports-w.webp'
-    }),
-    []
-  )
-
-  const brochureFile = useMemo(() => getBrochureFileName(lang), [lang])
-
-  // Parallax effect - DESKTOP ONLY
-  useEffect(() => {
-    if (!isDesktop || !bgRef.current) return
-
-    const handleScroll = () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-
-      rafRef.current = requestAnimationFrame(() => {
-        const scrollY = window.scrollY
-
-        if (Math.abs(scrollY - lastScrollY.current) < 2) return
-
-        if (scrollY < window.innerHeight && bgRef.current) {
-          lastScrollY.current = scrollY
-          bgRef.current.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
-        }
-      })
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-    }
-  }, [isDesktop])
+  const brochureFile = getBrochureFileName(lang)
 
   return (
     <section
@@ -90,13 +42,10 @@ export default function LandingWelcome({ lang, dict }: Props) {
       aria-labelledby='hero-heading'
       className='relative -mt-16 min-h-screen w-full overflow-hidden md:-mt-20'
     >
-      {/* Background - parallax on desktop, static on mobile */}
+      {/* Background — CSS scroll-driven parallax on supporting browsers (Chrome 115+, Edge, Firefox).
+          Safari falls back to a static background. */}
       <div className='absolute inset-0 z-0'>
-        <div
-          ref={bgRef}
-          className='relative h-full w-full'
-          style={isDesktop ? { willChange: 'transform' } : undefined}
-        >
+        <div className='hero-parallax-bg relative h-full w-full'>
           <Image
             src={ASSETS.BG}
             alt=''
@@ -109,15 +58,8 @@ export default function LandingWelcome({ lang, dict }: Props) {
         </div>
       </div>
 
-      {/* Content overlay */}
       <div className='relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center'>
-        {/* Tagline */}
-        <div
-          className={clsx(
-            'mb-6 delay-100 duration-700 ease-out motion-safe:transition-all',
-            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-          )}
-        >
+        <div className='mb-6'>
           <Image
             src={ASSETS.TAGLINE}
             alt={dict.taglineAlt}
@@ -130,40 +72,25 @@ export default function LandingWelcome({ lang, dict }: Props) {
           />
         </div>
 
-        {/* Main heading (visually hidden but accessible) */}
         <h1 id='hero-heading' className='sr-only'>
           {dict.heading}
         </h1>
 
-        {/* Logo */}
         <div className='flex flex-col items-center gap-4'>
-          <div
-            className={clsx(
-              'delay-300 duration-700 ease-out motion-safe:transition-all',
-              isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-            )}
-          >
-            <Image
-              src={ASSETS.LOGO}
-              alt='Cascais Volley Cup 2026'
-              width={650}
-              height={227}
-              priority={true}
-              quality={95}
-              sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
-              className='max-w-[350px] drop-shadow-2xl sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px]'
-              style={{ width: 'auto', height: 'auto' }}
-            />
-          </div>
+          <Image
+            src={ASSETS.LOGO}
+            alt='Cascais Volley Cup 2026'
+            width={650}
+            height={227}
+            priority
+            quality={95}
+            sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
+            className='max-w-[350px] drop-shadow-2xl sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px]'
+            style={{ width: 'auto', height: 'auto' }}
+          />
         </div>
 
-        {/* Action buttons */}
-        <div
-          className={clsx(
-            'mt-16 flex flex-col gap-3 delay-500 duration-700 ease-out motion-safe:transition-all',
-            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-          )}
-        >
+        <div className='mt-16 flex flex-col gap-3'>
           <Link
             href={localeHref(lang, '/registration')}
             className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold tracking-wide text-sky-500 uppercase drop-shadow-lg duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl motion-safe:transition-all sm:px-8 sm:py-4 sm:text-lg'
@@ -181,13 +108,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className={clsx(
-          'absolute bottom-8 left-1/2 -translate-x-1/2 text-white delay-700 duration-1000 ease-out motion-safe:transition-all',
-          isLoaded ? 'translate-y-0 opacity-70' : 'translate-y-4 opacity-0'
-        )}
-      >
+      <div className='absolute bottom-8 left-1/2 -translate-x-1/2 text-white opacity-70'>
         <div className='flex flex-col items-center gap-2'>
           <span className='text-xs font-medium tracking-wider uppercase'>
             {dict.scrollDown}
@@ -196,13 +117,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
         </div>
       </div>
 
-      {/* O-Sports logo */}
-      <div
-        className={clsx(
-          'absolute right-4 bottom-4 z-30 h-[40px] w-[80px] delay-900 duration-700 ease-out motion-safe:transition-all sm:h-[50px] sm:w-[100px] lg:h-[60px] lg:w-[120px]',
-          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-        )}
-      >
+      <div className='absolute right-4 bottom-4 z-30 h-[40px] w-[80px] sm:h-[50px] sm:w-[100px] lg:h-[60px] lg:w-[120px]'>
         <Image
           src={ASSETS.OSPORTS}
           alt='O-Sports'

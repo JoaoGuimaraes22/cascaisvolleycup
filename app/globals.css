@@ -14,6 +14,23 @@
   }
 }
 
+@keyframes hero-parallax {
+  to {
+    transform: translate3d(0, 30vh, 0);
+  }
+}
+
+@media (min-width: 1024px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-parallax-bg {
+      animation: hero-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+      will-change: transform;
+    }
+  }
+}
+
 :root {
   --primary: #333366;
   --background: #ededed;

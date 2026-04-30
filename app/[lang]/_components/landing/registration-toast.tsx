@@ -1,4 +1,3 @@
-// RegistrationToast component with registration form functionality
 'use client'
 
 import { useState, useCallback } from 'react'
@@ -27,7 +26,7 @@ type ValidationErrorsDict = {
   fixErrors: string
 }
 
-type RegistrationFormDict = {
+export type RegistrationFormDict = {
   FormTitle: string
   FormDescription: string
   Name: string
@@ -64,7 +63,6 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
 
-  // Form validation (using shared validation)
   const validateForm = useCallback(
     (data: RegistrationFormData): FormErrors =>
       validateRegistrationForm(
@@ -76,13 +74,11 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
     [dict]
   )
 
-  // Handle form input changes
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target
       setFormData(prev => ({ ...prev, [name]: value }))
 
-      // Clear field error when user starts typing
       if (errors[name]) {
         setErrors(prev => ({ ...prev, [name]: '' }))
       }
@@ -90,7 +86,6 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
     [errors]
   )
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -133,7 +128,6 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
   }
 
   const handleClose = () => {
-    // Reset form when closing
     setFormData({ ...REGISTRATION_INITIAL_DATA })
     setErrors({})
     setMessage('')

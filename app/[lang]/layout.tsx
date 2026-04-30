@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Rubik, Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -20,13 +20,6 @@ const space_grotesk = Space_Grotesk({
   preload: true,
   fallback: ["system-ui", "arial"],
   weight: ["400", "700"],
-});
-
-const rubik = Rubik({
-  subsets: ["arabic"],
-  variable: "--rubik",
-  display: "swap",
-  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -164,7 +157,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      className={`${space_grotesk.variable} ${rubik.variable} scroll-smooth`}
+      className={`${space_grotesk.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <head>

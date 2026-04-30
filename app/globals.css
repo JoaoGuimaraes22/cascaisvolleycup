@@ -4,7 +4,7 @@
   --color-primary: var(--primary);
   --color-background: var(--background);
 
-  --font-sans: var(--font-space-grotesk), var(--rubik), system-ui, sans-serif;
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
 :root {
@@ -32,11 +32,6 @@ html {
 }
 
 @layer base {
-  *:lang(ar),
-  *:lang(fa) {
-    font-family: var(--rubik) !important;
-  }
-
   div::selection,
   h1::selection,
   button::selection,

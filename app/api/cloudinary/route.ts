@@ -145,15 +145,25 @@ export async function GET(request: NextRequest) {
 
     if (folder) {
       const images = await fetchImagesFromFolder(folder, maxResults, offset)
-      return NextResponse.json({
-        success: true,
-        images,
-        count: images.length,
-        folder,
-        offset,
-        processingTime: Date.now() - startTime,
-        timestamp: new Date().toISOString()
-      })
+      return NextResponse.json(
+        {
+          success: true,
+          images,
+          count: images.length,
+          folder,
+          offset,
+          processingTime: Date.now() - startTime,
+          timestamp: new Date().toISOString()
+        },
+        {
+          headers: {
+            'Cache-Control':
+              'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800',
+            'CDN-Cache-Control': 'public, max-age=86400',
+            'Vercel-CDN-Cache-Control': 'public, max-age=86400'
+          }
+        }
+      )
     }
 
     const maxPerYear = parseInt(
@@ -174,9 +184,10 @@ export async function GET(request: NextRequest) {
       },
       {
         headers: {
-          'Cache-Control': 'public, max-age=300, s-maxage=300',
-          'CDN-Cache-Control': 'public, max-age=300',
-          'Vercel-CDN-Cache-Control': 'public, max-age=300'
+          'Cache-Control':
+            'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800',
+          'CDN-Cache-Control': 'public, max-age=86400',
+          'Vercel-CDN-Cache-Control': 'public, max-age=86400'
         }
       }
     )

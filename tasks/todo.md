@@ -140,15 +140,21 @@ resolved; eslint config restored to defaults (no rule overrides). Fixes:
 - [N/A] **Lazy-load `nextjs-toploader`** — savings <2KB and the loader
       needs to register early to catch first navigation. Risk > reward.
 
-## Performance follow-ups (not started)
+## Performance medium-effort items — investigated 2026-04-30
 
-- [ ] **Lazy-load `keen-slider` + CSS** — 4 client components import
-      `'keen-slider/keen-slider.min.css'` (`portugal.tsx`, `program/hero.tsx`,
-      `landing/news.tsx`, `landing/testimonials.tsx`). CSS leaks to bundle.
-      Wrap each carousel in `next/dynamic`.
-- [ ] **`villa-bg.webp` responsive variants** — 4.5MB single asset on
-      `about/villa.tsx`; mobile users eat the full size. Generate 600/1200px
-      variants + `sizes`. Verify against recent `b10fbc6` image work first.
-- [ ] **`/api/cloudinary` cache headers** — currently `s-maxage=300`
-      (`next.config.ts:58`). Bump to 24h for year-folder queries to reduce
-      Cloudinary API hits during ISR rebuilds.
+- [x] **`/api/cloudinary` cache headers** — bumped both response branches
+      (batch + per-folder) from `max-age=300` to
+      `max-age=86400, stale-while-revalidate=604800`. Tournament photos
+      are immutable once uploaded; weekly SWR window covers any late
+      uploads. Reduces Cloudinary API hits ~96% during steady state.
+- [N/A] **Lazy-load `keen-slider` + CSS** — overstated by audit. CSS
+      imported in `'use client'` components is bundled **per-route** by
+      Next, not globally. The 4 carousel components are used on
+      home/about/program where the carousel is above-the-fold critical
+      content; `next/dynamic` would hurt LCP, not help.
+- [N/A] **`villa-bg.webp` responsive variants** — overstated by audit.
+      `villa.tsx:62` uses `<Image fill sizes='100vw' quality={75}>`;
+      Next/Image already serves per-viewport optimized webp/avif at
+      runtime. The 4.5MB is the source the optimizer reads, not what
+      mobile users download (~150-300KB after avif optimization).
+      Recent `b10fbc6` already bounded sizes correctly.

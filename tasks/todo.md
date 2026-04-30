@@ -87,12 +87,21 @@ resolved; eslint config restored to defaults (no rule overrides). Fixes:
       `withYear()` helper per page). Verified rendered HTML on PT/ES/FR is
       now fully translated across Twitter/OG description + JSON-LD
       ImageGallery name/description + Gallery component description prop.
-- [ ] Re-evaluate `prettier-plugin-tailwindcss` 0.6 → 0.8 (latest). Trivial
-      bump but may reorder some Tailwind classes; run formatter and review
-      diff.
-- [ ] Drop `revalidate = 3600` magic numbers and centralize in a
-      `_lib/revalidate.ts` constants file (currently 3600 on home/news,
-      86400 on gallery years). Minor housekeeping.
+- [x] Bumped `prettier-plugin-tailwindcss` 0.6 → 0.8 — done 2026-04-30. Done
+      in two commits: first a drift-only `pnpm format` pass on 0.6 (the
+      codebase had drifted from project `.prettierrc` because VS Code was
+      formatting with the user's *global* config — quotes/semis/commas/
+      printWidth all flipped). After that commit, the 0.8 bump itself
+      produced **zero** Tailwind class reorders for this codebase — 0.6.14
+      and 0.8.0 produce identical output here. Final commit is just the
+      version bump in `package.json` + `pnpm-lock.yaml`.
+- [N/A] Centralize `revalidate` magic numbers in `_lib/revalidate.ts` —
+      attempted 2026-04-30, reverted. Next.js requires route segment config
+      exports (`revalidate`, `dynamic`, etc.) to be **statically
+      analyzable**: imported identifiers fail the build with `Invalid
+      segment configuration export detected`. The bundler reads these via
+      AST, not runtime evaluation. Lesson recorded in
+      `tasks/lessons/build.md`. Keeping inline literals (`3600`, `86400`).
 - [ ] Consider migrating CSS animations to the `motion` library to match
       ignite-base. Out-of-scope for this branch; revisit only when
       redesigning a section.

@@ -6,63 +6,20 @@ import { FiUsers, FiArrowDown } from 'react-icons/fi'
 import clsx from 'clsx'
 import { useStaggeredAnimation } from '../../_hooks/use-intersection-observer'
 import { WAVE_HEIGHT } from '../../_lib/constants'
+import { PARTICIPATING_TEAMS, type Team } from '../../_lib/data/teams'
 
-// Assets constant for better maintainability
 const ASSETS = {
   background: '/img/hall-of-fame/hero-bg.webp',
   players: '/img/hall-of-fame/players-2.webp',
   wave: '/img/global/ondas-7.webp'
 } as const
 
-// Team data type
-interface Team {
-  name: string
-  country: string
-}
-
-// Sample teams data - all Portuguese teams
-const SAMPLE_TEAMS: Team[] = [
-  // ESPANHA
-  { name: 'CV Madrid', country: 'ES' },
-  { name: 'Dompa Ourense Volei', country: 'ES' },
-
-  // MÓNACO
-  { name: 'AS Monaco', country: 'MC' },
-  // PORTUGAL
-  { name: 'CF "Os Belenenses"', country: 'PT' },
-  { name: 'Lusófona VC', country: 'PT' },
-  { name: 'Cascais Volley4all', country: 'PT' },
-  { name: 'PEL Amora SC', country: 'PT' },
-  { name: 'CJS Arouca', country: 'PT' },
-  { name: 'Santiago V4A', country: 'PT' },
-  { name: 'AR Canidelo', country: 'PT' },
-  { name: 'AV Atlântico', country: 'PT' },
-  { name: 'SC Vila Real', country: 'PT' },
-  { name: 'CV Aveiro', country: 'PT' },
-  { name: 'RC Santarém', country: 'PT' },
-  { name: 'SC Arcozelo', country: 'PT' },
-  { name: 'Madeira Torres', country: 'PT' },
-  { name: 'São Francisco AD', country: 'PT' },
-  { name: 'GDC Gueifães', country: 'PT' },
-  { name: 'TC Alcochete', country: 'PT' },
-  { name: 'AA Coimbra', country: 'PT' },
-  { name: 'Lousada VC', country: 'PT' },
-  { name: 'CA Madalena', country: 'PT' },
-  { name: 'CV Póvoa', country: 'PT' },
-  { name: 'AD Esposende', country: 'PT' },
-  { name: 'Frei Gil VC', country: 'PT' },
-  { name: 'CD Foz Porto', country: 'PT' },
-  { name: 'Col. Julio Dinis', country: 'PT' },
-  { name: 'Juventude SC', country: 'PT' },
-  { name: 'CRCD Luzense', country: 'PT' },
-  { name: 'Sporting CT', country: 'PT' }
-] as const
-
 type HallOfFameParticipantsDict = {
   title: string
   intro: string
   playersAlt: string
   seeWinners: string
+  seeMoreTeams: string
   stats: {
     teams: string
     athletes: string
@@ -213,8 +170,8 @@ export default function HallOfFameParticipants({ dict }: Props) {
   const [showAllTeams, setShowAllTeams] = useState(false)
 
   // Show first 7 teams on mobile, all on desktop
-  const visibleTeams = showAllTeams ? SAMPLE_TEAMS : SAMPLE_TEAMS.slice(0, 7)
-  const hasMoreTeams = SAMPLE_TEAMS.length > 7
+  const visibleTeams = showAllTeams ? PARTICIPATING_TEAMS : PARTICIPATING_TEAMS.slice(0, 7)
+  const hasMoreTeams = PARTICIPATING_TEAMS.length > 7
 
   const handleSeeWinners = () => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -316,7 +273,7 @@ export default function HallOfFameParticipants({ dict }: Props) {
             >
               {/* Desktop: Show all teams */}
               <ul className='hidden grid-cols-1 gap-3 text-sm sm:grid sm:grid-cols-2 sm:text-base lg:gap-2'>
-                {SAMPLE_TEAMS.map((team, index) => (
+                {PARTICIPATING_TEAMS.map((team, index) => (
                   <TeamItem
                     key={`${team.name}-${index}`}
                     team={team}
@@ -353,7 +310,10 @@ export default function HallOfFameParticipants({ dict }: Props) {
                   style={{ transitionDelay: '800ms' }}
                 >
                   <FiUsers className='h-4 w-4' />
-                  See {SAMPLE_TEAMS.length - 7} more teams
+                  {dict.seeMoreTeams.replace(
+                    '{count}',
+                    String(PARTICIPATING_TEAMS.length - 7)
+                  )}
                   <FiArrowDown className='h-4 w-4' />
                 </button>
               )}

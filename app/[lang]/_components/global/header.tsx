@@ -146,7 +146,7 @@ export default function Header({ lang, dict, localeNames }: Props) {
             <Image
               src={Logo}
               alt='Cascais Volley Cup 2026'
-              loading='eager'
+              priority
               quality={80}
               sizes='(max-width: 640px) 150px, (max-width: 1024px) 190px, 240px'
               className='max-h-8 hover:scale-105 motion-safe:transition-transform sm:max-h-10 md:max-h-12 lg:max-h-14'

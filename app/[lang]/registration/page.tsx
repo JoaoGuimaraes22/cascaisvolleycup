@@ -6,7 +6,7 @@ import RegistrationForm from '../_components/registration/form'
 import JsonLd from '../_components/json-ld'
 import { buildPageMetadata, buildPageGraph, breadcrumbLabel } from '../_lib/seo'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 export async function generateMetadata({
   params

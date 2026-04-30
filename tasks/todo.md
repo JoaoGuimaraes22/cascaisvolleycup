@@ -107,3 +107,48 @@ resolved; eslint config restored to defaults (no rule overrides). Fixes:
 - [ ] Consider migrating CSS animations to the `motion` library to match
       ignite-base. Out-of-scope for this branch; revisit only when
       redesigning a section.
+
+## Performance quick wins — done 2026-04-30
+
+- [x] **Logo `priority`** — `_components/global/header.tsx`: replaced
+      `loading='eager'` with `priority` on the header logo. Above-the-fold
+      LCP element; `priority` adds `<link rel="preload">` and overrides
+      lazy decode. Estimated 10-20ms LCP win.
+- [x] **Revalidate consistency** — bumped 4 pages from `3600` to `86400`
+      (home, gallery overview, registration, news). All 12 routes now at
+      24h, matching the gallery year pages. Content is dict-driven and
+      changes < weekly; hourly ISR was wasteful.
+- [x] **Gallery cache versioning** — `_hooks/use-optimized-gallery.ts`:
+      `cascais-gallery-cache` → `-v1`. Future-proofs against silent
+      data-shape drift; bump suffix to invalidate all client caches.
+- [x] **Teams data extraction** — moved hardcoded `SAMPLE_TEAMS` array out
+      of `_components/hall-of-fame/participants.tsx` into new
+      `_lib/data/teams.ts` (mirrors existing `_lib/data/winners.ts`).
+      Team names are proper nouns + ISO country codes — not translatable,
+      so a TS data file is more correct than the dict.
+- [x] **Dict-first fix** — `participants.tsx` had a hardcoded
+      `"See N more teams"` mobile-only button. Added `seeMoreTeams` key
+      with `{count}` placeholder to all 4 locale dicts under
+      `HallOfFamePage.Participants` and replaced via `dict.seeMoreTeams.replace`.
+
+## Performance audit — investigated, not changed
+
+- [N/A] **react-icons barrel** — proposed by audit, but `next.config.ts`
+      already has `experimental.optimizePackageImports: ["react-icons",
+      "keen-slider"]`. Subpath imports (`react-icons/fi`) are tree-shaken
+      optimally. A barrel would only add indirection.
+- [N/A] **Lazy-load `nextjs-toploader`** — savings <2KB and the loader
+      needs to register early to catch first navigation. Risk > reward.
+
+## Performance follow-ups (not started)
+
+- [ ] **Lazy-load `keen-slider` + CSS** — 4 client components import
+      `'keen-slider/keen-slider.min.css'` (`portugal.tsx`, `program/hero.tsx`,
+      `landing/news.tsx`, `landing/testimonials.tsx`). CSS leaks to bundle.
+      Wrap each carousel in `next/dynamic`.
+- [ ] **`villa-bg.webp` responsive variants** — 4.5MB single asset on
+      `about/villa.tsx`; mobile users eat the full size. Generate 600/1200px
+      variants + `sizes`. Verify against recent `b10fbc6` image work first.
+- [ ] **`/api/cloudinary` cache headers** — currently `s-maxage=300`
+      (`next.config.ts:58`). Bump to 24h for year-folder queries to reduce
+      Cloudinary API hits during ISR rebuilds.

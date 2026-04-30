@@ -20,7 +20,7 @@ export interface GalleryData {
   timestamp: string
 }
 
-const CACHE_KEY = 'cascais-gallery-cache'
+const CACHE_KEY = 'cascais-gallery-cache-v1'
 const CACHE_DURATION = 5 * 60 * 1000
 const MAX_RETRY_ATTEMPTS = 3
 const RETRY_DELAY = 1000

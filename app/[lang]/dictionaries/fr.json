@@ -471,6 +471,7 @@
       "intro": "Texte d'introduction sur les équipes participantes...",
       "playersAlt": "Joueurs en célébration",
       "seeWinners": "Voir les Gagnants",
+      "seeMoreTeams": "Voir {count} équipes de plus",
       "stats": {
         "teams": "50 équipes",
         "athletes": "600 athlètes",

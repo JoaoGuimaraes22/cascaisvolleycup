@@ -195,3 +195,45 @@ all pass; all 48 SSG routes generate.
 - No free mouse-drag (click-and-drag with pointer); touch drag works
   natively, desktop users use prev/next or wheel-scroll. Matches ignite
   barbershop pattern.
+
+## Mobile performance pass — next session
+
+Lighthouse baseline (2026-04-30, mobile, home page, post all today's
+changes):
+
+| Metric | Value | Verdict |
+| ------ | ----- | ------- |
+| Performance score | 59 | needs improvement |
+| FCP | 1.6 s | OK |
+| LCP | 3.6 s | needs improvement (target <2.5s) |
+| **TBT** | **1,090 ms** | **POOR (target <200ms)** |
+| CLS | 0 | perfect |
+| Speed Index | 8.2 s | poor |
+
+**Hypothesis:** TBT (JS hydration) is the dominant problem; Speed Index
+follows it. The home page chain `LandingWelcome` (parallax + matchMedia
++ scroll listeners) → `LandingUpdates` (Testimonials + News, all client)
+→ `LandingLocation` hydrates ~3 large client components on first paint.
+React 19 + throttled mobile CPU = >1s blocking.
+
+**Suggested approach next session** (~half day to a day):
+
+1. **Audit `'use client'` boundaries** — many components are marked
+   client just for `useIntersectionObserver` (fade-in animations).
+   Convert to RSC where possible. Move animation triggers to CSS
+   (`animation-timeline: view()` if browser support is OK; else keep
+   IO but only on the few sections that actually need it).
+2. **Kill the welcome.tsx parallax `requestAnimationFrame` loop** —
+   parallax is "nice to have", costs main-thread time on every scroll
+   frame. Replace with `background-attachment: fixed` (CSS-only) or
+   drop entirely on mobile.
+3. **Defer Vercel Analytics + SpeedInsights** — they currently load
+   eagerly in the layout. Use `<Script strategy="afterInteractive">`
+   or `next/dynamic`.
+4. **Hero LCP image** — verify the welcome section's main image is
+   `priority`, has tight `sizes`, and is appropriately compressed.
+   3.6s LCP suggests it's still being decoded late.
+5. **Re-measure** Lighthouse after each change; expect the score to
+   move into the 75-85 range with the above changes done.
+
+**Don't touch:** CLS (already 0). Carousels (just refactored, fine).

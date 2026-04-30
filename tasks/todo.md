@@ -71,6 +71,14 @@ resolved; eslint config restored to defaults (no rule overrides). Fixes:
       attempt)` async function. Mount + visibility effects use async
       IIFE with cancellation flag — all setState calls happen post-await.
 
+## Backlog
+
+- [ ] **Extract `GradientButton` primitive** — sky-600/sky-700 gradient
+      button styles are inlined in `_components/global/footer.tsx`,
+      `_components/competition/hero.tsx`, and the new
+      `_components/landing/plan-trip-cta.tsx`. Consolidate into a shared
+      component once a 4th use case appears (rule of three).
+
 ## Misc
 
 - [x] `news/page.tsx` i18n — done 2026-04-30. Added `NewsPage` block
@@ -196,10 +204,9 @@ all pass; all 48 SSG routes generate.
   natively, desktop users use prev/next or wheel-scroll. Matches ignite
   barbershop pattern.
 
-## Mobile performance pass — next session
+## Mobile performance pass — done 2026-04-30 (branch `perf/home-page-rsc`)
 
-Lighthouse baseline (2026-04-30, mobile, home page, post all today's
-changes):
+Lighthouse baseline (mobile, home, pre-pass):
 
 | Metric | Value | Verdict |
 | ------ | ----- | ------- |
@@ -210,30 +217,56 @@ changes):
 | CLS | 0 | perfect |
 | Speed Index | 8.2 s | poor |
 
-**Hypothesis:** TBT (JS hydration) is the dominant problem; Speed Index
-follows it. The home page chain `LandingWelcome` (parallax + matchMedia
-+ scroll listeners) → `LandingUpdates` (Testimonials + News, all client)
-→ `LandingLocation` hydrates ~3 large client components on first paint.
-React 19 + throttled mobile CPU = >1s blocking.
+**Hypothesis:** TBT (JS hydration) is the dominant problem. The home
+page chain `LandingWelcome` → `LandingUpdates` → `LandingLocation`
+hydrated ~3 large client components on first paint, plus eagerly
+mounted Vercel Analytics + SpeedInsights + NextTopLoader.
 
-**Suggested approach next session** (~half day to a day):
+### Changes shipped
 
-1. **Audit `'use client'` boundaries** — many components are marked
-   client just for `useIntersectionObserver` (fade-in animations).
-   Convert to RSC where possible. Move animation triggers to CSS
-   (`animation-timeline: view()` if browser support is OK; else keep
-   IO but only on the few sections that actually need it).
-2. **Kill the welcome.tsx parallax `requestAnimationFrame` loop** —
-   parallax is "nice to have", costs main-thread time on every scroll
-   frame. Replace with `background-attachment: fixed` (CSS-only) or
-   drop entirely on mobile.
-3. **Defer Vercel Analytics + SpeedInsights** — they currently load
-   eagerly in the layout. Use `<Script strategy="afterInteractive">`
-   or `next/dynamic`.
-4. **Hero LCP image** — verify the welcome section's main image is
-   `priority`, has tight `sizes`, and is appropriately compressed.
-   3.6s LCP suggests it's still being decoded late.
-5. **Re-measure** Lighthouse after each change; expect the score to
-   move into the 75-85 range with the above changes done.
+- [x] **Welcome → Server Component** (`_components/landing/welcome.tsx`).
+      Removed parallax JS (rAF + scroll listener), `useIsClient` fade-in
+      gates, `useMediaQuery`. Replaced JS parallax with CSS
+      `animation-timeline: scroll(root)` keyframe in `globals.css` —
+      pure CSS scroll-driven animation on Chromium/Firefox; Safari
+      falls back to static bg. Hero now ships zero JS.
+- [x] **Updates → Server Component** (`_components/landing/updates.tsx`).
+      Dropped redundant `useIntersectionObserver` gate around bg + wave
+      images. `next/image` already lazy-loads below-fold images
+      natively (same `rootMargin: ~200px` behavior). `LandingTestimonials`
+      remains the only client island in this section.
+- [x] **Location → Server Component + tiny CTA island**
+      (`_components/landing/location.tsx` + new
+      `_components/landing/plan-trip-cta.tsx`). Dropped IO gate.
+      Extracted button + `RegistrationToast` mount into a small client
+      island. The toast itself is now `next/dynamic`-loaded — its
+      form-validation chunk only ships when a button is clicked.
+- [x] **Defer third-party scripts** (new
+      `_components/global/deferred-third-party.tsx`). `<Analytics />`,
+      `<SpeedInsights />`, `<NextTopLoader />` now mount via
+      `requestIdleCallback` (with `setTimeout(1500)` fallback). Each
+      is `next/dynamic`-loaded so chunks are not in the initial bundle.
+      Tradeoff: NextTopLoader misses the very first navigation if a
+      user clicks within ~1.5s of paint — acceptable.
+- [x] **`page.tsx` cleanup** — dropped `next/dynamic` wrappers around
+      Updates/Location now that they're light RSC.
+- [x] `RegistrationFormDict` exported from `registration-toast.tsx` so
+      the new island can import it without duplication.
 
-**Don't touch:** CLS (already 0). Carousels (just refactored, fine).
+### Files NOT changed (intentional)
+
+- `_components/landing/testimonials.tsx` — must stay client (carousel)
+- `_components/landing/registration-toast.tsx` — already lazy on click;
+      now also code-split via `next/dynamic`
+- `_hooks/use-intersection-observer.ts`, `use-is-client.ts`,
+      `use-media-query.ts` — still used by inner pages
+- Header / Footer / ScrollToTopButton / LocaleSwitcher — justified
+      client cost or already RSC
+
+### Verification
+
+- `pnpm lint` — clean
+- `pnpm exec tsc --noEmit` — clean
+- `pnpm build` — all 48 SSG pages emit
+- Lighthouse re-measure pending user smoke test on branch
+      `perf/home-page-rsc` (or after merge to main → Vercel deploy)

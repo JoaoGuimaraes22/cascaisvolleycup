@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import Image from 'next/image'
 import clsx from 'clsx'
@@ -10,6 +10,7 @@ import {
   type AccommodationFormData,
   type FormErrors
 } from '../../_lib/validation'
+import HoneypotField from './honeypot-field'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
@@ -62,6 +63,7 @@ export default function ContactToast({
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
+  const honeypotRef = useRef<HTMLInputElement>(null)
 
   // Form validation (using shared validation)
   const validateForm = useCallback(
@@ -110,7 +112,10 @@ export default function ContactToast({
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          website: honeypotRef.current?.value ?? ''
+        })
       })
 
       const data = await response.json()
@@ -192,6 +197,7 @@ export default function ContactToast({
 
           {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-4' noValidate>
+            <HoneypotField ref={honeypotRef} />
             <div className='space-y-4'>
               {/* Team Name */}
               <FormField

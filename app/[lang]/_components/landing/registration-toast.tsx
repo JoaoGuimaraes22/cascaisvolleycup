@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { FiX, FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import clsx from 'clsx'
@@ -11,6 +11,7 @@ import {
   type FormErrors
 } from '../../_lib/validation'
 import { useIsClient } from '../../_hooks/use-is-client'
+import HoneypotField from '../global/honeypot-field'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
@@ -62,6 +63,7 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
+  const honeypotRef = useRef<HTMLInputElement>(null)
 
   const validateForm = useCallback(
     (data: RegistrationFormData): FormErrors =>
@@ -105,7 +107,10 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          website: honeypotRef.current?.value ?? ''
+        })
       })
 
       const data = await response.json()
@@ -173,6 +178,7 @@ function RegistrationToast({ isOpen, onClose, dict }: RegistrationToastProps) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-4' noValidate>
+            <HoneypotField ref={honeypotRef} />
             <div className='space-y-4'>
               {/* Name */}
               <FormField label={dict.Name} required error={errors.name}>

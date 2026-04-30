@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { z } from 'zod'
 import { escapeHtml } from '../_lib/escape-html'
+import { rateLimit } from '../_lib/rate-limit'
+import { isBotSubmission } from '../_lib/honeypot'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,6 +20,17 @@ const accommodationSchema = z.object({
 
 export async function POST(req: Request) {
   try {
+    const limit = rateLimit(req)
+    if (!limit.ok) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(limit.retryAfter ?? 60) }
+        }
+      )
+    }
+
     if (!process.env.RESEND_API_KEY) {
       console.error('RESEND_API_KEY is not configured')
       return NextResponse.json(
@@ -35,6 +48,11 @@ export async function POST(req: Request) {
     }
 
     const raw = await req.json()
+
+    if (isBotSubmission(raw)) {
+      return NextResponse.json({ success: true })
+    }
+
     const parsed = accommodationSchema.safeParse(raw)
     if (!parsed.success) {
       return NextResponse.json(

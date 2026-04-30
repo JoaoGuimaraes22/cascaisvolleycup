@@ -36,9 +36,29 @@ const YEARS_CONFIG = [
   { year: 2025, folder: 'cascaiscup/2025' }
 ] as const
 
+const ALLOWED_FOLDERS: ReadonlySet<string> = new Set(
+  YEARS_CONFIG.map(c => c.folder)
+)
+
 const DEFAULT_IMAGES_PER_YEAR = 6
 const MAX_IMAGES_PER_YEAR = 1000
 const API_TIMEOUT = 8000
+
+function clamp(n: number, lo: number, hi: number): number {
+  return Math.min(Math.max(n, lo), hi)
+}
+
+function parseClampedInt(
+  raw: string | null,
+  fallback: number,
+  lo: number,
+  hi: number
+): number {
+  if (raw == null) return fallback
+  const n = parseInt(raw, 10)
+  if (!Number.isFinite(n)) return fallback
+  return clamp(n, lo, hi)
+}
 
 function processImage(image: CloudinaryImage): ProcessedImage {
   return {
@@ -138,12 +158,26 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
 
     const folder = searchParams.get('folder')
-    const maxResults = parseInt(
-      searchParams.get('max') || String(DEFAULT_IMAGES_PER_YEAR)
+    const maxResults = parseClampedInt(
+      searchParams.get('max'),
+      DEFAULT_IMAGES_PER_YEAR,
+      1,
+      MAX_IMAGES_PER_YEAR
     )
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const offset = parseClampedInt(
+      searchParams.get('offset'),
+      0,
+      0,
+      MAX_IMAGES_PER_YEAR
+    )
 
     if (folder) {
+      if (!ALLOWED_FOLDERS.has(folder)) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid folder' },
+          { status: 400 }
+        )
+      }
       const images = await fetchImagesFromFolder(folder, maxResults, offset)
       return NextResponse.json(
         {
@@ -166,8 +200,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const maxPerYear = parseInt(
-      searchParams.get('maxPerYear') || String(DEFAULT_IMAGES_PER_YEAR)
+    const maxPerYear = parseClampedInt(
+      searchParams.get('maxPerYear'),
+      DEFAULT_IMAGES_PER_YEAR,
+      1,
+      MAX_IMAGES_PER_YEAR
     )
     const { imagesByYear, errors, totalImages } =
       await batchFetchAllYears(maxPerYear)

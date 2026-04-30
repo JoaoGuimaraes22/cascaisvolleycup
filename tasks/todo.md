@@ -204,6 +204,63 @@ all pass; all 48 SSG routes generate.
   natively, desktop users use prev/next or wheel-scroll. Matches ignite
   barbershop pattern.
 
+## Security hardening — done 2026-04-30 (branch `security/headers-and-rate-limit`)
+
+Application-layer hardening pass. Audit confirmed perf is mature; gaps were
+firmly on the security side (no rate limit, no captcha/honeypot, no CSP/HSTS,
+unbounded inputs on the Cloudinary route).
+
+- [x] **Security headers** in `next.config.ts` — added HSTS
+      (`max-age=63072000; includeSubDomains; preload`), Permissions-Policy
+      (camera/microphone/geolocation/payment/interest-cohort/browsing-topics
+      all `()`), and a pragmatic CSP. CSP is `isDev`-aware: prod uses strict
+      `script-src 'self' 'unsafe-inline'` + Vercel scripts allowlist +
+      `upgrade-insecure-requests`; dev adds `'unsafe-eval'` (React dev
+      callstack reconstruction + Next HMR) and `ws: wss:` (HMR socket).
+      `frame-ancestors`, `base-uri`, `form-action`, `object-src 'none'`
+      locked down in both modes.
+- [x] **Rate limiter** — new `app/api/_lib/rate-limit.ts`. In-memory IP token
+      bucket, 5 req / 10 min / IP. Time-based sweep prunes stale buckets
+      once per window so the Map stays bounded on long-running instances.
+      Per-Vercel-instance limitation documented at top of file (swap to
+      Upstash if abuse escalates). Wired into both email routes; returns
+      429 + `Retry-After`.
+- [x] **Honeypot** — new `app/api/_lib/honeypot.ts` (server-side
+      `isBotSubmission(body)` checking the `website` field) and new
+      `app/[lang]/_components/global/honeypot-field.tsx` (React 19
+      ref-as-prop component, visually hidden via inline `position: absolute;
+      left: -9999px`). Used by all 3 forms (registration page, home-page
+      modal, accommodation modal). Bot submissions return silent 200 so the
+      trap doesn't reveal itself; Resend never called.
+- [x] **Cloudinary input validation** in `app/api/cloudinary/route.ts` —
+      `ALLOWED_FOLDERS` whitelist (only `cascaiscup/{2023,2024,2025}` →
+      400 on anything else); `parseClampedInt` clamps `max`/`offset`/
+      `maxPerYear` to `[1, MAX_IMAGES_PER_YEAR]` / `[0, MAX_IMAGES_PER_YEAR]`.
+      Replaces bare `parseInt()` which accepted negatives + NaN.
+
+**Verification (local, dev mode):**
+
+- `pnpm lint && pnpm exec tsc --noEmit && pnpm build` all clean (48 SSG routes).
+- `curl 'http://localhost:3000/api/cloudinary?folder=foo/bar'` → 400.
+- `curl 'http://localhost:3000/api/cloudinary?folder=cascaiscup/2024&max=999999'`
+  → 200, clamped to MAX_IMAGES_PER_YEAR.
+- POST register with `{...payload, website: 'spam'}` → silent 200, no email.
+- 7× rapid POST register → 5×400, 6th–7th = 429 with `retry-after: 600`.
+- `curl -I /en` → HSTS, Permissions-Policy, CSP all present.
+- Real form submit → email arrives in inbox.
+
+**Notes for prod:**
+
+- Vercel reads its own dashboard env vars; local `.env.local` overrides do
+  not affect prod. Email targets in prod stay on `info@volley4all.com` /
+  `info@o-sports.pt` regardless of local edits.
+- CSP in prod drops `'unsafe-eval'` + `ws:`/`wss:`, adds
+  `upgrade-insecure-requests`. React/Next prod don't use eval, so no
+  breakage expected.
+- Rate limit is per-Vercel-instance — at scale, an attacker hitting
+  different regions can bypass. Acceptable for a marketing-site contact
+  form; Upstash swap is a one-file change if abuse appears.
+
 ## Mobile performance pass — done 2026-04-30 (branch `perf/home-page-rsc`)
 
 Lighthouse baseline (mobile, home, pre-pass):

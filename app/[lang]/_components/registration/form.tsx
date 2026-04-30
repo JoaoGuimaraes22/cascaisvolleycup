@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { FiCheck, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import clsx from 'clsx'
 import {
@@ -11,6 +11,7 @@ import {
   type FormErrors
 } from '../../_lib/validation'
 import { useIntersectionObserver } from '../../_hooks/use-intersection-observer'
+import HoneypotField from '../global/honeypot-field'
 
 type MessageType = 'success' | 'error' | 'info' | null
 
@@ -55,6 +56,7 @@ export default function RegistrationForm({ dict }: Props) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<MessageType>(null)
+  const honeypotRef = useRef<HTMLInputElement>(null)
 
   // Form validation (using shared validation)
   const validateForm = useCallback(
@@ -106,7 +108,10 @@ export default function RegistrationForm({ dict }: Props) {
       const res = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          website: honeypotRef.current?.value ?? ''
+        })
       })
 
       const data = await res.json()
@@ -199,6 +204,7 @@ export default function RegistrationForm({ dict }: Props) {
       >
         <div className='rounded-2xl bg-white/95 p-6 shadow-lg ring-1 ring-black/10 backdrop-blur-sm sm:p-8'>
           <form onSubmit={handleSubmit} className='space-y-6' noValidate>
+            <HoneypotField ref={honeypotRef} />
             <div className='text-center'>
               <h2
                 id='registration-heading'

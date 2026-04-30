@@ -3,16 +3,16 @@
 Post-migration polish items. Branch `refactor/migrate-to-ignite-base` is pushed
 but not yet merged to main — Vercel will only redeploy after merge.
 
-## Translation gaps (ES)
+## Translation gaps (ES) — done 2026-04-30
 
-- [ ] Translate `app/[lang]/dictionaries/es.json` → `ContactModal` block
-      (top-level). Currently English copy backfilled from `en.json` during
-      migration. Affects: contact-toast modal triggered from RegistrationHero
-      and AccommodationHero.
-- [ ] Translate `app/[lang]/dictionaries/es.json` → `GalleryPage.Main` block.
-      Quick translations were applied during migration (loading / failed /
-      try_again / etc.) but the previous Spanish version had different keys
-      that may have had better phrasing — review and tighten.
+- [x] Translate `app/[lang]/dictionaries/es.json` → `ContactModal` block
+      (top-level). Full Spanish translation applied (title, fields,
+      placeholders, validation messages).
+- [x] Translate `app/[lang]/dictionaries/es.json` → `GalleryPage.Main` block.
+      Tightened to match inline-usage casing (lowercase `imagen`/`imágenes`
+      mid-sentence) and EN semantics (`load_more` → "Cargar más imágenes",
+      `all_loaded` → "Todas las imágenes cargadas", `loading` → "Cargando
+      galería...").
 
 ## SEO enrichment
 

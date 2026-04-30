@@ -280,11 +280,6 @@ Fetches gallery images from Cloudinary. Supports year-based folder queries (`?fo
 - **API routes use `route.ts` with named HTTP method exports** (already so).
 - **Cloudinary `<CldImage>` requires `'use client'`** — `OptimizedCloudinaryImage` is a client wrapper to keep gallery pages partially server-rendered.
 
-### Known dict gaps (pre-existing, partially backfilled)
-
-- `es.json` was missing top-level `ContactModal` — backfilled from EN, **needs Spanish translation**.
-- `es.json` had stale `GalleryPage.Main` keys — replaced with translated EN equivalents during migration.
-
 ---
 
 ## Development

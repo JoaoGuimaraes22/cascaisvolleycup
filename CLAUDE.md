@@ -51,7 +51,7 @@ A multilingual tournament website for the **Cascais Volley Cup 2026** — a girl
 
 - `i18n-config.ts` (root) — defines `locales` + `defaultLocale` + `Locale` type.
 - `proxy.ts` (root) — Next 16 middleware (renamed from `middleware.ts`). Detects locale from `Accept-Language` and redirects un-prefixed URLs to `/{lang}{pathname}`.
-- `app/[lang]/dictionaries/<locale>.json` — translation source. Top-level keys: `metadata`, `ui`, `localeNames`, `Header`, `LandingPage`, `AboutPage`, `AccommodationPage`, `ProgramPage`, `CompetitionPage`, `GalleryPage`, `HallOfFamePage`, `RegistrationPage`, `ContactModal`, `Footer`.
+- `app/[lang]/dictionaries/<locale>.json` — translation source. Top-level keys: `metadata`, `ui`, `localeNames`, `Header`, `LandingPage`, `AboutPage`, `AccommodationPage`, `ProgramPage`, `CompetitionPage`, `GalleryPage`, `NewsPage`, `HallOfFamePage`, `RegistrationPage`, `ContactModal`, `Footer`.
 - `app/[lang]/dictionaries.ts` — exports `getDictionary(lang)`, `hasLocale(locale)`, `Dict` type. Server-only (`import "server-only"`).
 
 ### How to use translations

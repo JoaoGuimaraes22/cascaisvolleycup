@@ -73,12 +73,14 @@ resolved; eslint config restored to defaults (no rule overrides). Fixes:
 
 ## Misc
 
-- [ ] `app/[lang]/news/page.tsx` hardcodes English `"News"` title and
-      description (no `NewsPage` block in dicts). Once the news page ships
-      real content, add a `NewsPage` block to all 4 dict locales mirroring
-      `GalleryPage`, and replace the `NEWS_TITLE`/`NEWS_DESCRIPTION`
-      constants with dict references. PT/ES/FR users currently get an
-      English `<title>` for `/news`.
+- [x] `news/page.tsx` i18n — done 2026-04-30. Added `NewsPage` block
+      (`title`, `description`, `comingSoon`) to all 4 locale dicts —
+      EN "News" / PT "Notícias" / ES "Noticias" / FR "Actualités" — and
+      replaced the `NEWS_TITLE`/`NEWS_DESCRIPTION` constants + the
+      hardcoded "Coming soon" body with `dict.NewsPage.*` references.
+      Page is still a stub ("Coming soon" body); when real content
+      ships, expand `NewsPage` with `Hero` / article keys mirroring
+      other page blocks.
 - [x] Gallery year pages (`gallery/{2023,2024,2025}/page.tsx`) mix PT/ES/FR
       dict text with hardcoded English suffixes — fixed 2026-04-30. Replaced
       `yearDescription`/`yearSubtitle` with templated `yearMetaDescription`,

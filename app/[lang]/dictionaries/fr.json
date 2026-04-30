@@ -450,6 +450,11 @@
       "close_lightbox": "Fermer la lightbox"
     }
   },
+  "NewsPage": {
+    "title": "Actualités",
+    "description": "Dernières actualités et informations sur le tournoi Cascais Volley Cup.",
+    "comingSoon": "Bientôt disponible"
+  },
   "HallOfFamePage": {
     "Hero": {
       "title": "Hall of Fame",

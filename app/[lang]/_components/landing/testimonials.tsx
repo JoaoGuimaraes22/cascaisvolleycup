@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import { useIsClient } from '../../_hooks/use-is-client'
 import { useSnapCarousel } from '../../_hooks/use-snap-carousel'
 import Image from 'next/image'
 import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi'
@@ -87,8 +86,6 @@ interface LandingTestimonialsProps {
 export default function LandingTestimonials({
   dict
 }: LandingTestimonialsProps) {
-  const isMounted = useIsClient()
-
   const testimonials: Testimonial[] = useMemo(
     () =>
       TESTIMONIAL_KEYS.map(key => ({
@@ -148,9 +145,8 @@ export default function LandingTestimonials({
                 ))}
               </div>
 
-              {/* Tablet+: Auto-rotating snap carousel */}
-              {isMounted && (
-                <div className='relative hidden sm:block'>
+              {/* Tablet+: snap carousel */}
+              <div className='relative hidden sm:block'>
                   <div
                     ref={scrollRef}
                     className='scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto py-3 sm:py-4 lg:gap-4'
@@ -223,7 +219,6 @@ export default function LandingTestimonials({
                     </button>
                   </div>
                 </div>
-              )}
             </div>
           </div>
         </div>

@@ -19,10 +19,11 @@ function measure(el: HTMLDivElement) {
   const { scrollLeft, clientWidth, scrollWidth } = el
   if (clientWidth <= 0) return { activePage: 0, pageCount: 0 }
   const pageCount = Math.max(1, Math.ceil(scrollWidth / clientWidth))
-  const activePage = Math.min(
-    pageCount - 1,
-    Math.max(0, Math.round(scrollLeft / clientWidth))
-  )
+  const maxScroll = Math.max(0, scrollWidth - clientWidth)
+  const atEnd = scrollLeft >= maxScroll - 1
+  const activePage = atEnd
+    ? pageCount - 1
+    : Math.min(pageCount - 1, Math.max(0, Math.round(scrollLeft / clientWidth)))
   return { activePage, pageCount }
 }
 
@@ -36,7 +37,12 @@ export function useSnapCarousel({ loop = false }: Options = {}): SnapCarousel {
       const el = scrollRef.current
       if (!el || pageCount <= 0) return
       const clamped = ((index % pageCount) + pageCount) % pageCount
-      el.scrollTo({ left: el.clientWidth * clamped, behavior: 'smooth' })
+      const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth)
+      const target =
+        clamped === pageCount - 1
+          ? maxScroll
+          : Math.min(el.clientWidth * clamped, maxScroll)
+      el.scrollTo({ left: target, behavior: 'smooth' })
     },
     [pageCount]
   )

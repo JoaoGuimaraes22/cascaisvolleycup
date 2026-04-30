@@ -149,7 +149,8 @@ export default function Header({ lang, dict, localeNames }: Props) {
               loading='eager'
               quality={80}
               sizes='(max-width: 640px) 150px, (max-width: 1024px) 190px, 240px'
-              className='h-8 w-auto hover:scale-105 motion-safe:transition-transform sm:h-10 md:h-12 lg:h-14'
+              className='max-h-8 hover:scale-105 motion-safe:transition-transform sm:max-h-10 md:max-h-12 lg:max-h-14'
+              style={{ width: 'auto', height: 'auto' }}
             />
           </Link>
 

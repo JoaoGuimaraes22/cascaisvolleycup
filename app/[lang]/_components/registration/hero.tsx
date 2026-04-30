@@ -117,7 +117,7 @@ export default function RegistrationHero({
           alt=''
           fill
           priority
-          sizes='100vw'
+          sizes='(max-width: 1280px) 1280px, 1920px'
           className='object-cover'
           quality={75}
         />
@@ -131,7 +131,7 @@ export default function RegistrationHero({
           alt=''
           fill
           priority
-          sizes='100vw'
+          sizes='(max-width: 768px) 768px, 1024px'
           className='object-cover'
           quality={75}
         />

@@ -334,7 +334,8 @@ function SponsorsSection({
                 alt={sponsor.alt}
                 width={sponsor.width}
                 height={sponsor.height}
-                className='h-auto w-full max-w-[160px] object-contain drop-shadow-lg duration-300 hover:scale-105 motion-safe:transition-transform'
+                className='max-w-[160px] object-contain drop-shadow-lg duration-300 hover:scale-105 motion-safe:transition-transform'
+                style={{ width: 'auto', height: 'auto' }}
                 sizes='(max-width: 1024px) 160px, 160px'
                 quality={80}
                 loading='lazy'
@@ -364,7 +365,8 @@ function SponsorsSection({
                 alt={sponsor.alt}
                 width={sponsor.width}
                 height={sponsor.height}
-                className='h-auto w-full max-w-[120px] object-contain drop-shadow-lg duration-300 hover:scale-105 motion-safe:transition-transform'
+                className='max-w-[120px] object-contain drop-shadow-lg duration-300 hover:scale-105 motion-safe:transition-transform'
+                style={{ width: 'auto', height: 'auto' }}
                 sizes='120px'
                 quality={80}
                 loading='lazy'

@@ -128,7 +128,8 @@ export default function Footer({ lang, dict }: Props) {
                 alt='Cascais Volley Cup'
                 width={200}
                 height={72}
-                className='h-12 w-auto md:h-14'
+                className='max-h-12 md:max-h-14'
+                style={{ width: 'auto', height: 'auto' }}
                 loading='lazy'
                 quality={80}
               />
@@ -315,7 +316,8 @@ const SponsorLogo: FC<{ sponsor: Sponsor }> = ({ sponsor }) => {
       alt={sponsor.alt}
       width={sponsor.w}
       height={sponsor.h}
-      className='h-auto max-h-16 w-auto object-contain hover:scale-105 motion-safe:transition-all'
+      className='max-h-16 object-contain hover:scale-105 motion-safe:transition-all'
+      style={{ width: 'auto', height: 'auto' }}
       sizes='(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 160px'
       loading='lazy'
       quality={80}

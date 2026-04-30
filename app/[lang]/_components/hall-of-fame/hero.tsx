@@ -164,7 +164,8 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
                 alt={logoAlt}
                 width={240}
                 height={96}
-                className='h-[60px] w-auto sm:h-[68px]'
+                className='max-h-[60px] sm:max-h-[68px]'
+                style={{ width: 'auto', height: 'auto' }}
                 loading='lazy'
                 quality={80}
               />
@@ -224,7 +225,8 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
               alt={logoAlt}
               width={150}
               height={60}
-              className='h-[36px] w-auto'
+              className='max-h-[36px]'
+              style={{ width: 'auto', height: 'auto' }}
               loading='lazy'
               quality={80}
             />
@@ -295,7 +297,7 @@ export default function HallOfFameHero({ dict }: Props) {
           role='presentation'
           fill
           priority
-          sizes='100vw'
+          sizes='(max-width: 768px) 100vw, (max-width: 1280px) 1280px, 1920px'
           className='object-cover opacity-40'
           quality={75}
         />

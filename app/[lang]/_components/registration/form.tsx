@@ -152,7 +152,7 @@ export default function RegistrationForm({ dict }: Props) {
         alt=''
         role='presentation'
         fill
-        sizes='100vw'
+        sizes='(max-width: 768px) 100vw, (max-width: 1280px) 1280px, 1920px'
         className='absolute inset-0 -z-20 object-cover'
         quality={75}
         loading='lazy'

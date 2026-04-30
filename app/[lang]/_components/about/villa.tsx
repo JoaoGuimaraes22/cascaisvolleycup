@@ -118,7 +118,8 @@ export default function AboutVilla({ dict }: Props) {
                 height={80}
                 quality={80}
                 loading='lazy'
-                className='h-auto w-[120px] object-contain drop-shadow duration-300 hover:scale-105 motion-safe:transition-transform'
+                className='max-w-[120px] object-contain drop-shadow duration-300 hover:scale-105 motion-safe:transition-transform'
+                style={{ width: 'auto', height: 'auto' }}
                 sizes='120px'
                 decoding='async'
                 draggable={false}
@@ -163,7 +164,8 @@ export default function AboutVilla({ dict }: Props) {
                 alt={dict.sponsorAlt}
                 width={240}
                 height={80}
-                className='h-auto w-[120px] object-contain drop-shadow duration-300 group-hover:scale-105 motion-safe:transition-transform'
+                className='max-w-[120px] object-contain drop-shadow duration-300 group-hover:scale-105 motion-safe:transition-transform'
+                style={{ width: 'auto', height: 'auto' }}
                 sizes='120px'
                 decoding='async'
                 draggable={false}
@@ -195,7 +197,8 @@ export default function AboutVilla({ dict }: Props) {
               alt={dict.eventLogoAlt}
               width={260}
               height={80}
-              className='h-auto w-[220px] object-contain drop-shadow duration-300 group-hover:scale-105 motion-safe:transition-transform lg:w-[260px]'
+              className='max-w-[220px] object-contain drop-shadow duration-300 group-hover:scale-105 motion-safe:transition-transform lg:max-w-[260px]'
+              style={{ width: 'auto', height: 'auto' }}
               sizes='(max-width: 1024px) 220px, 260px'
               decoding='async'
               draggable={false}
@@ -212,7 +215,8 @@ export default function AboutVilla({ dict }: Props) {
                 alt={dict.sponsorAlt}
                 width={240}
                 height={80}
-                className='h-auto w-[200px] object-contain drop-shadow duration-300 group-hover:scale-105 motion-safe:transition-transform lg:w-[240px]'
+                className='max-w-[200px] object-contain drop-shadow duration-300 group-hover:scale-105 motion-safe:transition-transform lg:max-w-[240px]'
+                style={{ width: 'auto', height: 'auto' }}
                 sizes='(max-width: 1024px) 200px, 240px'
                 decoding='async'
                 draggable={false}

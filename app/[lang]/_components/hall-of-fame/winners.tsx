@@ -109,6 +109,7 @@ export default function HallOfFameWinners({ dict }: Props) {
           alt=''
           role='presentation'
           fill
+          sizes='(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px'
           className='object-cover opacity-40'
           quality={75}
         />

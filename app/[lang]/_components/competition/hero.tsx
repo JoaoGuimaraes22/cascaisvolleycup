@@ -150,7 +150,8 @@ export default function CompetitionHero({ dict, logoDict }: Props) {
                 alt={dict.phoneAlt}
                 width={PHONE_DIMENSIONS.xl.width}
                 height={PHONE_DIMENSIONS.xl.height}
-                className='h-auto w-auto max-w-none object-contain object-left drop-shadow-2xl duration-300 hover:scale-105 motion-safe:transition-transform'
+                className='max-w-none object-contain object-left drop-shadow-2xl duration-300 hover:scale-105 motion-safe:transition-transform'
+                style={{ width: 'auto', height: 'auto' }}
                 sizes='(max-width: 640px) 200px, (max-width: 768px) 230px, (max-width: 1024px) 260px, (max-width: 1280px) 280px, 300px'
                 loading='eager'
                 quality={90}
@@ -368,7 +369,8 @@ function LogoTaglineSection({
                   alt={logoAlt}
                   width={LOGO_DIMENSIONS.width}
                   height={LOGO_DIMENSIONS.height}
-                  className='h-auto w-[180px] duration-300 hover:scale-105 motion-safe:transition-transform sm:w-[260px] lg:w-[320px] xl:w-[340px]'
+                  className='max-w-[180px] duration-300 hover:scale-105 motion-safe:transition-transform sm:max-w-[260px] lg:max-w-[320px] xl:max-w-[340px]'
+                  style={{ width: 'auto', height: 'auto' }}
                   sizes='(max-width: 640px) 180px, (max-width: 1024px) 260px, (max-width: 1280px) 320px, 340px'
                   quality={90}
                   loading='lazy'

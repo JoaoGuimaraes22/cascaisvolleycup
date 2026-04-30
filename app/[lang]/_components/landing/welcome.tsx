@@ -151,8 +151,8 @@ export default function LandingWelcome({ lang, dict }: Props) {
               priority={true}
               quality={95}
               sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
-              className='w-[350px] drop-shadow-2xl sm:w-[500px] md:w-[600px] lg:w-[650px]'
-              style={{ height: 'auto' }}
+              className='max-w-[350px] drop-shadow-2xl sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px]'
+              style={{ width: 'auto', height: 'auto' }}
             />
           </div>
         </div>
@@ -199,17 +199,16 @@ export default function LandingWelcome({ lang, dict }: Props) {
       {/* O-Sports logo */}
       <div
         className={clsx(
-          'absolute right-4 bottom-4 z-30 delay-900 duration-700 ease-out motion-safe:transition-all',
+          'absolute right-4 bottom-4 z-30 h-[40px] w-[80px] delay-900 duration-700 ease-out motion-safe:transition-all sm:h-[50px] sm:w-[100px] lg:h-[60px] lg:w-[120px]',
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
         )}
       >
         <Image
           src={ASSETS.OSPORTS}
           alt='O-Sports'
-          width={120}
-          height={60}
-          className='h-auto w-[80px] drop-shadow-lg sm:w-[100px] lg:w-[120px]'
-          priority={false}
+          fill
+          sizes='(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px'
+          className='object-contain drop-shadow-lg'
           quality={75}
         />
       </div>

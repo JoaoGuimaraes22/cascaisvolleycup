@@ -18,7 +18,7 @@ interface Testimonial {
   year?: string
 }
 
-const TESTIMONIAL_KEYS = ['t1', 't2', 't3', 't4', 't5'] as const
+const TESTIMONIAL_KEYS = ['t1', 't2', 't3', 't4', 't5', 't6', 't7'] as const
 
 type TestimonialItem = {
   team: string

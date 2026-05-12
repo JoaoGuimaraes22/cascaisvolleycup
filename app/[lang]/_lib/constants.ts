@@ -23,6 +23,18 @@ export const GLOBAL_ASSETS = {
   logoWhite: '/img/global/cascais-volley-cup-1-w.webp'
 } as const
 
+/** News image sizes for Sanity CDN transforms (passed to urlFor().width(...).height(...)) */
+export const NEWS_IMAGE = {
+  /** Card on list / landing strip */
+  card: { width: 640, height: 400 },
+  /** Hero image on detail page */
+  hero: { width: 1920, height: 900 },
+  /** OG / Twitter share image */
+  og: { width: 1200, height: 630 },
+  /** Inline body image inside Portable Text */
+  body: { width: 1200, height: 675 }
+} as const
+
 /** Language code mapping for brochure file naming */
 export const LANGUAGE_CODES = {
   en: 'UK',

@@ -19,9 +19,25 @@ export default function LocaleSwitcher({ currentLocale, localeNames }: Props) {
 
   const handleLocaleChange = useCallback(
     (newLocale: Locale) => {
-      const segments = pathname.split('/')
-      segments[1] = newLocale
-      const nextPath = segments.join('/')
+      let nextPath = ''
+      if (typeof document !== 'undefined') {
+        const link = document.head.querySelector<HTMLLinkElement>(
+          `link[rel="alternate"][hreflang="${newLocale}"]`
+        )
+        if (link?.href) {
+          try {
+            const u = new URL(link.href)
+            nextPath = u.pathname + u.search + u.hash
+          } catch {
+            nextPath = ''
+          }
+        }
+      }
+      if (!nextPath) {
+        const segments = pathname.split('/')
+        segments[1] = newLocale
+        nextPath = segments.join('/')
+      }
       startTransition(() => {
         router.replace(nextPath)
       })

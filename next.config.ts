@@ -8,7 +8,7 @@ const cspDirectives: string[] = [
     isDev ? " 'unsafe-eval'" : ""
   } https://va.vercel-scripts.com https://vercel.live`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://res.cloudinary.com",
+  "img-src 'self' data: blob: https://res.cloudinary.com https://cdn.sanity.io",
   "font-src 'self' data: https://fonts.gstatic.com",
   `connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com${
     isDev ? " ws: wss:" : ""
@@ -21,6 +21,21 @@ const cspDirectives: string[] = [
 ];
 if (!isDev) cspDirectives.push("upgrade-insecure-requests");
 const cspValue = cspDirectives.join("; ");
+
+const studioCspValue = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://core.sanity-cdn.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https://cdn.sanity.io https://*.sanity.io https://lh3.googleusercontent.com",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "connect-src 'self' https://*.api.sanity.io https://*.apicdn.sanity.io wss://*.api.sanity.io https://api.sanity.io https://apicdn.sanity.io https://core.sanity-cdn.com",
+  "frame-src 'self' https://*.sanity.io",
+  "worker-src 'self' blob:",
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+].join("; ");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -40,6 +55,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
         port: "",
         pathname: "/**",
       },
@@ -98,6 +119,13 @@ const nextConfig: NextConfig = {
               "camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=(), browsing-topics=()",
           },
           { key: "Content-Security-Policy", value: cspValue },
+        ],
+      },
+      {
+        source: "/studio/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: studioCspValue },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
     ];

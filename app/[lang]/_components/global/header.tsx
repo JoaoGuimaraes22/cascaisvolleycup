@@ -27,6 +27,7 @@ type HeaderDict = {
   Program: string
   Competition: string
   Gallery: string
+  News: string
   Hall_of_Fame: string
   Registration: string
 }
@@ -217,6 +218,7 @@ const NavLinks: FC<{
       { href: '/program', label: dict.Program },
       { href: '/competition', label: dict.Competition },
       { href: '/gallery', label: dict.Gallery },
+      { href: '/news', label: dict.News },
       { href: '/hall-of-fame', label: dict.Hall_of_Fame },
       { href: '/registration', label: dict.Registration, cta: true }
     ],

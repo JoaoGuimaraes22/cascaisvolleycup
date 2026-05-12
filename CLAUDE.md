@@ -271,6 +271,66 @@ Fetches gallery images from Cloudinary. Supports year-based folder queries (`?fo
 
 ---
 
+## Sanity / news
+
+News articles are authored in Sanity Studio embedded at `/studio`. Content is field-level multi-locale (every text field carries `en/pt/es/fr` in one document).
+
+**Files**
+
+- `sanity.config.ts` / `sanity.cli.ts` — Studio config (basePath `/studio`).
+- `sanity/env.ts` — reads `NEXT_PUBLIC_SANITY_*` env vars.
+- `sanity/schemas/` — `newsPost` document + `localeString`/`localeText`/`localeSlug`/`localeBlockContent` object types.
+- `app/studio/[[...tool]]/page.tsx` + `studio.tsx` — Studio mount point.
+- `app/[lang]/_lib/sanity-client.ts` — singleton `@sanity/client` (server-only, `useCdn: true`, `perspective: 'published'`).
+- `app/[lang]/_lib/sanity-image.ts` — `urlFor(source)` builder for image transforms (safe in client + server).
+- `app/[lang]/_lib/news.ts` — `getAllPosts`, `getRecentPosts`, `getPostBySlug`, `getAllSlugsForStaticParams`. GROQ uses `coalesce(field[$lang], field.en)` for graceful EN fallback.
+- `app/[lang]/news/page.tsx` + `news/[slug]/page.tsx` — list + detail routes (ISR 1 h).
+- `app/[lang]/_components/news/` — `hero`, `list`, `empty`, `article`, `portable-text-components`.
+- `app/api/revalidate/route.ts` — Sanity webhook handler, HMAC-verifies signature with `SANITY_WEBHOOK_SECRET`, calls `revalidatePath` per locale.
+
+**Adding a schema field**
+
+1. Add the `defineField` in `sanity/schemas/news-post.ts` (or a new object type under `sanity/schemas/objects/`).
+2. Project it in the GROQ queries in `app/[lang]/_lib/news.ts`.
+3. Extend the `NewsCardData` / `NewsPostData` types.
+4. Render it in `article.tsx` (or `list.tsx`).
+5. No build step needed for the Studio — it picks up schema changes from the running file system.
+
+**Manually triggering a revalidation**
+
+From the Sanity dashboard or your own API client, send a POST to `/api/revalidate` with a properly signed body (`sanity-webhook-signature: t=<ms>,v1=<base64url(hmac-sha256(secret, "<ms>.<body>"))>`). For local debugging without HMAC: temporarily comment out the `verifySignature` call. **Do not deploy that change.**
+
+**Configuring the webhook in Sanity**
+
+Dashboard → Settings → API → Webhooks → Create:
+
+- URL: `https://cascaisvolley.com/api/revalidate`
+- Trigger on: Create + Update + Delete, filter `_type == "newsPost"`
+- Projection (so the handler can extract slugs without re-fetching):
+
+  ```groq
+  {
+    _id,
+    _type,
+    "slugs": {
+      "en": slug.en.current,
+      "pt": slug.pt.current,
+      "es": slug.es.current,
+      "fr": slug.fr.current
+    }
+  }
+  ```
+
+- Secret: paste `SANITY_WEBHOOK_SECRET`
+
+CORS origins (Settings → API → CORS): add `http://localhost:3000` (untrusted, no credentials) and `https://cascaisvolley.com` (trusted, with credentials so Studio session cookies work).
+
+**Seeding a sample post**
+
+`node scripts/seed-news.mjs` — uploads `public/img/news/news1.webp` as a Sanity asset and publishes one sample article in EN/PT/ES/FR. Idempotent (skips if a post with the seed slug already exists). Requires `SANITY_WRITE_TOKEN`.
+
+---
+
 ## Common Gotchas
 
 - **Never import `Link` from `@/src/navigation`** — that file no longer exists. Use `next/link` + `localeHref`.

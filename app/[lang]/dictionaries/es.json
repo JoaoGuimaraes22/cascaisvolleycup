@@ -36,6 +36,7 @@
     "Program": "Programa",
     "Competition": "Competición",
     "Gallery": "Galería",
+    "News": "Noticias",
     "Registration": "Inscripción",
     "Hall_of_Fame": "Hall of Fame"
   },
@@ -58,6 +59,9 @@
     },
     "Updates": {
       "Latest_news": "ÚLTIMAS NOTICIAS",
+      "previousNews": "Noticias anteriores",
+      "nextNews": "Siguientes noticias",
+      "goToNewsPage": "Ir a la página de noticias",
       "What_they_say": "LO QUE DICEN",
       "previousTestimonial": "Testimonio anterior",
       "nextTestimonial": "Siguiente testimonio",
@@ -465,7 +469,9 @@
   "NewsPage": {
     "title": "Noticias",
     "description": "Últimas noticias y novedades del torneo Cascais Volley Cup.",
-    "comingSoon": "Próximamente"
+    "backToNews": "Volver a noticias",
+    "noPostsYet": "Aún no hay noticias — vuelva pronto.",
+    "seeMore": "Ver más"
   },
   "HallOfFamePage": {
     "Hero": {

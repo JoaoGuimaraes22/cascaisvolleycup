@@ -170,7 +170,9 @@ export default function HallOfFameParticipants({ dict }: Props) {
   const [showAllTeams, setShowAllTeams] = useState(false)
 
   // Show first 7 teams on mobile, all on desktop
-  const visibleTeams = showAllTeams ? PARTICIPATING_TEAMS : PARTICIPATING_TEAMS.slice(0, 7)
+  const visibleTeams = showAllTeams
+    ? PARTICIPATING_TEAMS
+    : PARTICIPATING_TEAMS.slice(0, 7)
   const hasMoreTeams = PARTICIPATING_TEAMS.length > 7
 
   const handleSeeWinners = () => {

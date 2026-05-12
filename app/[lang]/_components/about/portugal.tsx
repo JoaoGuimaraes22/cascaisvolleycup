@@ -208,7 +208,7 @@ export default function AboutPortugal({ dict }: Props) {
               {SPOTS.map((spot, index) => (
                 <div
                   key={spot.key}
-                  className='shrink-0 snap-start basis-[83%] px-1 sm:basis-[calc(45%-0.625rem)]'
+                  className='shrink-0 basis-[83%] snap-start px-1 sm:basis-[calc(45%-0.625rem)]'
                 >
                   <SpotCard
                     spot={spot}

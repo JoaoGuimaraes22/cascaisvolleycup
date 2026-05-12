@@ -30,7 +30,9 @@ export default function PlanTripCta({
         onClick={() => setOpen(true)}
         className={clsx(
           'group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-600 to-sky-700 font-bold text-white shadow-xl ring-1 ring-black/10 duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 motion-safe:transition-all',
-          size === 'lg' ? 'px-8 py-4 text-base' : 'px-6 py-3 text-sm sm:text-base'
+          size === 'lg'
+            ? 'px-8 py-4 text-base'
+            : 'px-6 py-3 text-sm sm:text-base'
         )}
       >
         <span className='relative z-10 flex items-center gap-2'>

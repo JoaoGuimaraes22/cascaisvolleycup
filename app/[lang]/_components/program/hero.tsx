@@ -80,7 +80,6 @@ export default function ProgramHero({ lang, dict }: Props) {
   const { ref: sectionRef, isVisible } = useIntersectionObserver<HTMLElement>()
   const [backgroundLoaded, setBackgroundLoaded] = useState(false)
 
-
   const ASSETS = {
     background: '/img/program/program-bg.webp',
     tagline: GLOBAL_ASSETS.tagline,
@@ -265,7 +264,7 @@ export default function ProgramHero({ lang, dict }: Props) {
                 {DAYS.map((day, index) => (
                   <div
                     key={day.key}
-                    className='shrink-0 snap-start basis-[83%] px-1 sm:basis-[calc(45%-0.5rem)] md:basis-[calc(31%-0.5rem)]'
+                    className='shrink-0 basis-[83%] snap-start px-1 sm:basis-[calc(45%-0.5rem)] md:basis-[calc(31%-0.5rem)]'
                   >
                     <DayCard
                       day={{ ...day, blocks: [...day.blocks] }}

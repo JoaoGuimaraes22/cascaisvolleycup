@@ -55,7 +55,10 @@ export function rateLimit(
   if (recent.length >= max) {
     buckets.set(ip, recent)
     const oldest = recent[0]!
-    return { ok: false, retryAfter: Math.ceil((oldest + windowMs - now) / 1000) }
+    return {
+      ok: false,
+      retryAfter: Math.ceil((oldest + windowMs - now) / 1000)
+    }
   }
 
   recent.push(now)

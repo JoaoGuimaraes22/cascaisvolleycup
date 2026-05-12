@@ -147,78 +147,78 @@ export default function LandingTestimonials({
 
               {/* Tablet+: snap carousel */}
               <div className='relative hidden sm:block'>
-                  <div
-                    ref={scrollRef}
-                    className='scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto py-3 sm:py-4 lg:gap-4'
-                    aria-labelledby='testimonials-heading'
+                <div
+                  ref={scrollRef}
+                  className='scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto py-3 sm:py-4 lg:gap-4'
+                  aria-labelledby='testimonials-heading'
+                >
+                  {testimonials.map((item, index) => (
+                    <div
+                      key={`${item.team}-${index}`}
+                      className='shrink-0 basis-[calc(50%-0.375rem)] snap-center px-2 lg:basis-[calc(33.3333%-0.6667rem)]'
+                    >
+                      <TestimonialCard testimonial={item} />
+                    </div>
+                  ))}
+                </div>
+
+                <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
+                  <button
+                    onClick={prev}
+                    aria-label='Previous testimonial'
+                    className='rounded-full bg-white/25 p-1.5 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors sm:p-2'
                   >
-                    {testimonials.map((item, index) => (
-                      <div
-                        key={`${item.team}-${index}`}
-                        className='shrink-0 snap-center basis-[calc(50%-0.375rem)] px-2 lg:basis-[calc(33.3333%-0.6667rem)]'
-                      >
-                        <TestimonialCard testimonial={item} />
-                      </div>
+                    <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
+                  </button>
+
+                  <div
+                    className='flex gap-2'
+                    role='tablist'
+                    aria-label='Testimonial slides'
+                  >
+                    {Array.from({ length: pageCount }).map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToPage(index)}
+                        aria-label={`Go to page ${index + 1}`}
+                        role='tab'
+                        aria-selected={activePage === index}
+                        className={clsx(
+                          'h-3 w-3 rounded-full motion-safe:transition-colors sm:h-2 sm:w-2',
+                          activePage === index
+                            ? 'bg-white'
+                            : 'bg-white/60 hover:bg-white/80'
+                        )}
+                      />
                     ))}
                   </div>
 
-                  <div className='mt-3 flex items-center justify-center gap-3 sm:mt-4 sm:gap-4'>
-                    <button
-                      onClick={prev}
-                      aria-label='Previous testimonial'
-                      className='rounded-full bg-white/25 p-1.5 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors sm:p-2'
-                    >
-                      <FiChevronLeft className='h-3 w-3 sm:h-4 sm:w-4' />
-                    </button>
-
-                    <div
-                      className='flex gap-2'
-                      role='tablist'
-                      aria-label='Testimonial slides'
-                    >
-                      {Array.from({ length: pageCount }).map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => goToPage(index)}
-                          aria-label={`Go to page ${index + 1}`}
-                          role='tab'
-                          aria-selected={activePage === index}
-                          className={clsx(
-                            'h-3 w-3 rounded-full motion-safe:transition-colors sm:h-2 sm:w-2',
-                            activePage === index
-                              ? 'bg-white'
-                              : 'bg-white/60 hover:bg-white/80'
-                          )}
-                        />
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={next}
-                      aria-label='Next testimonial'
-                      className='rounded-full bg-white/25 p-1.5 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors sm:p-2'
-                    >
-                      <FiChevronRight className='h-3 w-3 sm:h-4 sm:w-4' />
-                    </button>
-                  </div>
-
-                  <div className='hidden lg:block'>
-                    <button
-                      onClick={prev}
-                      aria-label='Previous testimonial'
-                      className='absolute top-1/2 left-0 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors'
-                    >
-                      <FiChevronLeft className='h-5 w-5' />
-                    </button>
-                    <button
-                      onClick={next}
-                      aria-label='Next testimonial'
-                      className='absolute top-1/2 right-0 translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors'
-                    >
-                      <FiChevronRight className='h-5 w-5' />
-                    </button>
-                  </div>
+                  <button
+                    onClick={next}
+                    aria-label='Next testimonial'
+                    className='rounded-full bg-white/25 p-1.5 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors sm:p-2'
+                  >
+                    <FiChevronRight className='h-3 w-3 sm:h-4 sm:w-4' />
+                  </button>
                 </div>
+
+                <div className='hidden lg:block'>
+                  <button
+                    onClick={prev}
+                    aria-label='Previous testimonial'
+                    className='absolute top-1/2 left-0 -translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors'
+                  >
+                    <FiChevronLeft className='h-5 w-5' />
+                  </button>
+                  <button
+                    onClick={next}
+                    aria-label='Next testimonial'
+                    className='absolute top-1/2 right-0 translate-x-4 -translate-y-1/2 rounded-full bg-white/25 p-2 hover:bg-white/35 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none motion-safe:transition-colors'
+                  >
+                    <FiChevronRight className='h-5 w-5' />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -378,8 +378,11 @@ buffered `layout-shift` observer; confirmed against a local prod build).
 Verified: lint + tsc + build clean (57 static pages, home SSG); Chrome CLS 0.0067 on
 local prod build; Chrome parallax confirmed still active.
 
-### Follow-up (same antipattern, lower priority)
+### `/news` + `/news/[slug]` — already fixed by the same change
 
-- [ ] `/news` and `/news/[slug]` also `await` Sanity under what was the shared
-      `loading.tsx`. Lower priority (the awaited data IS the page's main content), but
-      the spinner-swap CLS applies there too — scope the same way if Speed Insights flags them.
+`/news` and `/news/[slug]` also `await` Sanity, so they had the same whole-page
+spinner-swap. Because the deleted `loading.tsx` was the **shared** `[lang]` boundary,
+removing it fixed them too — no per-route work needed. Verified 2026-06-03 on the
+live deploy: both render content inline (0 spinner / 0 `<template>` / 0 `$RC`) and
+measure **CLS = 0** (1440×900, 4× CPU throttle). The home-only `news-section`
+Suspense split is not needed here since there's no above-the-fold content to protect.

@@ -4,8 +4,6 @@ import {
   useCallback,
   useEffect,
   useState,
-  useLayoutEffect,
-  useRef,
   useMemo,
   startTransition,
   type FC,
@@ -40,29 +38,6 @@ type Props = {
 
 const HEADER_BG = '/img/footer/footer-bg.webp'
 
-function useHeaderHeight(
-  headerRef: React.RefObject<HTMLElement | null>,
-  menuOpen: boolean
-) {
-  const syncHeaderHeight = useCallback(() => {
-    const h = headerRef.current?.offsetHeight ?? 0
-    document.documentElement.style.setProperty('--header-h', `${h}px`)
-  }, [headerRef])
-
-  useLayoutEffect(() => {
-    syncHeaderHeight()
-    if (!headerRef.current) return
-    const ro = new ResizeObserver(syncHeaderHeight)
-    ro.observe(headerRef.current)
-    return () => ro.disconnect()
-  }, [syncHeaderHeight, headerRef])
-
-  useEffect(() => {
-    const id = setTimeout(syncHeaderHeight, 320)
-    return () => clearTimeout(id)
-  }, [menuOpen, syncHeaderHeight])
-}
-
 function useMobileMenu(pathname: string) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [lastPathname, setLastPathname] = useState(pathname)
@@ -92,10 +67,8 @@ function useMobileMenu(pathname: string) {
 export default function Header({ lang, dict, localeNames }: Props) {
   const pathname = usePathname()
   const router = useRouter()
-  const headerRef = useRef<HTMLElement | null>(null)
 
   const { menuOpen, toggleMenu } = useMobileMenu(pathname)
-  useHeaderHeight(headerRef, menuOpen)
 
   const handleLogoClick = useCallback(
     (e: MouseEvent<HTMLAnchorElement>) => {
@@ -127,7 +100,6 @@ export default function Header({ lang, dict, localeNames }: Props) {
 
   return (
     <header
-      ref={headerRef}
       role='banner'
       className='fixed inset-x-0 top-0 z-[200] w-full bg-slate-100/95 shadow-md backdrop-blur-sm'
       style={{

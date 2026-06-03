@@ -31,10 +31,49 @@
   }
 }
 
+/* Firefox-only override. Firefox resolves a scroll-driven animation's at-rest
+   state (scroll = 0) to the END keyframe instead of 0%, shifting the hero
+   background down 30vh and exposing a white gap at the top. Chrome resolves it to
+   0% (no shift) correctly. Until Firefox matches, disable the parallax in Firefox
+   so its hero background stays static — identical to Chrome's scroll-0 frame.
+   The `-moz-*` feature query matches Firefox only; Blink and WebKit don't
+   recognize these properties (verified: Chrome → CSS.supports false). */
+@supports (-moz-appearance: none) or (-moz-osx-font-smoothing: auto) {
+  @media (min-width: 1024px) {
+    .hero-parallax-bg {
+      animation: none;
+      transform: none;
+    }
+  }
+}
+
 :root {
   --primary: #333366;
   --background: #ededed;
-  --header-h: 4rem;
+  /* Closed-header height per breakpoint — EMPIRICALLY MEASURED (header.offsetHeight
+     with the mobile menu closed), not derived: padding + logo max-h-* + focus-ring
+     don't sum cleanly. Static values let <body> reserve the right space from first
+     paint (no JS measurement, no hydration shift). If you change the header padding
+     or logo max-h-* in header.tsx, re-measure in DevTools and update these four. */
+  --header-h: 51px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --header-h: 64px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 66px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 73px;
+  }
 }
 
 html {

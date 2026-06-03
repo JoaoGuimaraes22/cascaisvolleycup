@@ -327,3 +327,59 @@ mounted Vercel Analytics + SpeedInsights + NextTopLoader.
 - `pnpm build` — all 48 SSG pages emit
 - Lighthouse re-measure pending user smoke test on branch
       `perf/home-page-rsc` (or after merge to main → Vercel deploy)
+
+## News / Sanity CMS — shipped 2026-05-12 (branch `feat/news-sanity`, merged to main)
+
+Replaced the `/news` stub with a full Sanity-CMS-powered news section. Studio
+embedded at `/studio`, field-level multi-locale schema (each text field carries
+en/pt/es/fr in one document), Portable Text body rendering, ISR (1h) + webhook
+revalidation, top and bottom wave decoration matching the Location section.
+Landing strip pulls top 4 below the Location section.
+
+- Sanity project `usmxu3p8` / dataset `production` / embedded Studio at `/studio`
+- Webhook → `/api/revalidate` (HMAC-verified, revalidates list + home + per-locale detail)
+- Schema in `sanity/schemas/` (newsPost + 4 locale object types: localeString, localeText, localeSlug, localeBlockContent)
+- Data layer in `app/[lang]/_lib/news.ts` (server-only, React `cache()` on `getPostBySlug`)
+- Full Sanity setup docs in the project `CLAUDE.md` ("Sanity / news" section)
+- Seed script: `node scripts/seed-news.mjs` (idempotent; uses `SANITY_WRITE_TOKEN`)
+- Editor access: client invited to Sanity as Editor; both sign in with their own Google accounts
+
+### Backlog (news enhancements)
+
+- [ ] **Per-article sitemap entries**. `/news` is in `sitemap.ts` but per-slug entries are missing — search engines have to crawl the list page to discover articles. Add a Sanity fetch in `sitemap.ts` to enumerate published slugs per locale. ~20 LoC.
+- [ ] **GROQ-level pagination for `getAllPosts`**. Currently returns every post. Fine until the archive grows past ~100; then switch to `[$offset...$offset+$limit]` with offset-based "Load more" that fetches the next batch from a route handler instead of client-side slicing.
+- [ ] **Sanity Visual Editing**. Wire up `next-sanity/visual-editing` so the client can click any element on a draft preview and jump straight into Studio at that field. Big editor-UX win. ~half-day effort.
+- [ ] **Tags / categories / search** — add when content volume justifies it.
+- [ ] **RSS feed** at `/news/feed.xml` — small effort, only worth it if anyone actually subscribes.
+
+## Desktop CLS + INP fix — done 2026-06-03
+
+Vercel Speed Insights flagged the home page on Desktop: **CLS 0.56**, **INP 768ms**
+(worse in Firefox). Root-caused empirically (Playwright + CDP 4× CPU throttle +
+buffered `layout-shift` observer; confirmed against a local prod build).
+
+- [x] **Root cause: `loading.tsx` whole-page Suspense gate.** `app/[lang]/loading.tsx`
+      wrapped the segment in `<Suspense>`; the `async` page (`await params`/Sanity)
+      deferred the **entire** body behind a 40px spinner, then `$RC`-swapped in the
+      3330px content → 0.508 CLS every load. Scoping the Sanity fetch alone did NOT
+      fix it (still 0.54) — the page suspends on `await params` regardless. **Deleted
+      `loading.tsx`** → content renders inline in the static HTML. **CLS 0.56 → ~0.013.**
+- [x] **Scoped the Sanity news fetch** into `landing/news-section.tsx` (async) behind
+      `<Suspense fallback={<NewsSectionSkeleton/>}>` in `page.tsx`, so the news strip
+      is the only thing that streams (below the fold). New: `news-section.tsx`,
+      `news-section-skeleton.tsx`.
+- [x] **Static `--header-h`** per breakpoint in `globals.css` (51/64/66/73px), deleted
+      the `useHeaderHeight` JS hook (ResizeObserver + setTimeout) in `header.tsx`.
+      Kills the 64→73px hydration shift + that main-thread work (helps INP).
+- [x] **Firefox hero gap** — `@supports (-moz-…)` guard disables the
+      `animation-timeline: scroll(root)` parallax in Firefox only (it resolved the
+      scroll-0 state to the end keyframe, shifting the bg down 30vh). Chrome untouched.
+
+Verified: lint + tsc + build clean (57 static pages, home SSG); Chrome CLS 0.0067 on
+local prod build; Chrome parallax confirmed still active.
+
+### Follow-up (same antipattern, lower priority)
+
+- [ ] `/news` and `/news/[slug]` also `await` Sanity under what was the shared
+      `loading.tsx`. Lower priority (the awaited data IS the page's main content), but
+      the spinner-swap CLS applies there too — scope the same way if Speed Insights flags them.

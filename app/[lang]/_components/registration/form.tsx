@@ -214,7 +214,7 @@ export default function RegistrationForm({ dict }: Props) {
               </h2>
               <p className='mt-2 text-sm text-slate-600'>
                 {dict.FormDescription ||
-                  'Fill out the form below to register for the Cascais Volley Cup 2026'}
+                  'Fill out the form below to register for the Cascais Volley Cup 2027'}
               </p>
             </div>
 

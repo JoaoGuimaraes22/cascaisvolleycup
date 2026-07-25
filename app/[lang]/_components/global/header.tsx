@@ -112,13 +112,13 @@ export default function Header({ lang, dict, localeNames }: Props) {
         <div className='ml-1 flex w-full items-center justify-between sm:ml-3 lg:ml-6 lg:w-auto'>
           <Link
             href={`/${lang}`}
-            aria-label='Cascais Volley Cup 2026 - Go to homepage'
+            aria-label='Cascais Volley Cup 2027 - Go to homepage'
             onClick={handleLogoClick}
             className='rounded-sm focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:outline-none'
           >
             <Image
               src={Logo}
-              alt='Cascais Volley Cup 2026'
+              alt='Cascais Volley Cup 2027'
               priority
               quality={80}
               sizes='(max-width: 640px) 150px, (max-width: 1024px) 190px, 240px'

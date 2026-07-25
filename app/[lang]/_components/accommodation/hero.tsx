@@ -127,9 +127,6 @@ export default function AccommodationHero({ dict, contactToastDict }: Props) {
               delay={200}
               isVisible={isVisible}
             >
-              <p className='mb-4 text-sm leading-relaxed text-slate-800/90 sm:text-base'>
-                {dict.schools.p1}
-              </p>
               <p className='text-sm leading-relaxed text-slate-800/90 sm:text-base'>
                 {dict.schools.p2} <strong>{dict.schools.p2Bold}</strong>{' '}
                 {dict.schools.p2_cont}

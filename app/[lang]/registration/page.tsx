@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   return buildPageMetadata(lang, {
     title: hero.title,
-    description: `${hero.title} — Cascais Volley Cup 2026. Cascais, Portugal.`,
+    description: `${hero.title} — Cascais Volley Cup 2027. Cascais, Portugal.`,
     path: '/registration'
   })
 }
@@ -35,7 +35,7 @@ export default async function RegistrationPageRoute({
     type: 'WebPage',
     path: '/registration',
     name: hero.title,
-    description: `${hero.title} — Cascais Volley Cup 2026. Cascais, Portugal.`,
+    description: `${hero.title} — Cascais Volley Cup 2027. Cascais, Portugal.`,
     eventRef: 'mainEntity',
     breadcrumb: [
       { name: breadcrumbLabel(lang, 'registration'), path: '/registration' }

@@ -17,7 +17,7 @@ export async function generateMetadata({
 
   return buildPageMetadata(lang, {
     title: hero.title,
-    description: `Cascais Volley Cup 2026 — ${hero.title}. ${hero.checkin.label}, ${hero.checkout.label}.`,
+    description: `Cascais Volley Cup 2027 — ${hero.title}. ${hero.checkin.label}, ${hero.checkout.label}.`,
     path: '/program'
   })
 }
@@ -34,7 +34,7 @@ export default async function ProgramPage({
     type: 'WebPage',
     path: '/program',
     name: hero.title,
-    description: `Cascais Volley Cup 2026 — ${hero.title}. ${hero.checkin.label}, ${hero.checkout.label}.`,
+    description: `Cascais Volley Cup 2027 — ${hero.title}. ${hero.checkin.label}, ${hero.checkout.label}.`,
     eventRef: 'mainEntity',
     breadcrumb: [{ name: breadcrumbLabel(lang, 'program'), path: '/program' }]
   })

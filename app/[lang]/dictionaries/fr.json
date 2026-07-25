@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "name": "Cascais Volley Cup 2026",
-    "title": "Cascais Volley Cup 2026",
-    "titleTemplate": "%s | Cascais Volley Cup 2026",
-    "description": "Participez à la Cascais Volley Cup 2026 — tournoi international de volley-ball féminin à Cascais, Portugal. Juillet 2026. Inscrivez-vous maintenant.",
+    "name": "Cascais Volley Cup 2027",
+    "title": "Cascais Volley Cup 2027",
+    "titleTemplate": "%s | Cascais Volley Cup 2027",
+    "description": "Participez à la Cascais Volley Cup 2027 — tournoi international de volley-ball féminin à Cascais, Portugal. Juillet 2027. Inscrivez-vous maintenant.",
     "type": "SportsEvent",
     "keywords": [
       "volley-ball",
@@ -12,7 +12,7 @@
       "Portugal",
       "tournoi",
       "VolleyCup",
-      "2026"
+      "2027"
     ]
   },
   "ui": {
@@ -44,9 +44,9 @@
     "Welcome": {
       "tagline_alt": "ressentez l'ACTION, profitez de l'ÉTÉ",
       "taglineAlt": "Ressens l'action, profite de l'été",
-      "heading": "Cascais Volley Cup 2026",
+      "heading": "Cascais Volley Cup 2027",
       "PORTUGAL": "PORTUGAL",
-      "dates": "8 — 12 JUILLET",
+      "dates": "7 — 11 JUILLET",
       "avg_air_temp": "TEMP. AIR MOY.",
       "avg_air_temp_value": "94°F | 34°C",
       "airport": "AÉROPORT (LIS)",
@@ -117,7 +117,7 @@
       "p2": "Reconnu comme l'une des principales destinations touristiques d'Europe et classé parmi le Top 3 des destinations les plus sûres au monde, le Portugal combine de manière unique des paysages naturels diversifiés, une richesse culturelle, une gastronomie primée, et l'hospitalité traditionnelle du peuple portugais.",
       "p3": "À seulement 2 heures d'avion des grandes capitales européennes, Lisbonne offre des connexions rapides et pratiques pour les visiteurs du monde entier.",
       "p4": "La charmante ville de Cascais, où se déroule notre tournoi, est située sur la côte atlantique et à seulement 30 km de l'aéroport international de Lisbonne !",
-      "logoAlt": "Cascais Volley Cup 2026",
+      "logoAlt": "Cascais Volley Cup 2027",
       "taglineAlt": "Ressentez l'action, profitez de l'été",
       "cards": {
         "portugal": {
@@ -159,7 +159,7 @@
       "p2": "Avec de nombreuses demeures nobles des 17ème–19ème siècles, Cascais est une station balnéaire de luxe aux portes de Lisbonne (à seulement 20 minutes en voiture) et était autrefois un refuge favori de la royauté portugaise et européenne.",
       "p3": "Avec une excellente infrastructure touristique et des services de haute qualité, Cascais est la scène parfaite pour accueillir de jeunes athlètes et des familles du monde entier.",
       "p4": "Visitez Cascais et profitez de l'été.",
-      "eventLogoAlt": "Logo Cascais Volley Cup 2026",
+      "eventLogoAlt": "Logo Cascais Volley Cup 2027",
       "sponsorAlt": "Cascais — Mairie",
       "cta": "VISITEZ-NOUS"
     }
@@ -189,11 +189,11 @@
       },
       "food": {
         "title": "Nourriture et Repas",
-        "p1": "Les cantines ne seront opérationnelles qu'à partir du 8 juillet, par conséquent aucun repas ne sera fourni le 7 juillet. Le dernier jour de l'événement, le 12 juillet, le dîner ne sera pas servi.",
+        "p1": "Les cantines ne seront opérationnelles qu'à partir du 7 juillet, par conséquent aucun repas ne sera fourni le 6 juillet. Le dernier jour de l'événement, le 11 juillet, le dîner ne sera pas servi.",
         "scheduleTitle": "Les repas seront servis dans diverses cantines scolaires disponibles selon l'horaire suivant :",
-        "breakfast": "Petits-déjeuners emballés distribués aux équipes | 8:00–10:00",
-        "lunch": "Déjeuner | 12:00–15:00",
-        "dinner": "Dîner | 19:00–21:00",
+        "breakfast": "Petit-déjeuner | 7.00-10.00",
+        "lunch": "Déjeuner | 12.30-15.30",
+        "dinner": "Dîner | 18.00-21.00",
         "intolerances": "En cas d'intolérances alimentaires, les responsables d'équipe doivent informer l'organisation au moment de l'inscription afin que des repas appropriés puissent être préparés pour chaque cas.",
         "contactButton": "Contacter O-Sports"
       },
@@ -210,7 +210,7 @@
       "guidelinesTitle": "Directives pour le Message :",
       "guidelinesText": "De préférence, indiquez dans votre message votre **pays et club**, suivi de votre question ou commentaire sur l’hébergement.",
       "exampleTitle": "Message d’Exemple :",
-      "exampleText": "\"Bonjour, j’écris depuis [Pays] au nom de [Nom du Club]. Nous aimerions nous renseigner sur les options d’hébergement pour notre équipe de 12 joueurs pour la Cascais Volley Cup 2026...\"",
+      "exampleText": "\"Bonjour, j’écris depuis [Pays] au nom de [Nom du Club]. Nous aimerions nous renseigner sur les options d’hébergement pour notre équipe de 12 joueurs pour la Cascais Volley Cup 2027...\"",
       "gotItButton": "Compris !"
     }
   },
@@ -221,13 +221,13 @@
       "playersAlt": "Joueurs en action",
       "downloadBrochure": "Télécharger la Brochure",
       "checkin": {
-        "label": "7 Juillet - Mardi",
+        "label": "6 Juillet - Mardi",
         "text": "L'**ENREGISTREMENT** pour toutes les équipes doit avoir lieu entre **15:00 et 24:00** ce jour-là dans leur hébergement assigné, qui sera communiqué à l'avance par l'organisation."
       },
       "days": {
         "d1": {
           "weekday": "MERCREDI",
-          "date": "08-Juil",
+          "date": "07-Juil",
           "block1": {
             "title": "1ère PHASE DE GROUPE",
             "subtitle": "Matchs",
@@ -236,7 +236,7 @@
         },
         "d2": {
           "weekday": "JEUDI",
-          "date": "09-Juil",
+          "date": "08-Juil",
           "block1": {
             "title": "1ère PHASE DE GROUPE",
             "subtitle": "Matchs",
@@ -245,14 +245,14 @@
         },
         "d3": {
           "weekday": "VENDREDI",
-          "date": "10-Juil",
+          "date": "09-Juil",
           "block1": {
             "title": "JOUR DE REPOS"
           }
         },
         "d4": {
           "weekday": "SAMEDI",
-          "date": "11-Juil",
+          "date": "10-Juil",
           "block1": {
             "title": "2ème PHASE DE GROUPE"
           },
@@ -266,7 +266,7 @@
         },
         "d5": {
           "weekday": "DIMANCHE",
-          "date": "12-Juil",
+          "date": "11-Juil",
           "block1": {
             "title": "2ème PHASE DE GROUPE"
           },
@@ -286,13 +286,13 @@
         }
       },
       "checkout": {
-        "label": "13 Juillet - Lundi",
+        "label": "12 Juillet - Lundi",
         "text": "Le **DÉPART** pour toutes les équipes qui demandent et/ou ont besoin de transferts vers l'aéroport de Lisbonne doit être effectué avant **12:00** ce jour-là."
       },
       "layDay": {
         "title": "Jour de Repos",
         "content1": "Le ",
-        "bold1": "10 juillet, vendredi ",
+        "bold1": "9 juillet, vendredi ",
         "content2": "seuls les matchs strictement nécessaires auront lieu pour assurer le respect du calendrier. Ce jour-là, il sera possible de profiter de tout ce que notre ville a à offrir, avec la possibilité de faire un voyage à Lisbonne. Le voyage en train le long de l'estuaire est une expérience inoubliable, passant par toutes les plages de la Côte d'Estoril et offrant des vues sur des sites touristiques tels que la Tour de Belém, le Monastère des Hiéronymites, le Monument aux Découvertes, le Centre Culturel de Belém, le MAAT, entre autres. Tout cela en un voyage de seulement ",
         "bold2": "25 minutes ",
         "content3": "en train.",
@@ -314,7 +314,7 @@
     },
     "LogoTaglineHero": {
       "sectionLabel": "Bannière Cascais Volley Cup",
-      "logoAlt": "Logo Cascais Volley Cup 2026",
+      "logoAlt": "Logo Cascais Volley Cup 2027",
       "taglineAlt": "ressentez l'ACTION, profitez de l'ÉTÉ"
     },
     "Facts": {
@@ -340,7 +340,7 @@
         "heading": "OÙ ET QUAND ?",
         "l1": "Dans la municipalité de",
         "l2": "CASCAIS",
-        "l3": "du 8 au 12 juillet"
+        "l3": "du 7 au 11 juillet"
       },
       "games": {
         "heading": "COMBIEN DE MATCHS ?",
@@ -466,20 +466,20 @@
       "title": "INSCRIPTIONS",
       "schoolAccommodation": {
         "title": "HÉBERGEMENT EN ÉCOLES",
-        "description": "L'inscription doit être faite obligatoirement via le site de l'événement en suivant les instructions qui y seront fournies. De manière générale, l'inscription à la CASCAIS VOLLEY CUP 2026 a deux moments :"
+        "description": "L'inscription doit être faite obligatoirement via le site de l'événement en suivant les instructions qui y seront fournies. De manière générale, l'inscription à la CASCAIS VOLLEY CUP 2027 a deux moments :"
       },
       "pricing": {
         "earlyBird": {
           "label": "TARIF ANTICIPÉ",
           "period": "I Du 1er janvier au 31 mars",
           "price": "165 euros/athlète",
-          "details": "inclut l'inscription au tournoi, l'hébergement et la restauration du 8 au 12 juillet I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
+          "details": "inclut l'inscription au tournoi, l'hébergement et la restauration du 7 au 11 juillet I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
         },
         "regularBird": {
           "label": "TARIF RÉGULIER",
           "period": "I Du 1er avril au 31 mai",
           "price": "185 euros/athlète",
-          "details": "inclut l'inscription, l'hébergement et la restauration du 8 au 12 juillet I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
+          "details": "inclut l'inscription, l'hébergement et la restauration du 7 au 11 juillet I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
         }
       },
       "teamRequirements": "Chaque équipe doit avoir un minimum de 10 athlètes inscrits, et l'organisation offre l'inscription gratuite pour 2 entraîneurs par équipe.",
@@ -520,7 +520,7 @@
         "guidelinesTitle": "Directives pour le Message :",
         "guidelinesText": "De préférence, indiquez dans votre message votre **pays et club**, suivi de votre question ou commentaire sur l’hébergement.",
         "exampleTitle": "Message d’Exemple :",
-        "exampleText": "\"Bonjour, j’écris depuis [Pays] au nom de [Nom du Club]. Nous aimerions nous renseigner sur les options d’hébergement pour notre équipe de 12 joueurs pour la Cascais Volley Cup 2026...\"",
+        "exampleText": "\"Bonjour, j’écris depuis [Pays] au nom de [Nom du Club]. Nous aimerions nous renseigner sur les options d’hébergement pour notre équipe de 12 joueurs pour la Cascais Volley Cup 2027...\"",
         "gotItButton": "Compris !"
       }
     },

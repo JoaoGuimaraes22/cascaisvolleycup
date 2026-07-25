@@ -19,7 +19,7 @@ export async function generateMetadata({
 
   const dict = await getDictionary(lang)
   const w = dict.LandingPage.Welcome
-  const title = 'Cascais VolleyCup 2026'
+  const title = 'Cascais VolleyCup 2027'
 
   return {
     ...buildPageMetadata(lang, {

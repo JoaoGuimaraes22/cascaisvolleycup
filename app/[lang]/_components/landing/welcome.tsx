@@ -116,7 +116,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
         <div className='hero-in-logo flex flex-col items-center gap-4'>
           <Image
             src={ASSETS.LOGO}
-            alt='Cascais Volley Cup 2026'
+            alt='Cascais Volley Cup 2027'
             width={650}
             height={227}
             priority

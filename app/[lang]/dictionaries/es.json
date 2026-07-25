@@ -71,53 +71,6 @@
       "loadingTestimonials": "Cargando testimonios...",
       "testimonialsError": "No se pudieron cargar los testimonios en este momento."
     },
-    "Testimonials": {
-      "heading": "LO QUE DICEN",
-      "items": {
-        "t1": {
-          "team": "SC Arcozelo",
-          "country": "Portugal",
-          "year": "2025",
-          "quote": "\"…una vez más el Sporting Clube de Arcozelo participó en el torneo\""
-        },
-        "t2": {
-          "team": "Pel Amora SC",
-          "country": "Portugal",
-          "year": "2025",
-          "quote": "\"…una experiencia inolvidable, tanto a nivel competitivo como social.\""
-        },
-        "t3": {
-          "team": "CRCD Luzense",
-          "country": "Portugal",
-          "year": "2025",
-          "quote": "\"…un torneo garantizado por la organización y un ambiente fantástico.\""
-        },
-        "t4": {
-          "team": "São Francisco AD",
-          "country": "Portugal",
-          "year": "2025",
-          "quote": "\"…a las chicas les encantó y por supuesto quieren volver el próximo año.\""
-        },
-        "t5": {
-          "team": "CD Foz do Porto",
-          "country": "Portugal",
-          "year": "2025",
-          "quote": "\"...el torneo estuvo muy bien organizado, con espacio para crecer como equipo, no solo competitivamente, sino también con momentos dedicados al ocio.\""
-        },
-        "t6": {
-          "team": "Madeira Torres",
-          "country": "Portugal",
-          "year": "2023",
-          "quote": "\"…tuvimos el honor de conquistar el título en la edición inaugural — un torneo que se supera cada año.\""
-        },
-        "t7": {
-          "team": "CJS Arouca",
-          "country": "Portugal",
-          "year": "2024",
-          "quote": "\"…el torneo perfecto para cerrar la temporada por todo lo alto: mucho voleibol y tiempo para disfrutar Cascais.\""
-        }
-      }
-    },
     "Location": {
       "title": "¿Cómo llegar a Cascais?",
       "p1": "Existen varias formas de viajar desde el Aeropuerto de Lisboa hasta Cascais: tren, taxi, alquiler de coche o reservando un servicio de traslado. Solo elige la opción que mejor se adapte a tus necesidades, sabiendo que está a solo 30 km de distancia — unos 20-30 minutos desde Cascais.",

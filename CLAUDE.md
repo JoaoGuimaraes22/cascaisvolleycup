@@ -160,7 +160,7 @@ cascaisvolleycup/
 │       │   ├── competition/{hero,info,facts}.tsx
 │       │   ├── gallery/{hero,gallery,optimized-cloudinary-image}.tsx
 │       │   ├── hall-of-fame/{hero,participants,winners}.tsx
-│       │   ├── landing/{welcome,updates,testimonials,location,news,news-card,news-section,news-section-skeleton,registration-toast}.tsx
+│       │   ├── landing/{welcome,location,news,news-card,news-section,news-section-skeleton,registration-toast}.tsx
 │       │   ├── program/hero.tsx
 │       │   └── registration/{hero,form}.tsx
 │       ├── _hooks/{use-intersection-observer,use-optimized-gallery}.ts
@@ -345,7 +345,7 @@ CORS origins (Settings → API → CORS): add `http://localhost:3000` (untrusted
 ## Performance / CLS
 
 - **No route-level `loading.tsx` under `[lang]`.** It wraps the whole segment in a `<Suspense>`; because every page is `async` (`await params`), the entire body gets deferred behind the tiny spinner fallback and swapped in on the client → ~0.5 CLS on the home page. Removed 2026-06-03. **Don't re-add a blanket `loading.tsx`.** If a route needs a loading state, scope it per-section (see below).
-- **The home page must not `await` slow data at the top level.** The Sanity news fetch lives in `landing/news-section.tsx` (async) behind its own `<Suspense fallback={<NewsSectionSkeleton/>}>` in `page.tsx`, so the above-the-fold hero/updates/location render inline and only the below-the-fold news strip streams. Keep new network dependencies out of the page's render-blocking path the same way.
+- **The home page must not `await` slow data at the top level.** The Sanity news fetch lives in `landing/news-section.tsx` (async) behind its own `<Suspense fallback={<NewsSectionSkeleton/>}>` in `page.tsx`, so the above-the-fold hero/location render inline and only the below-the-fold news strip streams. Keep new network dependencies out of the page's render-blocking path the same way.
 - **`--header-h` is static per-breakpoint in `globals.css`** (51/64/66/73px at base/sm/md/lg), empirically measured from the closed header. There is **no** JS that measures the header — re-measure and update those four values if you change header padding or logo `max-h-*`.
 - **Hero parallax (`.hero-parallax-bg`, `animation-timeline: scroll(root)`) is disabled in Firefox** via a `@supports (-moz-…)` guard — Firefox resolves the scroll-0 state to the end keyframe and shifts the bg down (white gap). Chrome keeps the effect. See `reference_nextjs_loading_tsx_cls` in memory.
 

@@ -3,7 +3,7 @@
 // Replaces the duplicated pattern found in:
 // - AccommodationHero, AboutVilla, AboutPortugal
 // - CompetitionFacts, CompetitionHero, CompetitionInfo
-// - ProgramHero, LandingLocation, LandingUpdates
+// - ProgramHero, LandingLocation
 // - GalleryHero, HallOfFameHero, HallOfFameParticipants
 
 'use client'

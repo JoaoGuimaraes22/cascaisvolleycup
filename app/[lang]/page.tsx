@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { getDictionary, hasLocale } from './dictionaries'
 import LandingWelcome from './_components/landing/welcome'
-// "What they say" testimonials section unloaded per request — component kept in updates.tsx/testimonials.tsx
-// import LandingUpdates from './_components/landing/updates'
 import LandingLocation from './_components/landing/location'
 import NewsSection from './_components/landing/news-section'
 import NewsSectionSkeleton from './_components/landing/news-section-skeleton'
@@ -43,8 +41,6 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
   return (
     <div className='bg-white'>
       <LandingWelcome lang={lang} dict={dict.LandingPage.Welcome} />
-      {/* "What they say" testimonials section unloaded per request — restore with:
-          <LandingUpdates testimonialsDict={dict.LandingPage.Testimonials} /> (+ re-add its import above) */}
       <LandingLocation
         dict={dict.LandingPage.Location}
         registrationFormDict={dict.RegistrationPage.Form}

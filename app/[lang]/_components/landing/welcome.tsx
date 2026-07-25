@@ -27,8 +27,11 @@ type Props = {
 }
 
 const ASSETS = {
-  BG: '/img/landing/hero-bg-new.webp',
+  BG: '/img/landing/home-bg.webp',
+  LEFT: '/img/landing/home-left.webp',
+  RIGHT: '/img/landing/home-right.webp',
   TAGLINE: GLOBAL_ASSETS.taglineWhite,
+  CMC: '/img/landing/cascais-para-toda-a-vida-w.webp',
   LOGO: '/img/landing/hero-logo.webp',
   OSPORTS: '/img/sponsors/o-sports-w.webp'
 } as const
@@ -58,20 +61,54 @@ export default function LandingWelcome({ lang, dict }: Props) {
         </div>
       </div>
 
-      <div className='relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center'>
-        <div className='mb-6'>
-          <Image
-            src={ASSETS.TAGLINE}
-            alt={dict.taglineAlt}
-            width={400}
-            height={86}
-            priority
-            quality={95}
-            sizes='(max-width: 640px) 280px, 400px'
-            className='h-auto w-[280px] drop-shadow-2xl sm:w-[400px]'
-          />
-        </div>
+      {/* Large-desktop-only (≥1440px) full-height player cutouts flanking the centered logo/info.
+          Gated at 1440 (not xl/1280) so narrower laptops keep the clean centered hero — below that the logo crowds the players. */}
+      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 hidden min-[1440px]:block'>
+        <Image
+          src={ASSETS.LEFT}
+          alt=''
+          width={382}
+          height={1300}
+          sizes='(min-width: 1440px) 30vw, 0px'
+          className='h-full w-auto object-contain object-bottom drop-shadow-2xl'
+        />
+      </div>
+      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 hidden min-[1440px]:block'>
+        <Image
+          src={ASSETS.RIGHT}
+          alt=''
+          width={565}
+          height={1300}
+          sizes='(min-width: 1440px) 30vw, 0px'
+          className='h-full w-auto object-contain object-bottom drop-shadow-2xl'
+        />
+      </div>
 
+      {/* Top corners (below the fixed header): Câmara Municipal de Cascais wordmark left, event tagline right */}
+      <div className='absolute top-[calc(var(--header-h)_+_1.5rem)] left-4 z-30 sm:left-6 lg:left-8'>
+        <Image
+          src={ASSETS.CMC}
+          alt='Cascais — Para toda a vida'
+          width={1280}
+          height={146}
+          quality={90}
+          sizes='(max-width: 640px) 170px, (max-width: 1024px) 260px, 340px'
+          className='h-auto w-[170px] drop-shadow-lg sm:w-[260px] lg:w-[340px]'
+        />
+      </div>
+      <div className='absolute top-[calc(var(--header-h)_+_1.5rem)] right-4 z-30 sm:right-6 lg:right-8'>
+        <Image
+          src={ASSETS.TAGLINE}
+          alt={dict.taglineAlt}
+          width={400}
+          height={86}
+          quality={95}
+          sizes='(max-width: 640px) 150px, (max-width: 1024px) 220px, 300px'
+          className='h-auto w-[150px] drop-shadow-2xl sm:w-[220px] lg:w-[300px]'
+        />
+      </div>
+
+      <div className='relative z-20 flex min-h-screen flex-col items-center justify-center px-4 text-center'>
         <h1 id='hero-heading' className='sr-only'>
           {dict.heading}
         </h1>

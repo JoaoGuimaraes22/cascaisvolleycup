@@ -75,7 +75,8 @@ const ASSETS = {
   background: '/img/landing/home-page-2-2.webp',
   map: '/img/landing/mapa.webp',
   tagline: GLOBAL_ASSETS.tagline,
-  wave: GLOBAL_ASSETS.wave
+  wave: GLOBAL_ASSETS.wave,
+  waveTop: '/img/global/ondas-4.webp'
 } as const
 
 export default function LandingLocation({ dict, registrationFormDict }: Props) {
@@ -102,6 +103,18 @@ export default function LandingLocation({ dict, registrationFormDict }: Props) {
         />
       </div>
 
+      {/* Top wave — transition from the hero above (moved here from the removed testimonials section) */}
+      <div className='absolute inset-x-0 top-0 z-0 h-[60px] sm:h-[80px] lg:h-[120px]'>
+        <Image
+          src={ASSETS.waveTop}
+          alt=''
+          fill
+          className='object-cover object-center'
+          quality={65}
+          sizes='100vw'
+        />
+      </div>
+
       <div
         className='absolute inset-x-0 bottom-0 z-20'
         style={{ height: `${WAVE_HEIGHT}px` }}
@@ -116,7 +129,7 @@ export default function LandingLocation({ dict, registrationFormDict }: Props) {
         />
       </div>
 
-      <div className='mx-auto max-w-screen-xl px-4 pt-[clamp(32px,4vw,64px)] pb-10 sm:pb-12 lg:grid lg:h-full lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-8'>
+      <div className='relative z-10 mx-auto max-w-screen-xl px-4 pt-[76px] pb-10 sm:pt-[96px] sm:pb-12 lg:grid lg:h-full lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-8 lg:pt-[140px]'>
         {/* Mobile Layout */}
         <div className='flex flex-col items-center space-y-6 lg:hidden'>
           <div className='w-full max-w-md'>

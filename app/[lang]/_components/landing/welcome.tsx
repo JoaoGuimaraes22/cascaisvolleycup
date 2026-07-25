@@ -63,7 +63,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
 
       {/* Large-desktop-only (≥1440px) full-height player cutouts flanking the centered logo/info.
           Gated at 1440 (not xl/1280) so narrower laptops keep the clean centered hero — below that the logo crowds the players. */}
-      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 hidden min-[1440px]:block'>
+      <div className='hero-in-left pointer-events-none absolute inset-y-0 left-0 z-10 hidden min-[1440px]:block'>
         <Image
           src={ASSETS.LEFT}
           alt=''
@@ -73,7 +73,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
           className='h-full w-auto object-contain object-bottom drop-shadow-2xl'
         />
       </div>
-      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 hidden min-[1440px]:block'>
+      <div className='hero-in-right pointer-events-none absolute inset-y-0 right-0 z-10 hidden min-[1440px]:block'>
         <Image
           src={ASSETS.RIGHT}
           alt=''
@@ -85,7 +85,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
       </div>
 
       {/* Top corners (below the fixed header): Câmara Municipal de Cascais wordmark left, event tagline right */}
-      <div className='absolute top-[calc(var(--header-h)_+_1.5rem)] left-4 z-30 sm:left-6 lg:left-8'>
+      <div className='hero-in-cmc absolute top-[calc(var(--header-h)_+_1.5rem)] left-4 z-30 sm:left-6 lg:left-8'>
         <Image
           src={ASSETS.CMC}
           alt='Cascais — Para toda a vida'
@@ -96,7 +96,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
           className='h-auto w-[170px] drop-shadow-lg sm:w-[260px] lg:w-[340px]'
         />
       </div>
-      <div className='absolute top-[calc(var(--header-h)_+_1.5rem)] right-4 z-30 sm:right-6 lg:right-8'>
+      <div className='hero-in-tagline absolute top-[calc(var(--header-h)_+_1.5rem)] right-4 z-30 sm:right-6 lg:right-8'>
         <Image
           src={ASSETS.TAGLINE}
           alt={dict.taglineAlt}
@@ -113,7 +113,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
           {dict.heading}
         </h1>
 
-        <div className='flex flex-col items-center gap-4'>
+        <div className='hero-in-logo flex flex-col items-center gap-4'>
           <Image
             src={ASSETS.LOGO}
             alt='Cascais Volley Cup 2026'
@@ -127,7 +127,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
           />
         </div>
 
-        <div className='mt-16 flex flex-col gap-3'>
+        <div className='hero-in-cta mt-16 flex flex-col gap-3'>
           <Link
             href={localeHref(lang, '/registration')}
             className='rounded-full bg-white px-6 py-3 text-center text-sm font-bold tracking-wide text-sky-500 uppercase drop-shadow-lg duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl motion-safe:transition-all sm:px-8 sm:py-4 sm:text-lg'
@@ -145,7 +145,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
         </div>
       </div>
 
-      <div className='absolute bottom-8 left-1/2 -translate-x-1/2 text-white opacity-70'>
+      <div className='hero-in-scroll absolute bottom-8 left-1/2 -translate-x-1/2 text-white opacity-70'>
         <div className='flex flex-col items-center gap-2'>
           <span className='text-xs font-medium tracking-wider uppercase'>
             {dict.scrollDown}
@@ -154,7 +154,7 @@ export default function LandingWelcome({ lang, dict }: Props) {
         </div>
       </div>
 
-      <div className='absolute right-4 bottom-4 z-30 h-[40px] w-[80px] sm:h-[50px] sm:w-[100px] lg:h-[60px] lg:w-[120px]'>
+      <div className='hero-in-osports absolute right-4 bottom-4 z-30 h-[40px] w-[80px] sm:h-[50px] sm:w-[100px] lg:h-[60px] lg:w-[120px]'>
         <Image
           src={ASSETS.OSPORTS}
           alt='O-Sports'

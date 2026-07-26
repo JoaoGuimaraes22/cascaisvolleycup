@@ -74,6 +74,7 @@ type Props = {
 const ASSETS = {
   background: '/img/landing/home-page-2-2.webp',
   map: '/img/landing/mapa.webp',
+  player: '/img/landing/location-player.webp',
   tagline: GLOBAL_ASSETS.tagline,
   wave: GLOBAL_ASSETS.wave,
   waveTop: '/img/global/ondas-4.webp'
@@ -127,6 +128,23 @@ export default function LandingLocation({ dict, registrationFormDict }: Props) {
           unoptimized
           sizes='100vw'
         />
+      </div>
+
+      {/* Desktop-only decorative player — fills the right-hand gap between the tagline and the
+          wave, sitting behind the CTA (z-0) and rising out of the bottom wave (z-20). */}
+      <div className='pointer-events-none absolute inset-x-0 bottom-0 z-0 hidden lg:block'>
+        <div className='mx-auto flex max-w-screen-xl justify-end px-4'>
+          <Image
+            src={ASSETS.player}
+            alt=''
+            role='presentation'
+            width={960}
+            height={1204}
+            sizes='(min-width: 1280px) 570px, 470px'
+            quality={80}
+            className='h-auto w-[470px] translate-x-16 object-contain [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_82%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_82%,transparent_100%)] xl:w-[570px] xl:translate-x-32'
+          />
+        </div>
       </div>
 
       <div className='relative z-10 mx-auto max-w-screen-xl px-4 pt-[76px] pb-10 sm:pt-[96px] sm:pb-12 lg:grid lg:h-full lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-8 lg:pt-[140px]'>

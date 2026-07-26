@@ -427,7 +427,7 @@ export default function ProgramHero({ lang, dict }: Props) {
       </div>
 
       {/* Wave positioned responsively */}
-      <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2 lg:bottom-[50px]'>
+      <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
         {/* Desktop */}
         <div
           className='relative hidden lg:block'

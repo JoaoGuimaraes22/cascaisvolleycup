@@ -322,11 +322,11 @@
       "ages": {
         "heading": "AGE GROUPS",
         "under15": "Under 15",
-        "under15Years": "(≤2011)",
+        "under15Years": "(2014-2013-2012)",
         "under17": "Under 17",
-        "under17Years": "(2010-2009)",
+        "under17Years": "(2011-2010)",
         "open": "Open",
-        "openYears": "(≥2008)"
+        "openYears": "(2009<)"
       },
       "who": {
         "heading": "WHO CAN PARTICIPATE?",

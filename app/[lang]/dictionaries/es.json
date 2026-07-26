@@ -322,11 +322,11 @@
       "ages": {
         "heading": "GRUPOS DE EDAD",
         "under15": "Sub 15",
-        "under15Years": "(≤2011)",
+        "under15Years": "(2014-2013-2012)",
         "under17": "Sub 17",
-        "under17Years": "(2010-2009)",
+        "under17Years": "(2011-2010)",
         "open": "Abierto",
-        "openYears": "(≥2008)"
+        "openYears": "(2009<)"
       },
       "who": {
         "heading": "¿QUIÉN PUEDE PARTICIPAR?",
@@ -340,7 +340,7 @@
         "heading": "¿DÓNDE Y CUÁNDO?",
         "l1": "En el municipio de",
         "l2": "CASCAIS",
-        "l3": "durante toda la duración del evento"
+        "l3": "del 7 al 11 de julio"
       },
       "games": {
         "heading": "¿CUÁNTOS PARTIDOS?",

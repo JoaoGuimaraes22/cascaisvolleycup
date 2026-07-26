@@ -322,11 +322,11 @@
       "ages": {
         "heading": "GROUPES D'ÂGE",
         "under15": "Moins de 15 ans",
-        "under15Years": "(≤2011)",
+        "under15Years": "(2014-2013-2012)",
         "under17": "Moins de 17 ans",
-        "under17Years": "(2010-2009)",
+        "under17Years": "(2011-2010)",
         "open": "Ouvert",
-        "openYears": "(≥2008)"
+        "openYears": "(2009<)"
       },
       "who": {
         "heading": "QUI PEUT PARTICIPER ?",
@@ -340,7 +340,7 @@
         "heading": "OÙ ET QUAND ?",
         "l1": "Dans la municipalité de",
         "l2": "CASCAIS",
-        "l3": "pendant toute la durée de l'événement"
+        "l3": "du 7 au 11 juillet"
       },
       "games": {
         "heading": "COMBIEN DE MATCHS ?",

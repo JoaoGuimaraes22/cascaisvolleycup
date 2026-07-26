@@ -46,5 +46,5 @@ export const LANGUAGE_CODES = {
 /** Get brochure filename for a given locale */
 export function getBrochureFileName(locale: string): string {
   const langCode = LANGUAGE_CODES[locale as keyof typeof LANGUAGE_CODES] || 'UK'
-  return `CVCUP-2026-CONVITE-${langCode}.pdf`
+  return `CVCUP-2027-CONVITE-${langCode}.pdf`
 }

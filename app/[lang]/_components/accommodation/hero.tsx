@@ -197,8 +197,8 @@ export default function AccommodationHero({ dict, contactToastDict }: Props) {
               className={clsx(
                 'absolute inset-y-0 hidden w-[45vw] max-w-[900px] duration-1000 ease-out motion-safe:transition-all lg:block',
                 // Add the fade mask effect here
-                '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
-                '[mask-image:linear-gradient(to_bottom,black_0%,black_75%,transparent_100%)]',
+                '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_90%,transparent_100%)]',
+                '[mask-image:linear-gradient(to_bottom,black_0%,black_90%,transparent_100%)]',
                 isVisible
                   ? 'translate-x-0 opacity-100'
                   : 'translate-x-8 opacity-0'

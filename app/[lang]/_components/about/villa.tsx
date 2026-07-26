@@ -34,7 +34,7 @@ export default function AboutVilla({ dict }: Props) {
     bottomWave: GLOBAL_ASSETS.wave,
     tagline: GLOBAL_ASSETS.taglineWhite,
     logo: GLOBAL_ASSETS.logoWhite,
-    sponsor: '/img/sponsors/cascais-camara-w.webp'
+    sponsor: '/img/sponsors/cmc1.webp'
   } as const
 
   const PARAGRAPHS: Array<'p1' | 'p2' | 'p3' | 'p4'> = ['p1', 'p2', 'p3', 'p4']

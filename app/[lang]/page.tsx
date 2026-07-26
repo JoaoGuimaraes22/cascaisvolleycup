@@ -1,11 +1,8 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import { getDictionary, hasLocale } from './dictionaries'
 import LandingWelcome from './_components/landing/welcome'
 import LandingLocation from './_components/landing/location'
-import NewsSection from './_components/landing/news-section'
-import NewsSectionSkeleton from './_components/landing/news-section-skeleton'
 import { buildPageMetadata } from './_lib/seo'
 
 export const revalidate = 86400
@@ -45,11 +42,6 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
         dict={dict.LandingPage.Location}
         registrationFormDict={dict.RegistrationPage.Form}
       />
-      {/* Sanity news is the page's only network dependency — isolate it behind its
-          own Suspense so it never gates the above-the-fold content (see CLS fix). */}
-      <Suspense fallback={<NewsSectionSkeleton dict={dict.LandingPage.Updates} />}>
-        <NewsSection lang={lang} dict={dict.LandingPage.Updates} />
-      </Suspense>
     </div>
   )
 }

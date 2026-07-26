@@ -92,8 +92,8 @@ export default function LandingWelcome({ lang, dict }: Props) {
           width={1280}
           height={146}
           quality={90}
-          sizes='(max-width: 640px) 170px, (max-width: 1024px) 260px, 340px'
-          className='h-auto w-[170px] drop-shadow-lg sm:w-[260px] lg:w-[340px]'
+          sizes='(max-width: 640px) 125px, (max-width: 1024px) 260px, 340px'
+          className='h-auto w-[125px] drop-shadow-lg sm:w-[260px] lg:w-[340px]'
         />
       </div>
       <div className='hero-in-tagline absolute top-[calc(var(--header-h)_+_1.5rem)] right-4 z-30 sm:right-6 lg:right-8'>
@@ -103,8 +103,8 @@ export default function LandingWelcome({ lang, dict }: Props) {
           width={400}
           height={86}
           quality={95}
-          sizes='(max-width: 640px) 150px, (max-width: 1024px) 220px, 300px'
-          className='h-auto w-[150px] drop-shadow-2xl sm:w-[220px] lg:w-[300px]'
+          sizes='(max-width: 640px) 110px, (max-width: 1024px) 220px, 300px'
+          className='h-auto w-[110px] drop-shadow-2xl sm:w-[220px] lg:w-[300px]'
         />
       </div>
 
@@ -121,8 +121,8 @@ export default function LandingWelcome({ lang, dict }: Props) {
             height={227}
             priority
             quality={95}
-            sizes='(max-width: 640px) 350px, (max-width: 1024px) 500px, 650px'
-            className='max-w-[350px] drop-shadow-2xl sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px]'
+            sizes='(max-width: 640px) 260px, (max-width: 1024px) 500px, 650px'
+            className='max-w-[260px] drop-shadow-2xl sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px]'
             style={{ width: 'auto', height: 'auto' }}
           />
         </div>

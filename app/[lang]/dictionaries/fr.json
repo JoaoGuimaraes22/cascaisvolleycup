@@ -340,7 +340,7 @@
         "heading": "OÙ ET QUAND ?",
         "l1": "Dans la municipalité de",
         "l2": "CASCAIS",
-        "l3": "du 7 au 11 juillet"
+        "l3": "pendant toute la durée de l'événement"
       },
       "games": {
         "heading": "COMBIEN DE MATCHS ?",
@@ -431,9 +431,8 @@
       "title": "Hall of Fame",
       "intro": "Au cours des trois dernières années, à la Cascais Volley Cup, nous avons eu l'honneur d'accueillir de nombreuses équipes de volleyball féminin de tout le Portugal. En 2025, nous avons atteint la représentation nationale tant attendue et ajouté le titre \"international\" en accueillant des équipes de divers pays. À tous, un énorme MERCI d'avoir cru et d'avoir fait partie de la famille CASCAIS VOLLEY CUP.",
       "see_more": "Voir plus",
-      "hero_alt": "MVP du tournoi",
+      "hero_alt": "Vis l'action, profite de l'été",
       "logoAlt": "Logo Cascais Volley Cup",
-      "mvpAlt": "MVP 2025",
       "see_participants": "Voir les Participants",
       "see_winners": "Voir les Gagnants"
     },
@@ -466,20 +465,20 @@
       "title": "INSCRIPTIONS",
       "schoolAccommodation": {
         "title": "HÉBERGEMENT EN ÉCOLES",
-        "description": "L'inscription doit être faite obligatoirement via le site de l'événement en suivant les instructions qui y seront fournies. De manière générale, l'inscription à la CASCAIS VOLLEY CUP 2027 a deux moments :"
+        "description": "L'inscription doit être faite obligatoirement via le site de l'événement en suivant les instructions qui y seront fournies. De manière générale, l'inscription à la CASCAIS VOLLEY CUP a deux moments :"
       },
       "pricing": {
         "earlyBird": {
           "label": "TARIF ANTICIPÉ",
           "period": "I Du 1er janvier au 31 mars",
-          "price": "165 euros/athlète",
-          "details": "inclut l'inscription au tournoi, l'hébergement et la restauration du 7 au 11 juillet I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
+          "price": "175 euros/athlète",
+          "details": "inclut l'inscription au tournoi, l'hébergement et la restauration pendant toute la durée de l'événement I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
         },
         "regularBird": {
           "label": "TARIF RÉGULIER",
           "period": "I Du 1er avril au 31 mai",
-          "price": "185 euros/athlète",
-          "details": "inclut l'inscription, l'hébergement et la restauration du 7 au 11 juillet I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
+          "price": "195 euros/athlète",
+          "details": "inclut l'inscription, l'hébergement et la restauration pendant toute la durée de l'événement I Hébergement Scolaire à occupation multiple (min 10 pax – max 20 pax)."
         }
       },
       "teamRequirements": "Chaque équipe doit avoir un minimum de 10 athlètes inscrits, et l'organisation offre l'inscription gratuite pour 2 entraîneurs par équipe.",

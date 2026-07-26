@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# User asset staging drop (consumed into public/img then deleted)
+public/img/updated/

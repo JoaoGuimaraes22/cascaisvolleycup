@@ -340,7 +340,7 @@
         "heading": "¿DÓNDE Y CUÁNDO?",
         "l1": "En el municipio de",
         "l2": "CASCAIS",
-        "l3": "del 7 al 11 de julio"
+        "l3": "durante toda la duración del evento"
       },
       "games": {
         "heading": "¿CUÁNTOS PARTIDOS?",
@@ -431,9 +431,8 @@
       "title": "Hall of Fame",
       "intro": "En los últimos tres años, en la Copa de Voleibol Cascais hemos tenido el honor de dar la bienvenida a numerosos equipos de voleibol femenino de todo Portugal. En 2025, logramos la ansiada representación nacional y agregamos el título de \"internacional\" al recibir equipos de varios países. A todos, un enorme GRACIAS por creer y por ser parte de la familia de la COPA DE VOLEIBOL CASCAIS.",
       "see_more": "Ver más",
-      "hero_alt": "MVPs del torneo",
+      "hero_alt": "Siente la acción, disfruta el verano",
       "logoAlt": "Logo de la Copa de Voleibol Cascais",
-      "mvpAlt": "MVP 2025",
       "see_participants": "Ver Participantes",
       "see_winners": "Ver Ganadores"
     },
@@ -466,20 +465,20 @@
       "title": "INSCRIPCIONES",
       "schoolAccommodation": {
         "title": "ALOJAMIENTO EN ESCUELAS",
-        "description": "La inscripción debe realizarse obligatoriamente a través del sitio web del evento siguiendo las instrucciones que se proporcionarán en el mismo. De forma general, la inscripción en la COPA DE VOLEIBOL CASCAIS 2027 tiene dos momentos:"
+        "description": "La inscripción debe realizarse obligatoriamente a través del sitio web del evento siguiendo las instrucciones que se proporcionarán en el mismo. De forma general, la inscripción en la COPA DE VOLEIBOL CASCAIS tiene dos momentos:"
       },
       "pricing": {
         "earlyBird": {
           "label": "EARLY BIRD",
           "period": "I Del 1 de enero al 31 de marzo",
-          "price": "165 euros/atleta",
-          "details": "incluye inscripción en el torneo, estancia y alimentación del 7 al 11 de julio I Alojamiento Escolar de ocupación múltiple (mín 10 pax – max 20 pax)."
+          "price": "175 euros/atleta",
+          "details": "incluye inscripción en el torneo, estancia y alimentación durante toda la duración del evento I Alojamiento Escolar de ocupación múltiple (mín 10 pax – max 20 pax)."
         },
         "regularBird": {
           "label": "REGULAR BIRD",
           "period": "I Del 1 de abril al 31 de mayo",
-          "price": "185 euros/atleta",
-          "details": "incluye inscripción, estancia y alimentación del 7 al 11 de julio I Alojamiento Escolar de ocupación múltiple (mín 10 pax – max 20 pax)."
+          "price": "195 euros/atleta",
+          "details": "incluye inscripción, estancia y alimentación durante toda la duración del evento I Alojamiento Escolar de ocupación múltiple (mín 10 pax – max 20 pax)."
         }
       },
       "teamRequirements": "Cada equipo debe tener un mínimo de 10 atletas inscritas, y la organización ofrece la inscripción gratuita para 2 entrenadores por equipo.",

@@ -10,10 +10,9 @@ import { WAVE_HEIGHT_TALL as WAVE_HEIGHT } from '../../_lib/constants'
 // Assets constant for better maintainability
 const ASSETS = {
   background: '/img/hall-of-fame/hero-bg.webp',
-  heroImage: '/img/hall-of-fame/players.webp',
+  taglineWhite: '/img/global/tagline-w.webp',
   wave: '/img/global/ondas-10.webp',
-  logo: '/img/global/cascais-volley-cup-1-w.webp',
-  mvpLogo: '/img/hall-of-fame/mvp-logo.webp'
+  logo: '/img/global/cascais-volley-cup-1-w.webp'
 } as const
 
 type HallOfFameHeroDict = {
@@ -22,7 +21,6 @@ type HallOfFameHeroDict = {
   see_more: string
   hero_alt: string
   logoAlt: string
-  mvpAlt: string
   see_participants: string
   see_winners: string
 }
@@ -82,47 +80,14 @@ function CTAButton({
   )
 }
 
-// Hero image component with hover animation
-interface HeroImageProps {
-  src: string
-  alt: string
-  isVisible: boolean
-}
-
-function HeroImage({ src, alt, isVisible }: HeroImageProps) {
-  return (
-    <div className='relative lg:col-span-5'>
-      <div
-        className={clsx(
-          'relative z-10 mx-auto -mt-2 h-[320px] w-full overflow-visible duration-1000 ease-out motion-safe:transition-all sm:-mt-4 sm:h-[380px] lg:-mt-6 lg:h-[460px] xl:h-[520px]',
-          '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
-          '[mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]',
-          'delay-500',
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-        )}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes='(max-width: 1024px) 90vw, 700px'
-          className='object-contain object-bottom duration-300 hover:scale-105 motion-safe:transition-transform'
-          priority
-          quality={75}
-        />
-      </div>
-    </div>
-  )
-}
-
 // Enhanced wave section with logos
 interface WaveSectionProps {
   logoAlt: string
-  mvpAlt: string
+  taglineAlt: string
   isVisible: boolean
 }
 
-function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
+function WaveSection({ logoAlt, taglineAlt, isVisible }: WaveSectionProps) {
   return (
     <div className='pointer-events-none absolute bottom-0 left-1/2 w-screen -translate-x-1/2'>
       {/* Desktop */}
@@ -171,7 +136,7 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
               />
             </div>
 
-            {/* MVP logo right with staggered animation */}
+            {/* Tagline right ("feel the ACTION · enjoy the SUMMER") with staggered animation */}
             <div
               className={clsx(
                 'duration-700 ease-out motion-safe:transition-all',
@@ -182,12 +147,13 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
               )}
             >
               <Image
-                src={ASSETS.mvpLogo}
-                alt={mvpAlt}
-                width={280}
-                height={90}
-                className='h-[54px] w-auto sm:h-[64px]'
-                priority
+                src={ASSETS.taglineWhite}
+                alt={taglineAlt}
+                width={2368}
+                height={510}
+                className='max-h-[54px] w-auto sm:max-h-[62px]'
+                style={{ width: 'auto', height: 'auto' }}
+                loading='lazy'
                 quality={80}
               />
             </div>
@@ -242,12 +208,13 @@ function WaveSection({ logoAlt, mvpAlt, isVisible }: WaveSectionProps) {
             )}
           >
             <Image
-              src={ASSETS.mvpLogo}
-              alt={mvpAlt}
-              width={120}
-              height={40}
-              className='h-[20px] w-auto'
-              priority
+              src={ASSETS.taglineWhite}
+              alt={taglineAlt}
+              width={2368}
+              height={510}
+              className='max-h-[32px] w-auto'
+              style={{ width: 'auto', height: 'auto' }}
+              loading='lazy'
               quality={80}
             />
           </div>
@@ -286,7 +253,11 @@ export default function HallOfFameHero({ dict }: Props) {
     <section
       ref={sectionRef}
       className='relative w-full overflow-hidden'
-      style={{ paddingBottom: `${WAVE_HEIGHT}px` }}
+      /* Reserve space for the bottom wave. The desktop wave is `w-full` (ondas-10 is
+         8006×1279 → ~16vw tall), so a fixed px reserve is too small on wide screens and
+         the wave/tagline overlap the CTAs. Track the wave height on desktop, keep the
+         mobile wave's fixed height as the floor. +1rem keeps the CTAs off the wave crest. */
+      style={{ paddingBottom: `max(${WAVE_HEIGHT}px, calc(16vw + 1rem))` }}
       aria-labelledby='hall-of-fame-title'
     >
       {/* Enhanced background with subtle animation */}
@@ -306,75 +277,62 @@ export default function HallOfFameHero({ dict }: Props) {
       </div>
 
       <div className='mx-auto max-w-screen-xl px-4 pt-8 sm:pt-12'>
-        <div className='grid grid-cols-1 gap-8 lg:grid-cols-12'>
-          {/* Enhanced Left: text content */}
-          <div className='lg:col-span-7'>
-            <header>
-              <h1
-                id='hall-of-fame-title'
-                className={clsx(
-                  'mb-4 text-2xl font-extrabold tracking-wide text-sky-500 uppercase duration-1000 ease-out motion-safe:transition-all sm:text-3xl',
-                  isVisible
-                    ? 'translate-y-0 opacity-100'
-                    : 'translate-y-8 opacity-0'
-                )}
-              >
-                {dict.title}
-              </h1>
-            </header>
+        {/* Text content (single column — the right-hand visual moved to the wave strip) */}
+        <header>
+          <h1
+            id='hall-of-fame-title'
+            className={clsx(
+              'mb-4 text-2xl font-extrabold tracking-wide text-sky-500 uppercase duration-1000 ease-out motion-safe:transition-all sm:text-3xl',
+              isVisible
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-8 opacity-0'
+            )}
+          >
+            {dict.title}
+          </h1>
+        </header>
 
-            <div
-              className={clsx(
-                'delay-300 duration-1000 ease-out motion-safe:transition-all',
-                isVisible
-                  ? 'translate-y-0 opacity-100'
-                  : 'translate-y-6 opacity-0'
-              )}
+        <div
+          className={clsx(
+            'delay-300 duration-1000 ease-out motion-safe:transition-all',
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+          )}
+        >
+          <p className='max-w-3xl text-sm leading-relaxed text-slate-800/90 sm:text-base lg:text-lg'>
+            {dict.intro}
+          </p>
+
+          {/* Two CTA Buttons */}
+          <div className='flex flex-col gap-3 sm:flex-row sm:gap-4'>
+            <CTAButton
+              onClick={onSeeParticipants}
+              isVisible={isVisible}
+              icon={FiUsers}
+              href='#hall-of-fame-teams'
+              variant='primary'
+              delay={700}
             >
-              <p className='max-w-3xl text-sm leading-relaxed text-slate-800/90 sm:text-base lg:text-lg'>
-                {dict.intro}
-              </p>
+              {dict.see_participants}
+            </CTAButton>
 
-              {/* Two CTA Buttons */}
-              <div className='flex flex-col gap-3 sm:flex-row sm:gap-4'>
-                <CTAButton
-                  onClick={onSeeParticipants}
-                  isVisible={isVisible}
-                  icon={FiUsers}
-                  href='#hall-of-fame-teams'
-                  variant='primary'
-                  delay={700}
-                >
-                  {dict.see_participants}
-                </CTAButton>
-
-                <CTAButton
-                  onClick={onSeeWinners}
-                  isVisible={isVisible}
-                  icon={FiAward}
-                  href='#hall-of-fame-winners'
-                  variant='primary'
-                  delay={850}
-                >
-                  {dict.see_winners}
-                </CTAButton>
-              </div>
-            </div>
+            <CTAButton
+              onClick={onSeeWinners}
+              isVisible={isVisible}
+              icon={FiAward}
+              href='#hall-of-fame-winners'
+              variant='primary'
+              delay={850}
+            >
+              {dict.see_winners}
+            </CTAButton>
           </div>
-
-          {/* Enhanced Right: players image with parallax */}
-          <HeroImage
-            src={ASSETS.heroImage}
-            alt={dict.hero_alt}
-            isVisible={isVisible}
-          />
         </div>
       </div>
 
-      {/* Enhanced Wave section with logos */}
+      {/* Enhanced Wave section with logo + tagline */}
       <WaveSection
         logoAlt={dict.logoAlt}
-        mvpAlt={dict.mvpAlt}
+        taglineAlt={dict.hero_alt}
         isVisible={isVisible}
       />
     </section>

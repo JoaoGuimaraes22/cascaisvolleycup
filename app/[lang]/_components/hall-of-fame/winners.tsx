@@ -34,7 +34,7 @@ export default function HallOfFameWinners({ dict }: Props) {
   // Assets with better organization
   const ASSETS = {
     background: '/img/hall-of-fame/hero-bg.webp',
-    winnersImg: '/img/program/players.webp',
+    winnersImg: '/img/hall-of-fame/winners.webp',
     tagline: GLOBAL_ASSETS.tagline,
     wave: GLOBAL_ASSETS.wave
   } as const
@@ -292,7 +292,7 @@ export default function HallOfFameWinners({ dict }: Props) {
 
                 <Image
                   src={ASSETS.winnersImg}
-                  alt='Tournament winners celebrating with trophies'
+                  alt='Volleyball player diving for a dig'
                   fill
                   sizes='(max-width: 1024px) 240px, 520px'
                   className='object-contain object-center drop-shadow-xl duration-300 hover:scale-105 motion-safe:transition-transform lg:drop-shadow-2xl'

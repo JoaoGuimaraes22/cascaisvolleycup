@@ -12,6 +12,23 @@ export interface Winner {
 export const DIVISIONS: DivisionKey[] = ['Sub15', 'Sub17', 'Open']
 
 export const WINNERS: Record<string, Record<DivisionKey, Winner[]>> = {
+  '2026': {
+    Sub15: [
+      { name: 'São Francisco AD B', country: 'PT' },
+      { name: 'ALA Gondomar A', country: 'PT' },
+      { name: 'São Francisco AD A', country: 'PT' }
+    ],
+    Sub17: [
+      { name: 'GD Estreito A', country: 'PT' },
+      { name: 'ADC Santa Isabel', country: 'PT' },
+      { name: 'EE Cacereñas VB', country: 'ES' }
+    ],
+    Open: [
+      { name: "AVB Val d'Yerres", country: 'FR' },
+      { name: 'Cascais Volley4all', country: 'PT' },
+      { name: 'SVR Benfica', country: 'PT' }
+    ]
+  },
   '2025': {
     Sub15: [
       { name: 'PEL Amora SC A', country: 'PT' },

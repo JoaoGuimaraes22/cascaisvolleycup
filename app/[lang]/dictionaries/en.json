@@ -431,9 +431,8 @@
       "title": "Hall of Fame",
       "intro": "In the last three years, at the Cascais Volley Cup we have had the honor of welcoming numerous women’s volleyball teams from all over Portugal. In 2025, we achieved the long-awaited national representation and added the title of “international” by hosting teams from various countries. To all, a huge THANK YOU for believing and for being part of the CASCAIS VOLLEY CUP family.",
       "see_more": "See more",
-      "hero_alt": "Tournament MVPs",
+      "hero_alt": "Feel the action, enjoy the summer",
       "logoAlt": "Cascais Volley Cup logo",
-      "mvpAlt": "MVP 2025",
       "see_participants": "See Participants",
       "see_winners": "See Winners"
     },
@@ -466,20 +465,20 @@
       "title": "REGISTRATION",
       "schoolAccommodation": {
         "title": "SCHOOL ACCOMMODATION",
-        "description": "Registration must be done exclusively through the event website following the instructions provided there. In general, registration for CASCAIS VOLLEY CUP 2027 has two phases:"
+        "description": "Registration must be done exclusively through the event website following the instructions provided there. In general, registration for CASCAIS VOLLEY CUP has two phases:"
       },
       "pricing": {
         "earlyBird": {
           "label": "EARLY BIRD",
           "period": "I From January 1 to March 31",
-          "price": "165 euros/player",
-          "details": "includes tournament registration, accommodation and meals from July 7 to 11 I Shared school lodging (min 10 pax – max 20 pax)."
+          "price": "175 euros/player",
+          "details": "includes tournament registration, accommodation and meals throughout the entire event I Shared school lodging (min 10 pax – max 20 pax)."
         },
         "regularBird": {
           "label": "REGULAR BIRD",
           "period": "I From April 1 to May 31",
-          "price": "185 euros/player",
-          "details": "includes registration, accommodation and meals from July 7 to 11 I Shared school lodging (min 10 pax – max 20 pax)."
+          "price": "195 euros/player",
+          "details": "includes registration, accommodation and meals throughout the entire event I Shared school lodging (min 10 pax – max 20 pax)."
         }
       },
       "teamRequirements": "Each team must have a minimum of 10 registered players, and the organization offers free registration for 2 coaches per team.",

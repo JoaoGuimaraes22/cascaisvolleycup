@@ -10,9 +10,16 @@ export const PARTICIPATING_TEAMS: readonly Team[] = [
   // Spain
   { name: 'CV Madrid', country: 'ES' },
   { name: 'Dompa Ourense Volei', country: 'ES' },
+  { name: 'EE Cacereñas VB', country: 'ES' },
 
   // Monaco
   { name: 'AS Monaco', country: 'MC' },
+
+  // France
+  { name: "AVB Val d'Yerres", country: 'FR' },
+
+  // England
+  { name: 'Volleyball England', country: 'GB' },
 
   // Portugal
   { name: 'CF "Os Belenenses"', country: 'PT' },
@@ -41,5 +48,12 @@ export const PARTICIPATING_TEAMS: readonly Team[] = [
   { name: 'Col. Julio Dinis', country: 'PT' },
   { name: 'Juventude SC', country: 'PT' },
   { name: 'CRCD Luzense', country: 'PT' },
-  { name: 'Sporting CT', country: 'PT' }
+  { name: 'Sporting CT', country: 'PT' },
+  { name: 'GD Estreito', country: 'PT' },
+  { name: 'ALA Gondomar', country: 'PT' },
+  { name: 'AD Penafiel', country: 'PT' },
+  { name: 'Santa Isabel Vólei', country: 'PT' },
+  { name: 'SVR Benfica', country: 'PT' },
+  { name: 'EMB Oliveira de Azeméis', country: 'PT' },
+  { name: 'GDU Ericeirense', country: 'PT' }
 ] as const

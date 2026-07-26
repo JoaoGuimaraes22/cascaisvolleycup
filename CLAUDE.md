@@ -105,13 +105,14 @@ Locale-specific PDFs use the `LANGUAGE_CODES` map in `app/[lang]/_lib/constants.
 | `/registration`  | Registration form + pricing                |
 | `/accommodation` | Hotel accommodation (O-Sports)             |
 | `/gallery`       | Gallery overview (all years)               |
+| `/gallery/2026`  | 2026 photos                                |
 | `/gallery/2025`  | 2025 photos                                |
 | `/gallery/2024`  | 2024 photos                                |
 | `/gallery/2023`  | 2023 photos                                |
 | `/news`          | News articles (currently a stub)           |
 | `/hall-of-fame`  | Hall of fame                               |
 
-All routes prefixed with `/{lang}/`. All 12 routes × 4 locales = 48 pages, all SSG'd at build time.
+All routes prefixed with `/{lang}/`. All 13 routes × 4 locales = 52 pages, all SSG'd at build time.
 
 ---
 
@@ -131,7 +132,7 @@ cascaisvolleycup/
 ├── app/
 │   ├── globals.css                # Tailwind 4 @theme
 │   ├── robots.ts                  # AI_CRAWLERS allowlist
-│   ├── sitemap.ts                 # 48 entries with hreflang
+│   ├── sitemap.ts                 # 52 entries with hreflang
 │   ├── api/
 │   │   ├── _lib/escape-html.ts
 │   │   ├── register/route.ts      # zod-validated, escapes HTML
@@ -147,7 +148,7 @@ cascaisvolleycup/
 │       ├── about/page.tsx
 │       ├── accommodation/page.tsx
 │       ├── competition/page.tsx
-│       ├── gallery/page.tsx + {2023,2024,2025}/page.tsx
+│       ├── gallery/page.tsx + {2023,2024,2025,2026}/page.tsx
 │       ├── hall-of-fame/page.tsx
 │       ├── news/page.tsx
 │       ├── program/page.tsx
@@ -246,7 +247,7 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
 - `_lib/seo.ts` helpers: `SITE_URL`, `bcp47Locale(lang)`, `ogLocale(lang)`, `schemaIds(lang)` → `{ website, organization, event }`, `buildBreadcrumb(lang, items)`, `breadcrumbLabel(lang, key)`, `buildPageMetadata(lang, { title, description, path, image? })`, `buildPageGraph(lang, { type, path, name, description?, eventRef?, breadcrumb, dateCreated?, withPublisher? })`, `localeHref(lang, path)`.
 - **Use `buildPageMetadata` in every page-level `generateMetadata` (including layout)** — returns full Metadata with hreflang × 4 + `x-default`, canonical, OG (localized URL + locale), Twitter card. Don't hand-roll the alternates.
 - **Use `buildPageGraph` for per-page JSON-LD.** Returns the `@graph` (page-typed node + BreadcrumbList) with all `@id` plumbing handled. `type` ∈ `AboutPage` | `WebPage` | `CollectionPage` | `ImageGallery`; `eventRef` is `mainEntity` (page IS about the event, e.g. about/program/registration) or `about` (page is a collection that references the event, e.g. gallery/hall-of-fame); omit `eventRef` for pages with no event linkage (e.g. news stub). `withPublisher: true` and `dateCreated` apply to ImageGallery only. See `app/[lang]/about/page.tsx` for the canonical pattern.
-- Sitemap auto-generates 48 entries (12 routes × 4 locales) with hreflang alternates.
+- Sitemap auto-generates 52 entries (13 routes × 4 locales) with hreflang alternates.
 - Robots allows AI crawlers (`GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, etc.).
 
 ---

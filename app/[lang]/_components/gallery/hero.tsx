@@ -46,6 +46,7 @@ const IMAGES_PER_YEAR = 6
 
 // Map years to static routes
 const YEAR_ROUTES = {
+  2026: '/gallery/2026',
   2025: '/gallery/2025',
   2024: '/gallery/2024',
   2023: '/gallery/2023'
@@ -327,11 +328,11 @@ export default function GalleryHero({ lang, dict }: Props) {
             </div>
 
             {/* Year cards grid */}
-            <div className='mx-auto max-w-7xl'>
+            <div className='mx-auto max-w-5xl'>
               {loading && availableYears.length === 0 ? (
                 // Loading skeletons
-                <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                  {Array.from({ length: 3 }).map((_, index) => (
+                <div className='grid gap-6 md:grid-cols-2'>
+                  {Array.from({ length: 4 }).map((_, index) => (
                     <YearCardSkeleton key={index} />
                   ))}
                 </div>
@@ -359,7 +360,7 @@ export default function GalleryHero({ lang, dict }: Props) {
                 </div>
               ) : (
                 // Year cards
-                <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+                <div className='grid gap-6 md:grid-cols-2'>
                   {availableYears
                     .sort((a, b) => b - a) // Sort descending (newest first)
                     .map((year, index) => (

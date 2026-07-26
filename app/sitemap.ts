@@ -14,7 +14,8 @@ const routes = [
     priority: 0.7
   },
   { path: '/gallery', changeFrequency: 'monthly' as const, priority: 0.7 },
-  { path: '/gallery/2025', changeFrequency: 'monthly' as const, priority: 0.6 },
+  { path: '/gallery/2026', changeFrequency: 'monthly' as const, priority: 0.6 },
+  { path: '/gallery/2025', changeFrequency: 'yearly' as const, priority: 0.5 },
   { path: '/gallery/2024', changeFrequency: 'yearly' as const, priority: 0.5 },
   { path: '/gallery/2023', changeFrequency: 'yearly' as const, priority: 0.5 },
   { path: '/hall-of-fame', changeFrequency: 'monthly' as const, priority: 0.6 },

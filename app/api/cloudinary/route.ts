@@ -33,7 +33,8 @@ interface ProcessedImage {
 const YEARS_CONFIG = [
   { year: 2023, folder: 'cascaiscup/2023' },
   { year: 2024, folder: 'cascaiscup/2024' },
-  { year: 2025, folder: 'cascaiscup/2025' }
+  { year: 2025, folder: 'cascaiscup/2025' },
+  { year: 2026, folder: 'cascaiscup/2026' }
 ] as const
 
 const ALLOWED_FOLDERS: ReadonlySet<string> = new Set(

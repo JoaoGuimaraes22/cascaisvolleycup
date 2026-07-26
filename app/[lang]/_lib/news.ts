@@ -42,16 +42,6 @@ export async function getAllPosts(lang: Locale): Promise<NewsCardData[]> {
   )
 }
 
-export async function getRecentPosts(
-  lang: Locale,
-  limit: number
-): Promise<NewsCardData[]> {
-  return sanityClient.fetch<NewsCardData[]>(
-    `*[_type == "newsPost" && defined(slug.en.current)] | order(publishedAt desc)[0...$limit] { ${CARD_FIELDS} }`,
-    { lang, limit }
-  )
-}
-
 export const getPostBySlug = cache(
   async (lang: Locale, slug: string): Promise<NewsPostData | null> =>
     sanityClient.fetch<NewsPostData | null>(

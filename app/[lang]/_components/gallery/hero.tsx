@@ -262,11 +262,8 @@ export default function GalleryHero({ lang, dict }: Props) {
   const { availableYears, loading, error, getImagesForYear, isEmpty } =
     useOptimizedGallery(IMAGES_PER_YEAR)
 
-  // Handle image click (could open lightbox, navigate, etc.)
-  const handleImageClick = useCallback((image: ProcessedImage) => {
-    // Could implement lightbox or other actions here
-    console.log('Image clicked:', image.public_id)
-  }, [])
+  // Placeholder for a future lightbox/navigation action on thumbnail click.
+  const handleImageClick = useCallback((_image: ProcessedImage) => {}, [])
 
   return (
     <section

@@ -507,60 +507,6 @@
         "athletes": "600 Atletas",
         "countries": "3 Países",
         "games": "150 Partidos"
-      },
-      "ContactModal": {
-        "title": "Contactar O-Sports",
-        "closeButton": "Cerrar modal",
-        "emailLabel": "Dirección de correo:",
-        "subjectLabel": "Asunto:",
-        "subjectValue": "Cascais Volley Cup",
-        "copy": "Copiar",
-        "copied": "¡Copiado!",
-        "guidelinesTitle": "Directrices del Mensaje:",
-        "guidelinesText": "Preferiblemente, incluya en su mensaje el **país y club**, seguido de su pregunta o comentario sobre el alojamiento.",
-        "exampleTitle": "Mensaje de Ejemplo:",
-        "exampleText": "\"Hola, escribo desde [País] en nombre de [Nombre del Club]. Nos gustaría consultar sobre opciones de alojamiento para nuestro equipo de 12 jugadores para la Cascais Volley Cup 2027...\"",
-        "gotItButton": "¡Entendido!"
-      }
-    },
-    "ContactModal": {
-      "title": "Contactar O-Sports",
-      "closeButton": "Cerrar modal",
-      "submit": "Enviar",
-      "submitting": "Enviando...",
-      "successMessage": "¡Su solicitud de alojamiento ha sido enviada con éxito!",
-      "errorMessage": "Algo salió mal. Por favor, inténtelo de nuevo.",
-      "fields": {
-        "teamName": "Nombre del Equipo",
-        "country": "País",
-        "teamManagerName": "Nombre del Entrenador/Responsable",
-        "phone": "Teléfono",
-        "email": "Correo electrónico",
-        "ageGroup": "Categoría de Edad",
-        "numberOfPeople": "Número de Personas",
-        "message": "Mensaje"
-      },
-      "placeholders": {
-        "teamName": "Introduzca el nombre de su equipo",
-        "country": "Introduzca su país",
-        "teamManagerName": "Introduzca el nombre del entrenador/responsable",
-        "phone": "Introduzca el número de teléfono",
-        "email": "Introduzca la dirección de correo electrónico",
-        "ageGroup": "Seleccione la categoría de edad",
-        "numberOfPeople": "Introduzca el número total de personas",
-        "message": "Escriba su mensaje"
-      },
-      "validation": {
-        "teamNameRequired": "El nombre del equipo es obligatorio",
-        "countryRequired": "El país es obligatorio",
-        "managerNameRequired": "El nombre del entrenador/responsable es obligatorio",
-        "managerNameMinLength": "El nombre debe tener al menos 2 caracteres",
-        "emailRequired": "El correo electrónico es obligatorio",
-        "emailInvalid": "Por favor, introduzca un correo electrónico válido",
-        "phoneInvalid": "Por favor, introduzca un número de teléfono válido",
-        "ageGroupRequired": "La categoría de edad es obligatoria",
-        "numberOfPeopleRequired": "El número de personas es obligatorio",
-        "numberOfPeopleInvalid": "Por favor, introduzca un número válido"
       }
     },
     "Form": {

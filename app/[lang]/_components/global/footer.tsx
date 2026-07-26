@@ -247,8 +247,8 @@ export default function Footer({ lang, dict }: Props) {
                 {dict.brochure}
               </a>
               <a
-                href='/docs/CVCUP-2026-Regulamento-PT.pdf'
-                download='CVCUP-2026-Regulamento-PT.pdf'
+                href='/docs/CVCUP-2027-Regulamento-PT.pdf'
+                download='CVCUP-2027-Regulamento-PT.pdf'
                 className='text-sky-700 motion-safe:transition-colors sm:text-slate-500 sm:hover:text-slate-700'
               >
                 {dict.regulations}

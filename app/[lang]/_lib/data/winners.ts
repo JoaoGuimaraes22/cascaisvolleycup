@@ -78,8 +78,3 @@ export const WINNERS: Record<string, Record<DivisionKey, Winner[]>> = {
 export function getAvailableYears(): string[] {
   return Object.keys(WINNERS).sort((a, b) => Number(b) - Number(a))
 }
-
-/** Get winners for a specific year and division */
-export function getWinners(year: string, division: DivisionKey): Winner[] {
-  return WINNERS[year]?.[division] ?? []
-}

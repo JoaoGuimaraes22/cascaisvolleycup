@@ -507,20 +507,6 @@
         "athletes": "600 Athletes",
         "countries": "3 Countries",
         "games": "150 Games"
-      },
-      "ContactModal": {
-        "title": "Contact O-Sports",
-        "closeButton": "Close modal",
-        "emailLabel": "Email Address:",
-        "subjectLabel": "Subject:",
-        "subjectValue": "Cascais Volley Cup",
-        "copy": "Copy",
-        "copied": "Copied!",
-        "guidelinesTitle": "Message Guidelines:",
-        "guidelinesText": "Preferably, have your message contain your **country and club**, followed by your question or comment about accommodation.",
-        "exampleTitle": "Example Message:",
-        "exampleText": "\"Hello, I'm writing from [Country] on behalf of [Club Name]. We would like to inquire about accommodation options for our team of 12 players for Cascais Volley Cup 2027...\"",
-        "gotItButton": "Got it!"
       }
     },
     "Form": {

@@ -35,10 +35,10 @@ A multilingual tournament website for the **Cascais Volley Cup 2026** — a girl
 | Styling     | Tailwind CSS 4 (CSS-first via `@theme` in `app/globals.css`)        |
 | i18n        | Custom dict pattern — no library; matches ignite-base               |
 | Locale match| `@formatjs/intl-localematcher` + `negotiator` in `proxy.ts`         |
-| Images      | Cloudinary via `next-cloudinary` (gallery only) + `next/image`      |
+| Images      | `next/image` everywhere; gallery reads Cloudinary via `cloudinary` Node SDK (`app/api/cloudinary/route.ts`) + a hand-rolled `OptimizedCloudinaryImage` wrapper |
 | Email       | Resend API (form submissions)                                       |
 | Form valid. | `zod` server-side + custom `_lib/validation.ts` client-side         |
-| Carousel    | `keen-slider`                                                       |
+| Carousel    | Native CSS scroll-snap via `_hooks/use-snap-carousel.ts` (no lib)   |
 | Icons       | `react-icons`                                                       |
 | Lint        | ESLint 9 (flat config) + `eslint-config-next` 16                    |
 | Deployment  | Vercel (auto-deploys on push to main)                               |
@@ -339,7 +339,7 @@ CORS origins (Settings → API → CORS): add `http://localhost:3000` (untrusted
 - **`params` is a Promise** in Next 16 — always `await params`.
 - **Use `proxy.ts` not `middleware.ts`** — Next 16 renamed.
 - **API routes use `route.ts` with named HTTP method exports** (already so).
-- **Cloudinary `<CldImage>` requires `'use client'`** — `OptimizedCloudinaryImage` is a client wrapper to keep gallery pages partially server-rendered.
+- **`OptimizedCloudinaryImage` is a `'use client'` wrapper** over `next/image` (builds Cloudinary delivery URLs itself; no `next-cloudinary` dep) — keeps gallery pages partially server-rendered.
 
 ---
 

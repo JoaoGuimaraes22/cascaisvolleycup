@@ -384,8 +384,8 @@ function SponsorsSection({
 function RegulationsButton() {
   return (
     <a
-      href='/docs/CVCUP-2026-Regulamento-PT.pdf'
-      download='CVCUP-2026-Regulamento-PT.pdf'
+      href='/docs/CVCUP-2027-Regulamento-PT.pdf'
+      download='CVCUP-2027-Regulamento-PT.pdf'
       className={clsx(
         'group inline-flex items-center gap-3 rounded-lg px-6 py-3 font-semibold text-white shadow-lg duration-300 motion-safe:transition-all',
         'bg-gradient-to-r from-sky-600 to-sky-700',

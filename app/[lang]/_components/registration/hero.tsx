@@ -335,7 +335,7 @@ export default function RegistrationHero({
             )}
             style={{ transitionDelay: '400ms' }}
           >
-            <div className='relative h-[500px] w-full max-w-[400px] xl:h-[600px] xl:max-w-[480px]'>
+            <div className='relative h-[580px] w-full max-w-[400px] xl:h-[700px] xl:max-w-[480px]'>
               <div
                 className='absolute inset-0'
                 style={{
